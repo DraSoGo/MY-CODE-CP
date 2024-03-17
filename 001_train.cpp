@@ -1,57 +1,61 @@
-#include <iostream>
-#include <vector>
-#include <climits>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    int N, M;
-    cin >> N >> M;
-    vector<int> W(N-1), P(N), C(N);
+int R,C;
+int arr[1001][1001];
+int mem[1001][1001][1001];
 
-    for (int i = 0; i < N-1; ++i) {
-        cin >> W[i];
+bool check(int x, int y1, int y2)
+{
+    return (x >= 0 && x < R && y1 >= 0 && y1 < C && y2 >= 0 && y2 < C);
+}
+int fmx(int x, int y1, int y2)
+{
+    if (!check(x, y1, y2))
+    {
+        return INT_MIN;
     }
-
-    for (int i = 0; i < N; ++i) {
-        cin >> P[i];
+    if (x == R - 1 && y1 == 0 && y2 == C - 1)
+    {
+        return (y1 == y2) ? arr[x][y1] : arr[x][y1] + arr[x][y2];
     }
-
-    for (int i = 0; i < N; ++i) {
-        cin >> C[i];
+    if (x == R - 1)
+    {
+        return INT_MIN;
     }
-
-    // คำนวณระยะทางระหว่างเมืองที่ใกล้ที่สุด
-    vector<vector<int>> dist(N, vector<int>(N, 0));
-    for (int i = 0; i < N; ++i) {
-        for (int j = i + 1, sum = 0; j < N; ++j) {
-            sum += W[j - 1];
-            dist[i][j] = dist[j][i] = sum;
+    if (mem[x][y1][y2] != -1)
+    {
+        return mem[x][y1][y2];
+    }
+    int ans = INT_MIN;
+    int temp = (y1 == y2) ? arr[x][y1] : arr[x][y1] + arr[x][y2];
+    ans = max(ans, temp + fmx(x + 1, y1, y2 - 1));
+    ans = max(ans, temp + fmx(x + 1, y1, y2 + 1));
+    ans = max(ans, temp + fmx(x + 1, y1, y2));
+    ans = max(ans, temp + fmx(x + 1, y1 - 1, y2));
+    ans = max(ans, temp + fmx(x + 1, y1 - 1, y2 - 1));
+    ans = max(ans, temp + fmx(x + 1, y1 - 1, y2 + 1));
+    ans = max(ans, temp + fmx(x + 1, y1 + 1, y2));
+    ans = max(ans, temp + fmx(x + 1, y1 + 1, y2 - 1));
+    ans = max(ans, temp + fmx(x + 1, y1 + 1, y2 + 1));
+    return (mem[x][y1][y2] = ans);
+}
+int memmx()
+{
+    memset(mem, -1, sizeof(mem));
+    return fmx(0, 0, C - 1);
+}
+int main()
+{
+    cin >> R >> C;
+    for (int i = 0; i < R; i++)
+    {
+        for (int j = 0; j < C; j++)
+        {
+            cin >> arr[i][j];
         }
     }
-
-    // การวิเคราะห์ทุกชุดคำสั่งที่เป็นไปได้ (1 ถึง 2^N - 1)
-    int minCost = INT_MAX;
-    for (int i = 1; i < (1 << N); ++i) {
-        if (__builtin_popcount(i) == M) {
-            int cost = 0;
-            for (int j = 0; j < N; ++j) {
-                if (i & (1 << j)) cost += C[j];
-            }
-            for (int j = 0; j < N; ++j) {
-                if (!(i & (1 << j))) {
-                    int minDist = INT_MAX;
-                    for (int k = 0; k < N; ++k) {
-                        if (i & (1 << k)) minDist = min(minDist, dist[j][k]);
-                    }
-                    cost += P[j] * minDist;
-                }
-            }
-            minCost = min(minCost, cost);
-        }
-    }
-
-    cout << minCost << endl;
-
+    
+    cout << memmx();
     return 0;
 }
