@@ -1,63 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+long long par[100001];
+long long fp(long long a)
+{
+    if (a != par[a])
+    {
+        return par[a] = fp(par[a]);
+    }
+    return a;
+}
+
 int main()
 {
     ios_base::sync_with_stdio();cin.tie();cout.tie();
+    for (long long i = 0; i < 100001; i++)
+    {
+        par[i] = i;
+    }
+    
     char cm;
     long long n,q,u,v,a,b;
     cin >> n >> q;
-    vector <long long> V[n+1];
-    queue <long long> Q;
-    bool vis[n+1],ch;
     for (long long i = 0; i < q; i++)
     {
         cin >> cm >> u >> v;
         if (cm == 'c')
         {
-            V[u].push_back(v);
-            V[v].push_back(u);
+            par[fp(u)] = par[fp(v)];
         }
         else
         {
-            memset(vis,0,sizeof(vis));
-            ch = 0;
-            Q.push(u);
-            vis[u] = 1;
-            // for (long long k = 0; k < n; k++)
-            // {
-            //     for (long long j = 0; j < V[k].size(); j++)
-            //     {
-            //         cout << V[k][j] << " ";
-            //     }
-            //     cout << "-\n";
-                
-            // }
-            
-            while (!Q.empty())
-            {
-                a = Q.front();
-                //cout << a << " ";
-                Q.pop();
-                for (long long i = 0; i < V[a].size(); i++)
-                {
-                    if (vis[V[a][i]] == false)
-                    {
-                        if (V[a][i] == v)
-                        {
-                            ch = 1;
-                            break;
-                        }
-                        Q.push(V[a][i]);
-                        vis[V[a][i]] = true;
-                    }
-                }
-                if (ch)
-                {
-                    break;
-                }
-            }
-            // cout << "\n";
-            if (ch == 1)
+            if (par[fp(u)] == par[fp(v)])
             {
                 cout << "yes\n";
             }
@@ -65,9 +39,7 @@ int main()
             {
                 cout << "no\n";
             }
-            
         }
-        
     }
     
     return 0;
