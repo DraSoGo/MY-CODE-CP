@@ -3,24 +3,24 @@ using namespace std;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int n,mx;
+    int n,mx,c;
     cin >> n;
-    int val[n],DP[n+1];
-    DP[0] = 0;
+    int val[n+1],DP[n+1];
     memset(DP,0,sizeof(DP));
-    for (int i = 0; i < n; i++)
+    val[0] = 0;
+    for (int i = 1; i <= n; i++)
     {
         cin >> val[i];
     }
+    cin >> c;
     for (int i = 1; i <= n; i++)
     {
-        mx = 0;
-        for (int j = 0; j < i; j++)
+        for (int j = 1; j <= i; j++)
         {
-            mx = max(mx,val[j] + DP[i-j-1]);
+            DP[i] = max(DP[i],val[j]+DP[i-j]);
         }
-        DP[i] = mx;
-        cout << DP[i] << " ";
+        //cout << DP[i] << " ";
     }
+    cout << DP[c];
     return 0;
 }
