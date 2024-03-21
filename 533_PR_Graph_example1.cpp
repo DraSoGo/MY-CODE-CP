@@ -23,15 +23,16 @@ void pre(vector <pair<int,int>> eg[],int n,string N[])
                     cout << " ";
                 }
             }
-            cout << "    -> ";
+            cout << "\t" << "-> ";
             cout << N[eg[i][j].first] << " " << eg[i][j].second << " coins"; 
             cout << "\n";
         }
         if (eg[i].empty())
         {
-            cout << N[i] << "    -> -"; 
+            cout << N[i] << "\t-> -"; 
         }
         ch = 0;
+        cout << "\n";
     }
     
 }

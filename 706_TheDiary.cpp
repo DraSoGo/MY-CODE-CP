@@ -15,10 +15,14 @@ int main()
     {
         if (i > k + 1)
         {
-            DP[i] = (max(DP[i - 1], (DP[i - k - 1] + DP[i]) % md));
+            DP[i] = (max(DP[i - 1]%md, (DP[i - k - 1]%md + DP[i]%md) % md));
         }
+        else
+        {
+            DP[i] = max(DP[i],DP[i-1]);
+        }
+        
     }
     cout << DP[n];
-
     return 0;
 }

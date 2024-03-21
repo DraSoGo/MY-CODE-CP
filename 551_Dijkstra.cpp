@@ -19,8 +19,8 @@ void sp(int mn[],vector <pair<int,int>> G[],int sr)
     {
         t = pq.top();
         a = t.first;
-        pq.pop();
         b = t.second;
+        pq.pop();
         for (int i = 0; i < G[a].size(); i++)
         {
             if (b + G[a][i].second < mn[G[a][i].first])
