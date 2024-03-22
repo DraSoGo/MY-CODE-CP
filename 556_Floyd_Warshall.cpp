@@ -23,15 +23,6 @@ int main()
     {
         G[i][i] = 0;
     }
-    // for (int i = 0; i < n; i++)
-    // {
-    //     for (int j = 0; j < n; j++)
-    //     {
-    //         cout << G[i][j] << " ";
-    //     }
-    //     cout << "\n";
-    // }
-    // cout << "\n";
     for (int k = 0; k < n; k++)
     {
         for (int i = 0; i < n; i++)
