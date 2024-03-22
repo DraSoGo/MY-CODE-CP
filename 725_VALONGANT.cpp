@@ -23,18 +23,26 @@ int main()
     {
         G[i][i] = 0;
     }
-    for (long long k = 0; k < n; k++)
-    {
-        for (long long i = 0; i < n; i++)
+        for (long long k = 0; k < n; k++)
         {
-            for (long long j = 0; j < n; j++)
+            for (long long i = 0; i < n; i++)
             {
+                for (long long j = 0; j < n; j++)
+                {
                 if (G[i][j] > G[i][k] + G[k][j])
                 {
                     G[i][j] = G[i][k] + G[k][j];
                 }
             }
         }
+    }
+      for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << G[i][j] << " ";
+        }
+        cout << "\n";
     }
     long long sum = 0;
     for (long long i = 0; i < n-1; i++)

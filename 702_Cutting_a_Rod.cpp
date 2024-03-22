@@ -19,7 +19,6 @@ int main()
         {
             DP[i] = max(DP[i],val[j]+DP[i-j]);
         }
-        //cout << DP[i] << " ";
     }
     cout << DP[c];
     return 0;

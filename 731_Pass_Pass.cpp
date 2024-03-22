@@ -20,7 +20,6 @@ int findpath(int st,int ed)
     {
         int a = path[i];
         int b = path[i+1];
-        cout << a << " " << b << "\n";
         G[b].push_back({0,a});
         G[a].push_back({0,b});
     }
@@ -87,28 +86,28 @@ int main()
         G[u-1].push_back({w,v-1});
         G[v-1].push_back({w,u-1});
     }
-    cout << "\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < G[i].size(); j++)
-        {
-            cout << "(" << G[i][j].second << "," << G[i][j].first << ") ";
-        }
-        cout << "\n";
-    }
-    cout << "\n";
+    // cout << "\n";
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < G[i].size(); j++)
+    //     {
+    //         cout << "(" << G[i][j].second << "," << G[i][j].first << ") ";
+    //     }
+    //     cout << "\n";
+    // }
+    // cout << "\n";
     DJ(a,b);
     findpath(a,b);
-    cout << "\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < G[i].size(); j++)
-        {
-            cout << "(" << G[i][j].second << "," << G[i][j].first << ") ";
-        }
-        cout << "\n";
-    }
-    cout << "\n";
+    // cout << "\n";
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < G[i].size(); j++)
+    //     {
+    //         cout << "(" << G[i][j].second << "," << G[i][j].first << ") ";
+    //     }
+    //     cout << "\n";
+    // }
+    // cout << "\n";
     cout << DJ(x,y);
     return 0;
 }

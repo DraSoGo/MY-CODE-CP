@@ -28,7 +28,7 @@ int main()
         u--;v--;
         if (c == 'q')
         {
-            if (fp(u) == fp(v))
+            if (par[fp(u)] == par[fp(v)])
             {
                 cout << "yes\n";
             }
@@ -39,7 +39,7 @@ int main()
         }
         else
         {
-            par[par[u]] = par[v];
+            par[fp(u)] = par[fp(v)];
         }
     }
     return 0;
