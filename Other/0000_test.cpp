@@ -1,40 +1,46 @@
 #include <bits/stdc++.h>
+#define ll long long
+#define pii pair<int, int>
+#define f first
+#define s second
 using namespace std;
-
-int n;
-int tree[1000];
-
-int sum(int k)
-{
-    int s = 0;
-    while (k >= 1)
-    {
-        s += tree[k];
-        k -= k&-k;
-    }
-    return s;
-}
-
-void add(int k,int x)
-{
-    while (k <= n)
-    {
-        tree[k] += x;
-        k += k&-k;
-    }
-}
-
+ll val[1000005], c = 0, now = 0, ans = 0;
 int main()
 {
-    ios_base::sync_with_stdio(0);cin.tie();cout.tie(0);
-    int x,a,b;
-    cin >> n;
-    for (int i = 1; i <= n; i++)
+    ll a;
+    cin >> a;
+    for (int i = 0; i < a; i++)
     {
-        cin >> x;
-        add(i,x);
+        char b;
+        cin >> b;
+        if (b == 'T')
+        {
+            c++;
+            now += val[c - 1];
+            val[c] += val[c - 1];
+            if (c == 1)
+            {
+                now++;
+                val[0] = 0;
+            }
+            else
+            {
+                val[c - 1] = 1;
+                now += c - 1;
+            }
+        }
+        else
+        {
+            c = 0;
+            val[0]++;
+        }
+        ans += now;
+        for (int j = 0; j < a; j++)
+        {
+            cout << val[j] << " ";
+        }
+        cout << "\n";
+        cout << i << " :" << c << " " << now << " " << ans  << "\n";
     }
-    cin >> a >> b;
-    cout << sum(b)-sum(a); 
-    return 0;
+    cout << ans;
 }
