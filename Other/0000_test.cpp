@@ -1,46 +1,58 @@
 #include <bits/stdc++.h>
-#define ll long long
-#define pii pair<int, int>
-#define f first
-#define s second
+
 using namespace std;
-ll val[1000005], c = 0, now = 0, ans = 0;
+
 int main()
 {
-    ll a;
-    cin >> a;
-    for (int i = 0; i < a; i++)
+    long long n, l, r, mid, m, k;
+    cin >> n >> m >> k;
+    long long a[n];
+    for (int i = 0; i < n; i++)
     {
-        char b;
-        cin >> b;
-        if (b == 'T')
+        cin >> a[i];
+    }
+    l = 0;
+    r = LONG_LONG_MAX;
+    while (l <= r)
+    {
+        mid = (l + r) / 2;
+        long long cnt = 0, sum = 0;
+        priority_queue<long long, vector<long long>, greater<long long>> pq;
+        for (int i = 0; i < n; i++)
         {
-            c++;
-            now += val[c - 1];
-            val[c] += val[c - 1];
-            if (c == 1)
+            pq.push(a[i]);
+            sum = sum + a[i];
+            if (pq.size() < k)
             {
-                now++;
-                val[0] = 0;
+                continue;
             }
-            else
+            while (pq.size() > k)
             {
-                val[c - 1] = 1;
-                now += c - 1;
+                sum = sum - pq.top();
+                pq.pop();
             }
+            if (sum >= mid)
+            {
+                // cout<<sum<<" ";
+                while (!pq.empty())
+                {
+                    pq.pop();
+                }
+                // cout<<sum<<"\n";
+                sum = 0;
+                cnt++;
+            }
+        }
+        cout << "\n";
+        if (cnt >= m)
+        {
+            l = mid + 1;
         }
         else
         {
-            c = 0;
-            val[0]++;
+            r = mid - 1;
         }
-        ans += now;
-        for (int j = 0; j < a; j++)
-        {
-            cout << val[j] << " ";
-        }
-        cout << "\n";
-        cout << i << " :" << c << " " << now << " " << ans  << "\n";
     }
-    cout << ans;
+    // cout<<l<<" "<<mid<<" "<<r<<"\n";
+    return 0;
 }

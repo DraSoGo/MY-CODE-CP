@@ -1,35 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+
 int main() 
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int n;
+    long long n,sum = 0,x = 0,ans = 0;
+    stack <pair<long long,long long>> st;
     char s;
     cin >> n;
-    int DP[n];
-    for (int i = 0; i < n; i++)
+    for (long long i = 0; i < n; i++)
     {
         cin >> s;
-        if (i == 0)
-        {
-            if (DP[i] == 'T')
-            {
-                DP[i] = 1;
-            }
-            else
-            {
-                DP[i] = 0;
-            }
-            continue;
-        }
         if (s == 'F')
         {
-            DP[i] = DP[i-1];
+            x = 0;
         }
         else
         {
-            DP[i] = DP[i-1];
+            x++;
+            while (!st.empty() && st.top().first < x)
+            {
+                st.pop();
+            }
+            if (st.empty())
+            {
+                sum += i+1;
+            }
+            else
+            {
+                sum += i - st.top().second + x - 1;
+            }
+            st.push({x,i});
         }
+        ans += sum;
     }
+    cout << ans;
     return 0;   
 }

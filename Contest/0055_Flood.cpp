@@ -17,7 +17,7 @@ int main()
     while (m > 0)
     {
         mean = a/m;
-        if (mean > A[idx] && vis[idx])
+        if (mean > A[idx] && vis[idx])  
         {
             vis[idx] = 0;
             ch = 1;
