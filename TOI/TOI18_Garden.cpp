@@ -3,58 +3,55 @@ using namespace std;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int n,q,x;
+    long long n,q,x,idx;
     cin >> n >> q;
-    int A[n];
-    for (int i = 0; i < n; i++)
+    long long A[n],ansl[n],ansr[n];
+    vector <long long> L;
+    vector <long long> R;
+    for (long long i = 0; i < n; i++)
     {
         cin >> A[i];
     }
-    for (int i = 0; i < q; i++)
+    for (long long i = 0; i < n; i++)
     {
-        vector <int> R;
-        vector <int> L;
-        int chr = 0,chl = 0;
+        idx = lower_bound(L.begin(),L.end(),A[i])-L.begin();
+        if (idx == L.size())
+        {
+            L.push_back(A[i]);
+        }
+        else
+        {
+            L[idx] = A[i];
+        }
+        ansl[i] = idx;
+    }
+    // for(auto i:ansl)
+    // {
+    //     cout << i << " ";
+    // }
+    // cout << "\n";
+    for (long long i = n-1; i >= 0; i--)
+    {
+        idx = lower_bound(R.begin(),R.end(),A[i])-R.begin();
+        if (idx == R.size())
+        {
+            R.push_back(A[i]);
+        }
+        else
+        {
+            R[idx] = A[i];
+        }
+        ansr[i] = idx;
+    }
+    // for(auto i:ansr)
+    // {
+    //     cout << i << " ";
+    // }
+    // cout << "\n";
+    for (long long i = 0; i < q; i++)
+    {
         cin >> x;
-        for (int j = n-1; j > x; j--)
-        {
-            if (chr == 0 && A[j] < A[x])
-            {
-                R.push_back(A[j]);
-                chr = 1;
-            }
-            else if(chr == 1)
-            {
-                if (A[j] > R.back())
-                {
-                    R.push_back(A[j]);
-                }
-                else
-                {
-                    R[lower_bound(R.begin(),R.end(),A[j])-R.begin()] = A[j];
-                }
-            }
-        }
-        for (int j = 0; j < x; j++)
-        {
-            if (chl == 0 && A[j] < A[x])
-            {
-                L.push_back(A[j]);
-                chl = 1;
-            }
-            else if(chl == 1)
-            {
-                if (A[j] > L.back())
-                {
-                    L.push_back(A[j]);
-                }
-                else
-                {
-                    L[lower_bound(L.begin(),L.end(),A[j])-L.begin()] = A[j];
-                }
-            }
-        }
-        cout << min(L.size(),R.size()) << "\n";
+        cout << min(ansl[x],ansr[x]) << "\n";
     }
     return 0;
 }

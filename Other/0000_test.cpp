@@ -1,58 +1,48 @@
 #include <bits/stdc++.h>
-
+#define f first
+#define s second
+#define ll long long
 using namespace std;
 
 int main()
 {
-    long long n, l, r, mid, m, k;
-    cin >> n >> m >> k;
-    long long a[n];
-    for (int i = 0; i < n; i++)
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int n, m;
+    cin >> n >> m;
+    int room[m];
+    int num;
+    int m_num = 0;
+    for (int i = 0; i < m; ++i)
     {
-        cin >> a[i];
+        cin >> room[i];
     }
-    l = 0;
-    r = LONG_LONG_MAX;
-    while (l <= r)
+    int l = 0, r = 1e9, mid;
+    while (l < r)
     {
         mid = (l + r) / 2;
-        long long cnt = 0, sum = 0;
-        priority_queue<long long, vector<long long>, greater<long long>> pq;
-        for (int i = 0; i < n; i++)
+        cout << l << " " << r << " " << mid << "\n";
+        int c = 1, sum = 0;
+        for (int i = 0; i < m; ++i)
         {
-            pq.push(a[i]);
-            sum = sum + a[i];
-            if (pq.size() < k)
+            if (room[i] > mid)
             {
-                continue;
+                c += n;
+                break;
             }
-            while (pq.size() > k)
+            sum += room[i];
+            if (sum > mid)
             {
-                sum = sum - pq.top();
-                pq.pop();
+                c++;
+                sum = room[i];
             }
-            if (sum >= mid)
-            {
-                // cout<<sum<<" ";
-                while (!pq.empty())
-                {
-                    pq.pop();
-                }
-                // cout<<sum<<"\n";
-                sum = 0;
-                cnt++;
-            }
+            // cout << sum << " " << c << "\n";
         }
-        cout << "\n";
-        if (cnt >= m)
-        {
+        if (c > n)
             l = mid + 1;
-        }
         else
-        {
-            r = mid - 1;
-        }
+            r = mid;
     }
-    // cout<<l<<" "<<mid<<" "<<r<<"\n";
+    cout << r;
     return 0;
 }
