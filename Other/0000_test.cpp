@@ -1,77 +1,67 @@
 #include <bits/stdc++.h>
-#define coutf(n, m) cout << fixed << setprecision(n) << m
-#define forr(i, a, n) for (int i = a; i < n; i++)
-#define forl(i, a, n) for (int i = a; i > n; i--)
-#define macos                \
-    ios::sync_with_stdio(0); \
-    cin.tie(0);              \
-    cout.tie(0)
-#define endll "\n"
-#define sp " "
-typedef long long ll;
 using namespace std;
+using ll = long long;
 
-struct Non
+int dist[2200][2200];
+
+struct A
 {
-    int u, v, w;
-
-    bool operator<(const Non &rhs) const
+    int v, w, cnt;
+    bool operator<(const A &o) const
     {
-        if (w != rhs.w)
-            return w < rhs.w;
-        return v > rhs.v;
+        return w > o.w;
     }
 };
 
-int par[3001];
-int findpar(int x)
-{
-    if (par[x] != x)
-        par[x] = findpar(par[x]);
-    return par[x];
-}
+vector<pair<int, int>> adj[2200];
+priority_queue<A> pq;
 
 int main()
 {
-    macos;
-
-    int n, e, a, b, c, d, k;
-    cin >> n >> e;
-    forr(i, 0, n) par[i] = i;
-    vector<Non> edges;
-    forr(i, 0, e)
+    cin.tie(0)->sync_with_stdio(0);
+    int n, p, u, e;
+    int l;
+    cin >> n >> p >> u >> e;
+    for (int i = 1, q, r, t; i <= e; i++)
     {
-        cin >> a >> b >> c >> d;
-        if (!d)
-            edges.push_back({a, b, c});
-        else
-            par[findpar(b)] = par[findpar(a)];
+        cin >> q >> r >> t;
+        adj[q].push_back({r, t});
     }
-    sort(edges.begin(), edges.end());
-
-    cin >> k;
-    vector<pair<int, int>> package;
-    forr(i, 0, k)
+    memset(dist, 0x3f, sizeof dist);
+    pq.push({p, dist[p][0] = 0});
+    while (!pq.empty())
     {
-        cin >> a >> b;
-        package.push_back({a, b});
-    }
-    sort(package.begin(), package.end());
-
-    int ans = 0;
-    forr(i, 0, e)
-    {
-        auto [u, v, w] = edges[i];
-        if (findpar(u) == findpar(v))
+        A now = pq.top();
+        pq.pop();
+        if (now.cnt >= n)
             continue;
-        int mn = 1e9;
-        for (auto p : package)
-            if (p.first >= w)
-                mn = min(mn, p.second);
-        ans += mn;
-        par[findpar(u)] = par[findpar(v)];
+        // cout << now.v << " " << now.w << " " << now.cnt << "\n";
+        int o = 0;
+        cout << now.v << "\n";
+        for (auto x : adj[now.v])
+        {
+            cout << o << "\n";
+            int nxt = now.w + x.second; // sum weight
+            if (dist[x.first][now.cnt + 1] > nxt)
+            {
+                // cout << nxt << "\n";
+                pq.push({x.first, dist[x.first][now.cnt + 1] = nxt, now.cnt + 1}); // if new weight is less than current
+            }
+            o++;
+        }
     }
-    cout << ans;
-
+    cin >> l;
+    while (l--)
+    {
+        int y;
+        cin >> y;
+        int mn = 2e9;
+        for (int i = 1; i <= n; i++)
+        {
+            // cout << dist[u][i] << "\n";
+            mn = min(mn, dist[u][i] + (i * y) - y);
+        }
+        // cout << mn << "\n\n";
+    }
     return 0;
 }
