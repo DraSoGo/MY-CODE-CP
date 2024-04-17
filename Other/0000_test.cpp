@@ -1,39 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
-int DP[500001];
-deque<pair<int, int>> dq;
+const int NN = 1e7 + 5;
+int arr[NN] = {};
 int main()
 {
-    int n, k, val, i;
-    cin >> n >> k;
-    for (i = 1; i <= n; i++)
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n, a, mm, k, l, prev, sum, m;
+    cin >> n >> mm >> k >> l;
+    while (n--)
     {
-        cin >> val;
-        for(auto j:dq)
-        {
-            cout << j.second << " :" << j.first << "\n";
-        }
-        while (!dq.empty() && dq.front().second + k < i)
-        {
-            // cout << dq.front().second + k << "\n";
-            dq.pop_front();
-        }
-        if (!dq.empty())
-        {
-            val += dq.front().first;
-        }
-        DP[i] = val;
-        cout << DP[i] << "\n";
-        while (!dq.empty() && dq.back().first > val)
-        {
-            dq.pop_back();
-        }
-        dq.push_back({DP[i], i});
-        for(auto j:dq)
-        {
-            cout << j.second << " :" << j.first << "\n";
-        }
-        cout << "---\n";
+        cin >> a;
+        arr[a + 1]++;
     }
-    cout << DP[n];
+    for (int i = 1; i < NN; i++)
+    {
+        arr[i] += arr[i - 1];
+    }
+    while (k--)
+    {
+        prev = 0, sum = 0;
+        for (int i = 0; i < mm; i++)
+        {
+            cin >> m;
+            m++;
+            sum += (arr[min(m + l, NN - 1)] - arr[max(prev, m - l - 1)]);
+            prev = min(m + l, NN - 1);
+        }
+        cout << sum << "\n";
+    }
 }
