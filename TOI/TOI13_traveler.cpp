@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector <pair<int,int>> G[1000];
+vector <pair<int,int>> G[10002];
 priority_queue <pair<int,int>,vector <pair<int,int>>,greater <pair<int,int>>> pq;
 
 void ade(int v,int u,int w)

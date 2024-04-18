@@ -2,6 +2,7 @@
 using namespace std;
 int main()
 {
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     int x, y, k, s1 = 0, sum,mx = INT_MIN;
     cin >> y >> x >> k;
     int A[y][x], QS0[y+1][x+1], QS1[y+1][x+1],QS2[y+1][x+1],QS3[y+1][x+1];
@@ -123,4 +124,5 @@ int main()
         }
     }
     cout << mx;
+    return 0;
 }
