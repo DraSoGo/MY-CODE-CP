@@ -1,59 +1,28 @@
-#include <bits/stdc++.h>
+#include <iostream>
+
 using namespace std;
-using ll = long long int;
-const int N = 505;
-ll x[N], y[N], dp[N][N];
+const int N = 5e5 + 2;
+const int MOD = 1e9 + 7;
+
+long long a[N], fac[N];
 
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    int n, m;
-    cin >> n >> m;
+    int n, k;
+    scanf("%d", &n);
+    long long ans = 1ll;
+    fac[0] = fac[1] = 1;
+    for (int i = 2; i < N; i++)
+    {
+        fac[i] = (fac[i - 1] * i) % MOD;
+    }
+    for (int i = 0, x; i < 2 * n - 1; i++)
+    {
+        scanf("%d", &x), a[x]++;
+    }
     for (int i = 1; i <= n; i++)
     {
-        cin >> x[i] >> y[i];
-        dp[1][i] = abs(x[i] - x[1]) + abs(y[i] - y[1]);
+        ans *= fac[a[i] - 1], ans %= MOD;
     }
-    for (int k = 2; k <= n; k++)
-    {
-        for (int i = 1; i <= n; i++)
-        {
-            dp[k][i] = 1e18;
-            for (int j = 1; j <= n; j++)
-            {
-                dp[k][i] = min(dp[k][i], max(dp[k - 1][j], abs(x[i] - x[j]) + abs(y[i] - y[j])));
-            }
-        }
-    }
-    for (int k = 1; k <= n; k++)
-    {
-        for (int i = 1; i <= n; i++)
-        {
-            cout << dp[k][i] << " ";
-        }
-        cout << "\n";
-    }
-    cout << "\n";
-    for (int k = 1; k <= n; k++)
-    {
-        cout << dp[k][n] << " ";
-    }
-    cout << "\n";
-    ll ans = 0;
-    while (m--)
-    {
-        ll x;
-        cin >> x;
-        for (int i = 1; i <= n; i++)
-        {
-            if (x >= dp[i][n])
-            {
-                ans += i;
-                break;
-            }
-        }
-        //		cout << ans << ' ' <<x << "\n";
-    }
-    cout << ans;
+    printf("%lld", ans);
 }
