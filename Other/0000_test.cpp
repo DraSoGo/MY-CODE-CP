@@ -1,47 +1,39 @@
-#include <bits/stdc++.h>
-#define pii pair<int, pair<int, int>>
+#include <iostream>
+#include <deque>
 using namespace std;
 
-const int N = 4e5 + 1;
-int n;
-int lis[N];
-pii arr[N];
-vector<int> dp;
+long long qs[6000001];
+deque<int> dq;
 
 int main()
 {
-    ios_base::sync_with_stdio(0), cin.tie(0);
-    cin >> n;
-    for (int i = 1; i <= n; i++)
+    ios_base::sync_with_stdio(0);
+    cout.tie(0);
+    cin.tie(0);
+    int n, m;
+    cin >> n >> m;
+    for (int i = 1; i <= n; ++i)
     {
-        arr[i].first = i;
-        cin >> arr[i].second.first >> arr[i].second.second;
+        cin >> qs[i], qs[i] += qs[i - 1];
     }
-    sort(arr + 1, arr + n + 1, [&](pii a, pii b)
-         {
-        if(a.second.second!=b.second.second)return a.second.second<b.second.second;
-        else return a.second.first>b.second.first; });
-    for (int i = 1; i <= n; i++)
+    long long ss = 0, ll = 0;
+    for (int i = 1; i <= n; ++i)
     {
-        cout << arr[i].first << " :" << arr[i].second.first << "," << arr[i].second.second << "\n";
-    }
-    for (int i = 1; i <= n; i++)
-    {
-        auto it = upper_bound(dp.begin(), dp.end(), -arr[i].second.first);
-        if (dp.empty() || it == dp.end())
+        while (!dq.empty() && i - dq.front() > m)
         {
-            dp.push_back(-arr[i].second.first);
-            lis[arr[i].first] = dp.size();
+            dq.pop_front();
         }
-        else
+        while (!dq.empty() && qs[dq.back()] >= qs[i])
         {
-            *it = -arr[i].second.first;
-            lis[arr[i].first] = it - dp.begin() + 1;
+            dq.pop_back();
+        }
+        dq.emplace_back(i);
+        long long s = qs[i] - qs[dq.front()], l = i - dq.front();
+        if (ss < s || (ss == s && ll > l))
+        {
+            ss = s, ll = l;
         }
     }
-    cout << dp.size() << '\n';
-    for (int i = 1; i <= n; i++)
-        cout << lis[i] << ' ';
-
-    return 0;
+    cout << ss << "\n"
+         << ll;
 }
