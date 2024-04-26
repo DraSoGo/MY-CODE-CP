@@ -1,3 +1,4 @@
+#pragma GCC optimize("O3,unroll-loops")
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -46,7 +47,7 @@ void DJ(int st,int ed,int n)
 
 int main()
 {
-    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0  );
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     int n,a,b,e,u,v,w,q,x;
     cin >> n >> a >> b >> e;
     for (int i = 0; i < e; i++)
