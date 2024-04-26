@@ -1,39 +1,85 @@
-#include <iostream>
-#include <deque>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-long long qs[6000001];
-deque<int> dq;
+struct data
+{
+    int u, w;
+    bool operator<(const data &d2) const
+    {
+        return w > d2.w;
+    }
+};
+
+int n, s, dp[(1 << 19) + 5], ans = -1;
+vector<pair<int, int>> vc[(1 << 19) + 5];
+vector<int> node;
+priority_queue<data> pq;
 
 int main()
 {
-    ios_base::sync_with_stdio(0);
-    cout.tie(0);
-    cin.tie(0);
-    int n, m;
-    cin >> n >> m;
-    for (int i = 1; i <= n; ++i)
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    cin >> n >> s;
+    while (n--)
     {
-        cin >> qs[i], qs[i] += qs[i - 1];
+        int w;
+        cin >> w;
+        int u = 0, v = 0;
+        for (int i = 0; i < s; ++i)
+        {
+            int x;
+            cin >> x;
+            if (x == -1)
+                u |= (1 << i);
+            else if (x == 1)
+                v |= (1 << i);
+        }
+        vc[u].push_back({v, w});
+        node.push_back(u);
     }
-    long long ss = 0, ll = 0;
-    for (int i = 1; i <= n; ++i)
+    for (int i = 1; i < (1 << s); ++i)
     {
-        while (!dq.empty() && i - dq.front() > m)
+        for (int j = 0; j < s; ++j)
         {
-            dq.pop_front();
-        }
-        while (!dq.empty() && qs[dq.back()] >= qs[i])
-        {
-            dq.pop_back();
-        }
-        dq.emplace_back(i);
-        long long s = qs[i] - qs[dq.front()], l = i - dq.front();
-        if (ss < s || (ss == s && ll > l))
-        {
-            ss = s, ll = l;
+            if (i & (1 << j))
+            {
+                vc[i].push_back({i ^ (1 << j), 0});
+            }
         }
     }
-    cout << ss << "\n"
-         << ll;
+    for (int i = 0; i < 1 << s; i++)
+    {
+        cout << i << " :";
+        for (int j = 0; j < vc[i].size(); j++)
+        {
+            cout << "(" << vc[i][j].first << "," << vc[i][j].second << ") ";
+        }
+        cout << "\n";
+    }
+    
+    for (int i = 0; i < (1 << s); ++i)
+    {
+        dp[i] = 1e9 + 7;
+    }
+    dp[0] = 0;
+    pq.push({0, 0});
+    while (!pq.empty())
+    {
+        auto [u, w] = pq.top();
+        pq.pop();
+        for (auto [v, ww] : vc[u])
+        {
+            if (dp[v] > w + ww)
+            {
+                dp[v] = w + ww;
+                pq.push({v, dp[v]});
+            }
+        }
+    }
+    for (auto u : node)
+    {
+        ans = max(ans, dp[u] == 1e9 + 7 ? 0 : dp[u]);
+        cout << u << " " << dp[u] << "\n";
+    }
+    cout << ans;
 }
