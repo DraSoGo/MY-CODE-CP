@@ -1,85 +1,135 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-
-struct data
-{
-    int u, w;
-    bool operator<(const data &d2) const
-    {
-        return w > d2.w;
-    }
-};
-
-int n, s, dp[(1 << 19) + 5], ans = -1;
-vector<pair<int, int>> vc[(1 << 19) + 5];
-vector<int> node;
-priority_queue<data> pq;
-
+int cnr[1601][1601];
+int T[1601][1601], TL[1601][1601], TR[1601][1601], SR[1601][1601], SL[1601][1601];
+int DP[1601][1601];
 int main()
 {
-    ios_base::sync_with_stdio(0), cin.tie(0);
-    cin >> n >> s;
-    while (n--)
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    memset(DP, 0, sizeof(DP));
+    int m, n, k, st, ans = 0;
+    const int md = 1000003;
+    cin >> m >> n >> k;
+    st = m + n;
+    char x;
+    // for (int i = 0; i < 1601; i++)
+    // {
+    //     for (int j = 0; j < 1601; j++)
+    //     {
+    //         cout << DP[i][j] << " ";
+    //     }
+    //     cout << "\n";
+    // }
+
+    for (int i = 601; i < m + 601; i++)
     {
-        int w;
-        cin >> w;
-        int u = 0, v = 0;
-        for (int i = 0; i < s; ++i)
+        for (int j = 601; j < n + 601; j++)
         {
-            int x;
             cin >> x;
-            if (x == -1)
-                u |= (1 << i);
-            else if (x == 1)
-                v |= (1 << i);
-        }
-        vc[u].push_back({v, w});
-        node.push_back(u);
-    }
-    for (int i = 1; i < (1 << s); ++i)
-    {
-        for (int j = 0; j < s; ++j)
-        {
-            if (i & (1 << j))
+            if (x == '#')
             {
-                vc[i].push_back({i ^ (1 << j), 0});
+                T[i][j] = 1;
+                DP[i][j] = 1;
             }
         }
     }
-    for (int i = 0; i < 1 << s; i++)
+    for (int i = 1; i < 1601; i++)
     {
-        cout << i << " :";
-        for (int j = 0; j < vc[i].size(); j++)
+        for (int j = 1; j < 1601; j++)
         {
-            cout << "(" << vc[i][j].first << "," << vc[i][j].second << ") ";
-        }
-        cout << "\n";
-    }
-    
-    for (int i = 0; i < (1 << s); ++i)
-    {
-        dp[i] = 1e9 + 7;
-    }
-    dp[0] = 0;
-    pq.push({0, 0});
-    while (!pq.empty())
-    {
-        auto [u, w] = pq.top();
-        pq.pop();
-        for (auto [v, ww] : vc[u])
-        {
-            if (dp[v] > w + ww)
+            if (i == 1)
             {
-                dp[v] = w + ww;
-                pq.push({v, dp[v]});
+                cnr[i][j] = j;
+            }
+            else
+            {
+                if (i > j)
+                {
+                    cnr[i][j] = 0;
+                }
+                else
+                {
+                    cnr[i][j] = (cnr[i][j - 1] % md + cnr[i - 1][j - 1] % md) % md;
+                }
             }
         }
     }
-    for (auto u : node)
+    for (int i = 601; i < 1601; i++)
     {
-        ans = max(ans, dp[u] == 1e9 + 7 ? 0 : dp[u]);
-        cout << u << " " << dp[u] << "\n";
+        for (int j = 601; j < 1601; j++)
+        {
+            if (i == 601 && j == 601)
+            {
+                SL[i][j] = T[i][j];
+                TL[i][j] = T[i][j];
+            }
+            else if (i == 601)
+            {
+                SL[i][j] = T[i][j] + SL[i][j - 1];
+                TL[i][j] = T[i][j] + SL[i][j - 1];
+            }
+            else if (j == 601)
+            {
+                SL[i][j] = T[i][j] + SL[i - 1][j];
+                TL[i][j] = T[i][j];
+            }
+            else
+            {
+                SL[i][j] = T[i][j] + SL[i][j - 1] + SL[i - 1][j] - SL[i - 1][j - 1];
+                TL[i][j] = T[i][j] + TL[i - 1][j - 1] + SL[i][j - 1] - SL[i - 1][j - 1];
+            }
+        }
     }
-    cout << ans;
+    for (int i = 601; i < 1601; i++)
+    {
+        for (int j = n + 600; j >= 0; j--)
+        {
+            if (i == 601 && j == n + 600)
+            {
+                SR[i][j] = T[i][j];
+                TR[i][j] = T[i][j];
+            }
+            else if (i == 601)
+            {
+                SR[i][j] = T[i][j] + SR[i][j + 1];
+                TR[i][j] = T[i][j] + SR[i][j + 1];
+            }
+            else if (j == n + 600)
+            {
+                SR[i][j] = T[i][j] + SR[i - 1][j];
+                TR[i][j] = T[i][j];
+            }
+            else
+            {
+                // cout << "\n";
+                SR[i][j] = T[i][j] + SR[i][j + 1] + SR[i - 1][j] - SR[i - 1][j + 1];
+                TR[i][j] = T[i][j] + TR[i - 1][j + 1] + SR[i][j + 1] - SR[i - 1][j + 1];
+            }
+        }
+    }
+    for (int i = 601; i < m + 601; i++)
+    {
+        int sum, cal;
+        for (int j = 601; j < n + 601; j++)
+        {
+            for (int d = 1; d <= st; d++)
+            {
+                cal = 0;
+                cal += TL[i][j + d] - TL[i - d - 1][j - 1] - SL[i][j - 1] + SL[i - d - 1][j - 1];
+                cal += TR[i][j - d] - TR[i - d][j] - SR[i][j] + SR[i - d][j];
+                cal -= TL[i + d][j - 1] - TL[i][j - d - 1];
+                cal -= TR[i + d][j + 1] - TR[i][j + d + 1];
+                cal += SR[i + d][601] - SR[i][601];
+                // cout << cal << " ";
+                sum = cal - DP[i][j];
+                DP[i][j] = cal;
+                ans += cnr[k][sum] % md;
+                ans %= md;
+            }
+        }
+    }
+    cout << ans % md;
+    return 0;
 }
