@@ -1,9 +1,11 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <bitset>
+#include <queue>
 using namespace std;
 
 char T[10001][2001];
 char p;
-bool vis[10001][2001];
+bitset <10001> vis [2001];
 int m,n,ANS[3];
 int dx[8] = {0,0,1,-1,1,1,-1,-1};
 int dy[8] = {1,-1,0,0,-1,1,1,-1};
@@ -80,8 +82,10 @@ void BFS(int x,int y)
 
 int main()
 {
-    memset(vis,0,sizeof(vis));
-    memset(ANS,0,sizeof(ANS));
+    cin.tie(0)->sync_with_stdio(0);
+    ANS[0] = 0;
+    ANS[1] = 0;
+    ANS[2] = 0;
     cin >> n >> m;
     for (int i = 0; i < m; i++)
     {
@@ -117,4 +121,5 @@ int main()
     {
         cout << ANS[i] << " ";
     }
+    return 0;
 }

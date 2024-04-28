@@ -1,3 +1,4 @@
+#pragma GCC optimize("O3,unroll-loops")
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -35,9 +36,9 @@ void DJ(int st,int ed)
     while (!PQ.empty())
     {
         auto [u,w,t,ct] = PQ.top();
-        cout << u << " " << w << " " << ct << "\n";
+        // cout << u << " " << w << " " << ct << "\n";
         PQ.pop();
-        if (ct >= p)
+        if (ct > p)
         {
             continue;
         }
@@ -83,33 +84,33 @@ int main()
             }
         }
     }
-    for (int i = 0; i < k+2; i++)
-    {
-        cout << i << " :";
-        for (int j = 0; j < adj[i].size(); j++)
-        {
-            cout << adj[i][j].u << "," << adj[i][j].w << " ";
-        }
-        cout << "\n";
-    }
-    cout << "\n";
+    // for (int i = 0; i < k+2; i++)
+    // {
+    //     cout << i << " :";
+    //     for (int j = 0; j < adj[i].size(); j++)
+    //     {
+    //         cout << adj[i][j].u << "," << adj[i][j].w << " ";
+    //     }
+    //     cout << "\n";
+    // }
+    // cout << "\n";
     DJ(0,1);
-    cout << "\n";
-    for (int i = 0; i < (2*k)+2; i++)
-    {
-        for (int j = 0; j <= p; j++)
-        {
-            if (dist[i][j] == INT_MAX)
-            {
-                cout << "INF" << " ";
-            }
-            else
-            {
-                cout << dist[i][j] << " ";
-            }
-        }
-        cout << "\n";
-    }
+    // cout << "\n";
+    // for (int i = 0; i < (2*k)+2; i++)
+    // {
+    //     for (int j = 0; j <= p; j++)
+    //     {
+    //         if (dist[i][j] == INT_MAX)
+    //         {
+    //             cout << "INF" << " ";
+    //         }
+    //         else
+    //         {
+    //             cout << dist[i][j] << " ";
+    //         }
+    //     }
+    //     cout << "\n";
+    // }
     for (int i = 0; i <= p; i++)
     {
         if (dist[1][i] < ans1)
