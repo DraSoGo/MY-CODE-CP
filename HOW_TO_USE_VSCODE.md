@@ -50,7 +50,14 @@
 ---
 
 ### **Git**
-#### git status
-#### git add .
-#### git commit -m ""
-#### git push -u origin main
+- git status
+- git add .
+- git commit -m ""
+- git push -u origin main
+#### if bug use this:
+- git fetch origin main
+- git merge origin main
+- git fetch origin main:tmp
+- git rebase tmp
+- git push origin HEAD:main
+- git branch -D tmp
