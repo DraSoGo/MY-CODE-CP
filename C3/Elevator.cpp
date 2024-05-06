@@ -1,38 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie();cout.tie(0);
-    long long n,q,sum = 0,co = 0,c;
-    cin >> n >> q;
-    long long A[n],l = 0,r = n-1;
+    int n, w;
+    cin >> n >> w;
+    vector<int> wes(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> A[i];
+        cin >> wes[i];
     }
-    sort(A,A+n,greater <int>());
-    while (l < r)
+    sort(wes.begin(), wes.end());
+    int ans = 0;
+    int cw = 0;
+    for (int we : wes)
     {
-        // cout << l << " " << r << "\n";
-        c = 0;
-        sum = A[l];
-        for (int i = r; i >= l+1; i--)
+        if (cw + we > w)
         {
-            if (sum + A[i] < q)
-            {
-                sum += A[i];
-                c++;
-            }
-            else
-            {
-                break;
-            }
+            ans++;
+            cw = 0;
         }
-        r -= c;
-        l++;
-        // cout << l << " " << r << "\n";
-        co++;
+        cw += we;
     }
-    cout << co;
+    cout << ans << "\n";
     return 0;
 }
