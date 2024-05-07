@@ -1,42 +1,28 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int main()
 {
-    int n, m, q;
-    cin >> n >> m >> q;
-
-    vector<vector<int>> connections(m);
-    for (int i = 0; i < m; i++)
+    int n, m;
+    cin >> n >> m;
+    int A[n][m];
+    int B[n];
+    // fill(A[0],A[0] + n*m,100);
+    fill(B,B+n,10);
+    fill_n(A[0],n*m,1);
+    for (int j = 0; j < n; j++)
     {
-        int a, b;
-        cin >> a >> b;
-        connections[a - 1].push_back(b - 1);
-        connections[b - 1].push_back(a - 1);
+        cout << B[j] << " ";
     }
-
-    vector<int> firstDay(q, -1);
-    for (int i = 0; i < q; i++)
+    cout << "\n";
+    for (int i = 0; i < n; i++)
     {
-        int a, b;
-        cin >> a >> b;
-        a--, b--;
-        for (int j = 0; j < connections[a].size(); j++)
+        for (int j = 0; j < m; j++)
         {
-            if (connections[a][j] == b)
-            {
-                firstDay[i] = j + 1;
-                break;
-            }
+            cout << A[i][j] << " ";
         }
+        cout << "\n";
     }
-
-    for (int i = 0; i < q; i++)
-    {
-        cout << firstDay[i] << endl;
-    }
-
     return 0;
 }
