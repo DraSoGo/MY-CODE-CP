@@ -12,20 +12,22 @@ int main()
     }
     for (int i = 0; i < n; i++)
     {
-        if (i == 0)
+        int idx = lower_bound(V.begin(),V.end(),A[i])-V.begin();
+        if (idx >= V.size())
         {
             V.push_back(A[i]);
-            continue;
         }
-        if (A[i] > V.back())
+        else
         {
-            V.push_back(A[i]);
-            continue;
-        }
-        if (A[i] < V.back())
-        {
-            V[lower_bound(V.begin(),V.end(),A[i])-V.begin()] = A[i];
+            V[idx] = A[i];
         }
     }
     cout << V.size();
 }
+/*
+INPUT
+10
+1 3 4 2 1 7 8 9 2 0
+OUTPUT
+6
+*/
