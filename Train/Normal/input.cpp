@@ -3,10 +3,10 @@
 using namespace std;
 
 int input()
-{   
-    bool neg = 0;
+{
     int n = 0;
-    char c;
+    char c = 0;
+    bool neg = 0;
     c = getchar();
     if (c == '-')
     {
@@ -19,7 +19,7 @@ int input()
         n += c - '0';
         c = getchar();
     }
-    if (neg == 1)
+    if (neg)
     {
         n *= -1;
     }
