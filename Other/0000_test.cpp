@@ -1,28 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main()
+int main( )
 {
-    int co = 0;
-    for (int i = 1000; i < 9999; i++)
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    if(1 == 2)
     {
-        int n = i,sum = 0,ch = 0;
-        while (n > 0)
-        {
-            int s = n%10;
-            if (s == 5)
-            {
-                ch = 1;
-            }
-            // cout << s << " ";
-            sum += s;
-            n/=10;
-        }
-        if (sum == 9 && ch == 1)
-        {
-            cout << i<< "\n";
-            co++;
-        }
+        cout << 1;
     }
-    cout << co;
-    return 0;
+    else if(2 == 3 && 1 == 1)
+    {
+        cout << 2;
+    }
+    else if(2 == 3 || 1 == 1)
+    {
+        cout << 3;
+    }
+    else
+    {
+        cout << 4;
+    }
 }
