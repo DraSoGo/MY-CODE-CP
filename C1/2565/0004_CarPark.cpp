@@ -4,15 +4,7 @@ main()
 {
     int h1,m1,h2,m2,t,m;
     cin >> h1 >> m1 >> h2 >> m2;
-    t = (h2 - h1) * 60;
-    if (m2 > m1)
-    {
-        t = t + (m2 - m1);
-    }
-    else if (m2 < m1)
-    {
-        t = t - (m1 - m2);
-    }
+    t = ((h2 - h1) * 60)+abs(m2-m1);
     if (t <= 15)
     {
         m = 0;
