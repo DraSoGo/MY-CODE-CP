@@ -1,32 +1,35 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <stack>
+#include <cmath>
+#include <iomanip>
 using namespace std;
 
 struct Action
 {
     string type;
-    int dx, dy;
+    double dx, dy;
 };
 
 int main()
 {
-    int N;
+    double N;
     cin >> N;
 
-    int a, b;
+    double a, b;
     cin >> a >> b;
 
-    int x = a, y = b;
+    double x = a, y = b;
     stack<Action> actionStack;
     stack<Action> undoStack;
 
-    for (int i = 0; i < N; ++i)
+    for (double i = 0; i < N; ++i)
     {
         string cmd;
         cin >> cmd;
 
         if (cmd == "MV")
         {
-            int dx, dy;
+            double dx, dy;
             cin >> dx >> dy;
             x += dx;
             y += dy;
@@ -88,7 +91,7 @@ int main()
 
     double distance = sqrt((x - a) * (x - a) + (y - b) * (y - b));
     cout << fixed << setprecision(2) << distance << endl;
-    cout << x << " " << y << endl;
+    cout << fixed << setprecision(0) << x << " " << y << endl;
 
     return 0;
 }

@@ -14,10 +14,11 @@ void geninput(string in, int c)
     uniform_int_distribution<int> ranN1(1, 1e3);
     uniform_int_distribution<int> ranN2(1, 1e5);
     uniform_int_distribution<int> ranIDX(0, 4);
-    uniform_int_distribution<long long> ranXY((-1e7), 1e7);
+    uniform_int_distribution<long long> ranXY1((-1e2), 1e2);
+    uniform_int_distribution<long long> ranXY2((-1e18), 1e18);
 
     int n;
-    if (c <= 3)
+    if (c < 3)
     {
         n = ranN1(gen);
     }
@@ -26,17 +27,41 @@ void geninput(string in, int c)
         n = ranN2(gen);
     }
     fout << n << "\n";
-    fout << ranXY(gen) << " " << ranXY(gen) << "\n";
+    if (c < 6)
+    {
+        fout << ranXY1(gen) << " " << ranXY1(gen) << "\n";
+    }
+    else
+    {
+        fout << ranXY2(gen) << " " << ranXY2(gen) << "\n";
+    }
     for (int i = 0; i < n; i++)
     {
         int idx = ranIDX(gen);
-        if (idx > 2)
+        if (c == 0 || c == 6 || c == 7)
         {
-            idx = 2;
+            if (idx > 2)
+            {
+                idx = 1;
+            }
+        }
+        else
+        {
+            if (idx > 2)
+            {
+                idx = 2;
+            }
         }
         fout << CM[idx];
         if (idx == 2)
-            fout << ' ' << ranXY(gen) << " " << ranXY(gen);
+            if (c <= 5)
+            {
+                fout << ' ' << ranXY1(gen) << " " << ranXY1(gen);
+            }
+            else
+            {
+                fout << ' ' << ranXY2(gen) << " " << ranXY2(gen);
+            }
         fout << "\n";
     }
 }
@@ -49,3 +74,4 @@ int main()
     }
     return 0;
 }
+//for i in {0..9}; do    ./Re_Zii_jia_1.exe < "input/input$i.txt" > "output/output$i.txt" & done
