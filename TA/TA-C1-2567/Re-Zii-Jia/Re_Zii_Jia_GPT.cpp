@@ -1,97 +1,44 @@
-#include <iostream>
-#include <stack>
-#include <cmath>
-#include <iomanip>
+#include <bits/stdc++.h>
 using namespace std;
 
-struct Action
+struct CM
 {
-    string type;
     double dx, dy;
 };
 
+stack <CM> MV;
+stack <CM> RMV;
+
 int main()
 {
-    double N;
-    cin >> N;
-
-    double a, b;
-    cin >> a >> b;
-
-    double x = a, y = b;
-    stack<Action> actionStack;
-    stack<Action> undoStack;
-
-    for (double i = 0; i < N; ++i)
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    double n,a,b,x,y;
+    string cm;
+    cin >> n >> a >> b;
+    double xa = a,yb = b;
+    for (int i = 0; i < n; i++)
     {
-        string cmd;
-        cin >> cmd;
-
-        if (cmd == "MV")
+        cin >> cm;
+        if (cm == "MV")
         {
-            double dx, dy;
-            cin >> dx >> dy;
-            x += dx;
-            y += dy;
-            actionStack.push({"MV", dx, dy});
+            cin >> x >> y;
+            MV.push({x,y});
         }
-        else if (cmd == "RE")
+        for (int j = 0; j < n; j++)
         {
-            bool foundMV = false;
-            while (!actionStack.empty())
-            {
-                Action lastAction = actionStack.top();
-                actionStack.pop();
-                if (lastAction.type == "MV")
-                {
-                    x -= lastAction.dx;
-                    y -= lastAction.dy;
-                    actionStack.push({"RE", lastAction.dx, lastAction.dy});
-                    foundMV = true;
-                    break;
-                }
-            }
-            if (!foundMV)
-            {
-                actionStack.push({"RE", 0, 0});
-            }
+            xa += x;
+            yb += y;
         }
-        else if (cmd == "REE")
-        {
-            bool foundRE = false;
-            while (!actionStack.empty())
-            {
-                Action lastAction = actionStack.top();
-                actionStack.pop();
-                if (lastAction.type == "RE")
-                {
-                    if (!actionStack.empty() && actionStack.top().type == "RE")
-                    {
-                        x = a;
-                        y = b;
-                    }
-                    else
-                    {
-                        x += lastAction.dx;
-                        y += lastAction.dy;
-                    }
-                    actionStack.push({"REE", 0, 0});
-                    foundRE = true;
-                    break;
-                }
-            }
-            if (!foundRE)
-            {
-                x = a;
-                y = b;
-                actionStack.push({"REE", 0, 0});
-            }
-        }
+        
     }
-
-    double distance = sqrt((x - a) * (x - a) + (y - b) * (y - b));
-    cout << fixed << setprecision(2) << distance << endl;
-    cout << fixed << setprecision(0) << x << " " << y << endl;
-
+    while (!MV.empty())
+    {
+        auto [x,y] = MV.top();
+        xa += x;
+        yb += y;
+        MV.pop();
+    }
+    cout << fixed << setprecision(2) << sqrt(pow(a - xa,2)+pow(b - yb,2)) << "\n";
+    cout << fixed << setprecision(0) << xa << " " << yb;
     return 0;
 }

@@ -15,7 +15,7 @@ void geninput(string in, int c)
     uniform_int_distribution<int> ranN2(1, 1e5);
     uniform_int_distribution<int> ranIDX(0, 4);
     uniform_int_distribution<long long> ranXY1((-1e2), 1e2);
-    uniform_int_distribution<long long> ranXY2((-1e18), 1e18);
+    uniform_int_distribution<long long> ranXY2((-1e12), 1e12);
 
     int n;
     if (c < 3)
@@ -38,7 +38,7 @@ void geninput(string in, int c)
     for (int i = 0; i < n; i++)
     {
         int idx = ranIDX(gen);
-        if (c == 0 || c == 6 || c == 7)
+        if (c == 0 || c == 1 || c == 2)
         {
             if (idx > 2)
             {

@@ -24,24 +24,28 @@ int main()
             cin >> x >> y;
             MV.push({x,y});
         }
-        else if (cm == "RE" && !MV.empty())
+        else if (cm == "RE")
         {
+            if (MV.empty())
+            {
+                continue;
+            }
             RMV.push(MV.top());
             MV.pop();
         }
         else
         {
-            if (!RMV.empty())
-            {
-                MV.push(RMV.top());
-                RMV.pop();
-            }
-            else
+            if (RMV.empty())
             {
                 while (!MV.empty())
                 {
                     MV.pop();
                 }
+            }
+            else
+            {
+                MV.push(RMV.top());
+                RMV.pop();
             }
         }
     }

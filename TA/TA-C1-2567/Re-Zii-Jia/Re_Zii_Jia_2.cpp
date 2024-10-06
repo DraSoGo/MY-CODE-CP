@@ -1,14 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-stack<pair<double, double>> m, re;
+stack<pair<long long, long long>> m, re;
 
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    double n, a, b, c, d, x, y;
+    long long n, a, b, c, d, x, y;
     cin >> n >> a >> b;
     c = a, d = b;
     for (long long i = 0; i < n; i++)
