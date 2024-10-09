@@ -24,6 +24,6 @@ int main()
         c = A[i];
     }
     mxco = max(mxco,co);
-    cout << mxco;
+    cout << mxco;   
     return 0;
 }
