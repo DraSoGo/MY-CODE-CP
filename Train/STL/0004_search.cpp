@@ -32,7 +32,7 @@ int main()
     //         cout << '\n'<< mid;
     //         break;
     //     }
-
+    
     //     if(v[mid]<6){
     //         l=mid;
     //     }
