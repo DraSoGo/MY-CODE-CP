@@ -1,58 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
+int n;
+string s;
+queue<char> q, temp;
 int main()
 {
-    int b,ch1;
-    string s,chs;
-    cin >> b >> s;
-    chs = s[0];
-    for (int i = 0; i < b/2;i++)
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    cin >> n >> s;
+    for (int i = 0; i < n; i++)
     {
-        ch1 = 0;
-        if (i > 0)
+        q.push(s[i]);
+    }
+    temp = q;
+    for (int i = 1; i <= n; i++)
+    {
+        temp.push(temp.front());
+        temp.pop();
+        if (n % i == 0 && temp == q)
         {
-            chs = chs + s[i];
-        }
-        if (s.length() % chs.length() == 0)
-        {
-            for (int j = 0; j < b - chs.length() - 1;j++)
-            {
-                for (int k = 0; k < chs.length(); k++)
-                {
-                    if ((j*chs.length())+k == b)
-                    {
-                        ch1 = 2;
-                        break;
-                    }
-                    
-                    if (chs[k] != s[(j*chs.length())+k])
-                    {
-                        //cout << chs << " " << s << "\n";
-                        //cout << " " << chs[k] << " " << k << " " << j << " " << i << " | " << s[(j*chs.length())+k] << " " << (j*chs.length())+k << "\n";
-                        ch1 = 1;
-                        break;
-                    }
-                }
-                if (ch1 == 1 || ch1 == 2)
-                {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            ch1 = 1;
-            // break;
-        }
-        if (ch1 == 0 || ch1 == 2)
-        {
-            cout << i+1;
-            break;
+            cout << i;
+            return 0;
         }
     }
-    if (ch1 == 1)
-    {
-        cout << b;
-    }
-    
+    return 0;
 }

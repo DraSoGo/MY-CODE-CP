@@ -1,24 +1,38 @@
-#include <iostream>
-#define windows ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
+#include <bits/stdc++.h>
 using namespace std;
-
-bool isPrime(int num) {
-    int div = 2;
-    while (div <= num - 1 && num % div != 0) div++;
-    if (div == num) return true;
-    else return false;
-}
-
-int main() { windows;
-    int count = 0, num; cin >> num;
-
-    for (int i = 2; i <= num; i++) {
-        if (isPrime(i)) {
-            cout << i << " ";
-            count++;
+int main()
+{
+    int n = 5, c = 0, ck = 0;
+    int itemp[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> itemp[i];
+    }
+    int x;
+    cin >> x;
+    for (int i = 0; i < n; i++)
+    {
+        if (itemp[i] == x)
+        {
+            ck = 1;
         }
     }
-    cout << "\n" << count;
-
-    return 0;
+    if (ck == 0)
+    {
+        cout << "Item not found in the bag";
+        return 0;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (x == itemp[i] && c == 0)
+        {
+            c = 1;
+            continue;
+        }
+        if (x != itemp[i] || c == 1)
+        {
+            cout << itemp[i] << " ";
+        }
+    }
+    cout << "0";
 }
