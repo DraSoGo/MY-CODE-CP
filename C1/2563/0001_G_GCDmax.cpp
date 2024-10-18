@@ -1,22 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+int main()
 {
-    int a,b,m = 1,c,gcd;
-    cin >> a;
-    int A[a];
-    for (int i = 0; i < a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,mx = 1;
+    cin >> n;
+    int A[n];
+    for (int i = 0; i < n; i++)
     {
         cin >> A[i];
     }
-    
-    for (int i = 0; i < a; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (int j = i + 1; j < a; j++)
+        for (int j = i+1; j < n; j++)
         {
-            gcd = __gcd(A[i],A[j]);
-            m = max(gcd,m);
+            // cout << A[i] << " " << A[j] << "\n";
+            mx = max(mx,__gcd(A[i],A[j]));
         }
     }
-    cout << m;
+    cout << mx;
+    return 0;
 }

@@ -1,47 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+int main()
 {
-    int a,n,k,ch;
-    string str;
-    cin >> a;
-    for (int j = 0; j < a; j++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    long long n;
+    cin >> n;
+    while (n--)
     {
-        cin >> n >> k;
-        char str[n];
-        for (int i = 0; i < n; i++)
+        long long p,y,c = 0;
+        string x;
+        cin >> y >> p >> x;
+        long long A[26];
+        memset(A,0,sizeof(A));
+        for (long long i = 0; i < y; i++)
         {
-            cin >> str[i];
-        }
-        int B[26];
-        memset(B,0,sizeof(B));
-        for (int i = 0; i < n; i++)
-        {
-            B[str[i] - 97]++;
-        }
-        ch = 0;
-        for (int i = 0; i < 26; i++)
-        {
-            // cout << B[i] << " ";
-            if (B[i] <= k || B[i] == 0)
+            A[x[i]-'a']++;
+            if (A[x[i]-'a'] > p)
             {
-                ch = 1;
-            }
-            else
-            {
-                ch = 0;
+                cout << "NO";
+                c = 1;
                 break;
             }
         }
-        // cout << "\n";
-        if (ch == 1)
+        if (c == 0)
         {
-            cout << "YES\n";
+            cout << "YES";
         }
-        else
-        {
-            cout << "NO\n";
-        }
-        
+        cout << "\n";
     }
+    
+    return 0;
 }

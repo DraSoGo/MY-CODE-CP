@@ -1,15 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+int main()
 {
-    int a,ans;
-    cin >> a;
-    int A[a];
-    for (int i = 0; i < a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,a,mx = -1,mn = INT_MAX;
+    cin >> n;
+    for (int i = 0; i < n; i++)
     {
-        cin >> A[i];
+        cin >> a;
+        mx = max(mx,a);
+        mn = min(mn,a);
     }
-    sort(A,A+a);
-    ans = A[0] + (2 * A[a - 1]);
-    cout << ans;
+    cout << 2*mx+mn;
+    return 0;
 }

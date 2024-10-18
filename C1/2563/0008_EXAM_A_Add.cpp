@@ -1,58 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main() 
+int main()
 {
-    string a,b;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    string a,b,c = "";
+    int y = 0;
     cin >> a >> b;
-    int x = a.length(),y = b.length(),mx = max(a.length(),b.length()),j;
-    int A[mx],B[mx],SUM[mx],sum,ch = 0;
-    for (int i = 0; i < mx; i++)
+    reverse(a.begin(),a.end());
+    reverse(b.begin(),b.end());
+    while (b.size() < a.size())
     {
-        SUM[i] = 0;
+        b += '0';
     }
-    j = 0;
-    for (int i = x - 1; i >= 0; i--)
+    while (a.size() < b.size())
     {
-        A[j] = a[i] - '0';
-        j++;
+        a += '0';
     }
-    for (int i = j; i < mx; i++)
+    for (int i = 0; i < a.size(); i++)
     {
-        A[j] = 0;
-        j++;
+        // cout << a[i] << " " << b[i] << " " << char((((a[i]-'0') + (b[i]-'0') + y)%10)+'0') << " " << y << "\n";
+        c += char(((a[i]-'0' + b[i]-'0' + y)%10)+'0');
+        y = ((a[i]-'0' + b[i]-'0' + y)/10) % 10;
     }
-    j = 0;
-    for (int i = y - 1; i >= 0; i--)
+    if (y == 1)
     {
-        B[j] = b[i] - '0';
-        j++;
+        c += '1';
     }
-    for (int i = j; i < mx; i++)
-    {
-        B[j] = 0;
-        j++;
-    }
-    for (int i = 0; i < mx; i++)
-    {
-        sum = A[i] + B[i] + ch;
-        if (sum < 10)
-        {
-            SUM[i] = sum;
-            ch = 0;
-        }
-        else
-        {
-            SUM[i] = sum % 10;
-            ch = 1;
-        }
-        
-    }
-    if (ch == 1)
-    {
-        cout << ch;
-    }
-    for (int i = mx - 1; i >= 0; i--)
-    {
-        cout << SUM[i];
-    }
+    reverse(c.begin(),c.end());
+    cout << c;
+    return 0;
 }

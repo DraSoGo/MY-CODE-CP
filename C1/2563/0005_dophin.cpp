@@ -1,52 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+int main()
 {
-    long long a,b,x = 0,j,y,ch;
-    cin >> a;
-    for (int i = 0; i < a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int t,x;
+    cin >> t;
+    while (t--)
     {
-        x = 0;
-        ch = 0;
-        j = 1;
-        cin >> b;
-        while (x <= b)
+        int idx = 3,j = 1,sum = 0,id;
+        cin >> x;
+        while (sum < x)
         {
-            y = 3 * j;
-            x = x + y;
+            idx = 3 * j;
+            sum += idx;
+            // cout << sum << "\n";
             j++;
-            // cout << "y = " << y << "\n";
-            // cout << "x = " << x << "\n";
         }
-        x = x - y;
-        b = b - x;
-        y = y/3;
-        // cout << x << " " << b << " " << y << "\n";
-        if (b == 0)
+        sum -= idx;
+        j-=1;
+        idx = 3*j;
+        // cout << sum << " " << j << " " << idx << "\n";
+        id = x - sum;
+        if (id > 2*(idx/3))
         {
             cout << "splash";
         }
-        else if (b <= y * 1)
+        else if (id <= 1*(idx/3))
         {
-            cout << y << " dolphin";
-            if (y > 1)
+            cout << j << " " << "dolphin";
+            if (j > 1)
             {
                 cout << "s";
             }
+            
         }
-        else if (b <= y * 2)
+        else
         {
-            cout << y << " jump";
-            if (y > 1)
+            cout << j << " " << "jump";
+            if (j > 1)
             {
                 cout << "s";
             }
-        }
-        else if (b <= y * 3)
-        {
-            cout << "splash";
         }
         cout << "\n";
     }
-        
+    
+    return 0;
 }
