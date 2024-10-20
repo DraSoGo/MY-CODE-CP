@@ -1,4 +1,1 @@
-1 dolphin
-1 jump
-splash
-2 dolphins
+2
