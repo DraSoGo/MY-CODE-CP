@@ -1,14 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+int main()
 {
-    int a;
-    cin >> a;
-    for (int i = 1; i <= a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++)
     {
-        for (int j = 1; j <= a; j++)
+        for (int j = 1; j <= n; j++)
         {
-            if (i == j || i == a || i == 1 || j == a || j == 1 || i == (a-j)+1)
+            if (i == 1 || i == n || j == 1 || j == n || i == j || i+j == n+1)
             {
                 cout << "*";
             }
@@ -16,9 +17,9 @@ main()
             {
                 cout << "-";
             }
-            
         }
         cout << "\n";
     }
     
+    return 0;
 }

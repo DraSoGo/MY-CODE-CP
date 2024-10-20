@@ -1,25 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n;
-string s;
-queue<char> q, temp;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    cin >> n >> s;
-    for (int i = 0; i < n; i++)
+    int n;
+    cin >> n;
+    char x;
+    queue <char> Q,pat;
+    while (n--)
     {
-        q.push(s[i]);
+        cin >> x;
+        Q.push(x);
+        pat.push(x);
     }
-    temp = q;
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i <= Q.size(); i++)
     {
-        temp.push(temp.front());
-        temp.pop();
-        if (n % i == 0 && temp == q)
+        pat.push(pat.front());
+        pat.pop();
+        if (Q.size() % i == 0 && pat == Q)
         {
             cout << i;
-            return 0;
+            break;
         }
     }
     return 0;

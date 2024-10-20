@@ -2,56 +2,37 @@
 using namespace std;
 int main()
 {
-    long long a,b,c,d,e,x,n;
-    cin >> d;
-    for (int i = 0; i < d; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int t;
+    cin >> t;
+    while (t--)
     {
+        long long a,b,c,id,ans = 1;
         cin >> a >> b >> c;
-        vector <pair<int,int>> V;
-        pair <int,int> data;
-        n = 0;
-        e = a;
-        x = 1;
-        data.first = x;
-        data.second = a;
-        V.push_back(data);
-        while(2*x <= b)
+        long long A[21],idx[21];
+        A[0] = 1;
+        A[1] = a;
+        idx[0] = 0;
+        idx[1] = 1;
+        for (int i = 2; i < 21; i++)
         {
-            a = a * a;
-            x = x*2;
-            a = a % c;
-            data.first = x;
-            data.second = a;
-            V.push_back(data);
-            n++;
+            A[i] = (A[i-1]%c * A[i-1]%c)%c;
+            idx[i] = idx[i-1] * 2;
         }
-        while (x < b)
+        while (b > 0)
         {
-            for (int j = n; j >= 0; j--)
+            id = lower_bound(idx,idx+21,b)-idx;
+            if(idx[id] > b)
             {
-                if (x + V[j].first <= b)
-                {
-                    a = a * V[j].second;
-                    a = a % c;
-                    x += V[j].first;
-                    if (x + V[j].first > b)
-                    {
-                        n--;
-                    }
-                    break;
-                }
-                else
-                {
-                    n--;
-                }
+                id--;
             }
-            // cout << x << " " << n << "\n";
+            // cout << idx[id] << " ";
+            ans = (A[id]%c * ans%c)%c;
+            b -= idx[id];
         }
-        cout << a << "\n";
-        // for (int i = 0; i < V.size(); i++)
-        // {
-        //     cout << V[i].first << " " << V[i].second;
-        //     cout << "\n";
-        // }
+        // cout << "____\n";
+        cout << ans << "\n";
     }
+    
+    return 0;
 }

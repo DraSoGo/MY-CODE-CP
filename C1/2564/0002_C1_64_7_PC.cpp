@@ -2,90 +2,107 @@
 using namespace std;
 int main()
 {
-    int a;
-    cin >> a;
-    string A;
-    char COM[a];
-    int NUM[a],j = 0,b,x,y,z;
-    stack <int> STR;
-    stack <int> RE;
-    for (int i = 0; i < a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int re = 0,n,x,i = 0;
+    stack <int> ST;
+    string cm;
+    cin >> n;
+    string CM[n];
+    int NUM[n];
+    while (n--)
     {
-        cin >> A;
-        if (A == "PUSH")
+        cin >> cm;
+        if (cm == "PUSH")
         {
-            COM[i] = 'P';
-            cin >> NUM[i];
+            cin >> x;
+            CM[i] = "PUSH";
+            NUM[i] = x;
         }
-        else if (A == "STORE")
+        else if (cm == "STORE")
         {
-            COM[i] = 'S';
+            CM[i] = "STORE";
         }
-        else if (A == "LOAD")
+        else if (cm == "LOAD")
         {
-            COM[i] = 'L';
+            CM[i] = "LOAD";
         }
-        else if (A == "PLUS")
+        else if (cm == "PLUS")
         {
-            COM[i] = 'p';
+            CM[i] = "PLUS";
         }
-        else if (A == "TIMES")
+        else if (cm == "TIMES")
         {
-            COM[i] = 'T';
+            CM[i] = "TIMES";
         }
-        else if (A == "IFZERO")
+        else if (cm == "IFZERO")
         {
-            COM[i] = 'I';
-            cin >> NUM[i];
+            cin >> x;
+            CM[i] = "IFZERO";
+            NUM[i] = x;
         }
-        else if (A == "DONE")
+        else if (cm == "DONE")
         {
-            COM[i] = 'D';
+            CM[i] = "DONE";
         }
+        i++;
     }
-    while (COM[j] != 'D')
+    i = 0;
+    // cout << "Hi";
+    while (CM[i] != "DONE")
     {
-        if (COM[j] == 'P')
+        // cout << i << " " << CM[i] << " : " << re << " > ";
+        // if (!ST.empty())
+        // {
+        //     cout << ST.top();
+        // }
+        // cout << "\n";
+        if (CM[i] == "PUSH")
         {
-            STR.push(NUM[j]);
+            ST.push(NUM[i]);
         }
-        else if (COM[j] == 'S')
+        else if (CM[i] == "STORE")
         {
-            b = STR.top();
-            STR.pop();
-            RE.push(b);
+            re = ST.top();
+            ST.pop();
+            // ST.pop();
+            // if (!ST.empty())
+            // {
+            //     ST.pop();
+            // }
         }
-        else if (COM[j] == 'L')
+        else if (CM[i] == "LOAD")
         {
-            STR.push(RE.top());
+            ST.push(re);
         }
-        else if (COM[j] == 'p')
+        else if (CM[i] == "PLUS")
         {
-            x = STR.top();
-            STR.pop();
-            y = STR.top();
-            STR.pop();
-            z = x + y;
-            STR.push(z);
+            int a,b;
+            a = ST.top();
+            ST.pop();
+            b = ST.top();
+            ST.pop();
+            ST.push(a+b);
         }
-        else if (COM[j] == 'T')
+        else if (CM[i] == "TIMES")
         {
-            x = STR.top();
-            STR.pop();
-            y = STR.top();
-            STR.pop();
-            z = x * y;
-            STR.push(z);
+            int a,b;
+            a = ST.top();
+            ST.pop();
+            b = ST.top();
+            ST.pop();
+            ST.push(a*b);
         }
-        else if (COM[j] == 'I')
+        else if (CM[i] == "IFZERO")
         {
-            if (STR.top() == 0)
+            if (ST.top() == 0)
             {
-                j = NUM[j] - 1;
+                i = NUM[i] - 1;
             }
-            STR.pop();
+            ST.pop();
         }
-        j++;
+        i++;
     }
-    cout << STR.top();
+    cout << ST.top();
+    
+    return 0;
 }

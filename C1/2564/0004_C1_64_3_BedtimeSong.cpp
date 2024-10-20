@@ -1,17 +1,19 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 int main()
 {
-    double a,b,timestart,timeout = 1245,time;
-    cin >> a >> b;
-    timestart = 60*a + b;
-    time = timeout - timestart;
-    if (time > 0)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    double h,m,t;
+    cin >> h >> m;
+    t = -(h*60+m+15)+(21*60);
+    if (t <= 0)
     {
-      cout << time << " " << ceil(time/2);
+      cout << "0 0";
     }
     else
     {
-      cout << 0 << " " << 0;
+      cout << t << " " << ceil(t/2);
     }
+    
+    return 0;
 }
