@@ -1,25 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+
+int main()
 {
-    int h1,m1,h2,m2,t,m;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int h1,m1,h2,m2,t;
     cin >> h1 >> m1 >> h2 >> m2;
-    t = ((h2 - h1) * 60)+abs(m2-m1);
+    t = -(h1*60+m1)+(h2*60+m2);
     if (t <= 15)
     {
-        m = 0;
+        cout << 0;
     }
-    else if (t <= 180)
+    else if (t <= 60*3)
     {
-        m = ceil(t/60.0) * 10;
+        cout << ceil(t/60.0) * 10;
     }
-    else if (t <= 360)
+    else if (t <= 60*6)
     {
-        m = ceil((t - 180)/60.0) * 20 + 30;
+        cout << ceil((t-60*3)/60.0) * 20 + 30;
     }
     else
     {
-        m = 200;
+        cout << 200;
     }
-    cout << m;
+    
+    return 0;
 }

@@ -1,27 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 int main()
 {
-    int a;
-    cin >> a;
-    a--;
-    for (int i = -a; i <= a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n;
+    cin >> n;
+    n--;
+    for (int i = -n; i <= n; i++)
     {
-        for (int j = -a; j <= a; j++)
+        for (int j = -n; j <= n; j++)
         {
-            if (i == -j-a || (i == -a && j >= 0) || (i == -j && i <= 0) || (j == a && i <= 0) || (i == 0 && j <= 0) || i == -j + a || (j <= 0 && i == a) || (j == 0 && i >= 0) || (j == -a && i >= 0))
+            if ((i == -n && j >= 0) || ((i == n || i == 0) && j <= 0) || (j == n && i <= 0) || ((j == -n || j == 0) && i >= 0) || j == -i+n || j == -i-n || (j == -i && i <= 0))
             {
-                cout << "*";
+                cout << '*';
             }
-            else if (i < -j + a)
+            else if (j > -i+n)
             {
-                cout << "-";
+                cout << ' ';
             }
             else
             {
-                cout << " ";
+                cout << '-';
             }
+            
         }
         cout << "\n";
     }
+    
+    return 0;
 }

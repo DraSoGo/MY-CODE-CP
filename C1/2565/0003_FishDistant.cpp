@@ -1,24 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+
+struct fish
 {
-    int a,b,x,y,w,mxx,mxy,mxw = -1,mnx,mny,mnw = 999999,s;
-    cin >> a >> b;
-    for (int i = 0; i < b; i++)
+    double w,x,y;
+};
+
+
+int main()
+{
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,m,w,x,y;
+    cin >> n >> m;
+    fish mx,mn;
+    mx.w = -1,mn.w = INT_MAX;
+    for (int i = 0; i < m; i++)
     {
         cin >> x >> y >> w;
-        if (w > mxw)
+        if (w > mx.w)
         {
-            mxx = x;
-            mxy = y;
-            mxw = w;
+            mx.w = w;
+            mx.x = x;
+            mx.y = y;
         }
-        if (w < mnw)
+        if (w < mn.w)
         {
-            mnx = x;
-            mny = y;
-            mnw = w;
-        } 
+            mn.w = w;
+            mn.x = x;
+            mn.y = y;
+        }
     }
-    cout << fixed << setprecision(6) << sqrt(pow(mxx - mnx,2) + pow(mxy - mny,2));
+    cout << fixed << setprecision(6) << sqrt((mx.x-mn.x)*(mx.x-mn.x) + (mx.y-mn.y)*(mx.y-mn.y));
+    return 0;
 }
