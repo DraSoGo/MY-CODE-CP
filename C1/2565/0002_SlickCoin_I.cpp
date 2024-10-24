@@ -1,19 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+
+int main()
 {
-    int a,b,c = 0;
-    cin >> a;
-    int A[a];
-    for (int i = 0; i < a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,mn = INT_MAX,a,mx = 0;
+    cin >> n;
+    for (int i = 0; i < n; i++)
     {
-        cin >> A[i];
+        cin >> a;
+        mx = max(mx,a-mn);
+        mn = min(a,mn);
     }
-    int sumx = 0,mn = 10001;
-    for (int i = 0; i < a; i++)
-    {
-        mn = min(mn,A[i]);
-        sumx = max(sumx,A[i] - mn);
-    }
-    cout << sumx;
+    cout << mx;
+    return 0;
 }

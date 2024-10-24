@@ -1,63 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+const long long n = 1e5+1;
+bool P[n];
+vector <long long> V;
+
 int main()
 {
-    int a,n,ch,b,mn,x;
-    cin >> a;
-    vector <int> A;
-    for (int i = 2; i < 200000; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    P[0] = P[1] = 1;
+    for (long long i = 2; i < n; i++)
     {
-        b = 0;
-        for (int j = 2; j*j <= i; j++)
+        if (P[i] == 0)
         {
-            if (i % j == 0)
+            V.emplace_back(i);
+            for (long long j = i*i; j < n; j+=i)
             {
-                b = 1;
-                break;
+                P[j] = 1;
             }
         }
-        if (b == 0)
-        {
-            A.push_back(i);
-        }
     }
-    for (int i = 0; i < a; i++)
+    long long t,q;
+    cin >> t;
+    while (t--)
     {
-        ch = 0;
-        mn = 1000000;
-        cin >> n;
-        if (n < 10)
+        cin >> q;
+        long long a,b,ch = 0;
+        while (ch == 0)
         {
-            mn = 6;
-            ch = 1;
-        }
-        if (ch == 0)
-        {
-            for (int j = 0; j < n; j++)
+            for (long long i = 0; V[i] <= q/2+1; i++)
             {
-                x = n/A[j];
-                int l = 0;
-                if (x != 0)
+                if (ceil(double(q)/double(V[i])) == floor(double(q)/double(V[i])) && P[q/V[i]] == 0 && q/V[i] != V[i] && V[i] * q/V[i] == q)
                 {
-                    while ((x > A[l]))
-                    {
-                        l++;
-                    }
-                    if (A[l] == A[j])
-                    {
-                        l++;
-                    }
-                    if ((abs(n - mn) > abs(n - (A[j]*A[l]))) && A[j]*A[l] >= n)
-                    {
-                        mn = A[j]*A[l];
-                    }
-                    if (A[j]*A[l] > 1.5*n)
-                    {
-                        break;
-                    }
+                    // cout << q/V[i] << " " << V[i] << " " << q << "\n";
+                    cout << q << "\n";
+                    ch = 1;
+                    break;
                 }
             }
+            q++;
+            // cout << q << " ";
         }
-        cout << mn << "\n";
     }
+    return 0;
 }

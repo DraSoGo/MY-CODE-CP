@@ -1,21 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+
+int main()
 {
-    int a,b,c = 0;
-    cin >> a;
-    int A[a];
-    for (int i = 0; i < a; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,a,b = INT_MAX,mx = 0;
+    cin >> n;
+    for (int i = 0; i < n; i++)
     {
-        cin >> A[i];
-    }
-    for (int i = 0; i < a-1; i++)
-    {
-        if (A[i] < A[i + 1])
+        cin >> a;
+        if (b < a)
         {
-            c = c + ( A[i+1] - A[i] );
+            mx += a-b;
         }
-        
+        b = a;
     }
-    cout << c;
+    cout << mx;
+    return 0;
 }
