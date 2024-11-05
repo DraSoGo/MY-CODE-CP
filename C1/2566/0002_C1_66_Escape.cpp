@@ -2,22 +2,23 @@
 using namespace std;
 int main()
 {
-    string a,b;
-    long long n,x = 1e9+7,co,ans = 1;
-    cin >> n >> a;
-    for (int i = 0; i < n; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    long long a,sum = 1,co = 0,md = 1e9+7;
+    string x,y;
+    cin >> a >> x;
+    for (int i = 0; i < a; i++)
     {
         co = 0;
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < a; j++)
         {
-            cin >> b;
-            if (b == a)
+            cin >> y;
+            if (x == y)
             {
                 co++;
             }
         }
-        ans *= co;
-        ans %= x;
+        sum = ((co%md)*(sum%md))%md;
     }
-    cout << ans;
+    cout << sum % md;
+    return 0;
 }

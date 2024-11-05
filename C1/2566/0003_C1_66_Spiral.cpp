@@ -4,124 +4,75 @@ AUTHOR: Guntinun Sawatvong
 CENTER: WU */ 
 #include <bits/stdc++.h>
 using namespace std;
+
+int dx0[4] = {1,0,-1,0};
+int dy0[4] = {0,1,0,-1};
+int dx1[4] = {-1,0,1,0};
+int dy1[4] = {0,1,0,-1};
+bool T[200][200];
+
 int main()
 {
-    int s, x, y, n, z, chx = 0, chy = 0;
-    char a;
-    cin >> s >> x >> y >> n >> z >> a;
-    char A[s][s];
-    memset(A, '.', sizeof(A));
-    A[y][x] = a;
-    if (z == 0)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,x,y,a,s,st = 1;
+    char c;
+    cin >> n >> x >> y >> a >> s >> c;
+    for (int i = 0; i < a; i++)
     {
-        for (int i = 0; i < n; i++)
+        for (int j = 0; j < st; j++)
         {
-            if (i % 2 == 0)
+            if (x >= 0 && x < n && y >= 0 && y < n)
             {
-                for (int j = 0; j <= i; j++)
-                {
-                    if (chx % 2 == 0)
-                    {
-                        x++;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                    else
-                    {
-                        x--;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                }
-                chx++;
+                T[y][x] = 1;
+            }
+            if (s == 0)
+            {
+                x += dx0[i%4];
+                y += dy0[i%4];
+            }
+            if (s == 1)
+            {
+                x += dx1[i%4];
+                y += dy1[i%4];
+            }
+        }
+        st++;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (T[i][j] == 1)
+            {
+                cout  << c;
             }
             else
             {
-                for (int j = 0; j <= i; j++)
-                {
-                    if (chx % 2 == 0)
-                    {
-                        y--;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                    else
-                    {
-                        y++;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                }
+                cout << '.';
             }
-            chy++;
         }
+        cout << '\n';
     }
-    else
-    {
-        for (int i = 0; i < n; i++)
-        {
-            if (i % 2 == 0)
-            {
-                for (int j = 0; j <= i; j++)
-                {
-                    if (chx % 2 == 0)
-                    {
-                        x--;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                    else
-                    {
-                        x++;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                }
-                chx++;
-            }
-            else
-            {
-                for (int j = 0; j <= i; j++)
-                {
-                    if (chx % 2 == 0)
-                    {
-                        y--;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                    else
-                    {
-                        y++;
-                        if (x >= 0 && x < s && y >= 0 && y < s)
-                        {
-                            A[y][x] = a;
-                        }
-                    }
-                }
-            }
-            chy++;
-        }
-    }
-    for (int i = 0; i < s; i++)
-    {
-        for (int j = 0; j < s; j++)
-        {
-            cout << A[i][j];
-        }
-        cout << "\n";
-    }
+    return 0;
 }
+/*
+8
+2 4
+6
+0
+C
+*/
+/*
+10
+5 5
+10
+0
+X
+*/
+/*
+10
+5 5
+10
+1
+H
+*/

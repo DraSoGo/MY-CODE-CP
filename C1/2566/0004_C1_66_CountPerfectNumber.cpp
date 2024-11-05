@@ -2,28 +2,26 @@
 using namespace std;
 int main()
 {
-    int A[1000],n,a,b,co;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int A[1000];
     for (int i = 0; i < 1000; i++)
     {
-        A[i] = pow(i+1,2);
+        A[i] = (i+1)*(i+1);
     }
+    int n,a,b;
     cin >> n;
-    for (int i = 0; i < n; i++)
+    while (n--)
     {
+        int co = 0;
         cin >> a >> b;
-        co = 0;
-        for (int j = 0; j < 1000; j++)
+        for (int i = 0; i < 1000; i++)
         {
-            if (A[j] >= a && A[j] <= b)
+            if (A[i] >= a && A[i] <= b)
             {
                 co++;
-            }
-            if (A[j] > b)
-            {
-                break;
             }
         }
         cout << co << "\n";
     }
-    
+    return 0;
 }
