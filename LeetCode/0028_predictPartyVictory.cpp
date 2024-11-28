@@ -4,47 +4,42 @@ using namespace std;
 class Solution
 {
     public:
+        Solution()
+        {
+            ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+        }
         string predictPartyVictory(string senate)
         {
-            int ch = 1;
-            while (ch >= 1)
+            int n = senate.size();
+            queue <int> QD,QR;
+            for (int i = 0; i < n; i++)
             {
-                queue <char> Q;
-                bool c = 1;
-                for (int i = 0; i < senate.size(); i++)
+                if (senate[i] == 'D')
                 {
-                    cout << i << " " << senate[i] << "\n";
-                    if (i == senate.size()-1 && !Q.empty() && Q.front() != senate[i])
-                    {
-                        cout << senate[i] << " " << Q.front() << "\n";
-                        ch = 2;
-                        Q.pop();
-                        continue;
-                    }
-                    if (c && !Q.empty() && Q.back() != senate[i])
-                    {
-                        ch = 2;
-                        c = 0;
-                    }
-                    else
-                    {
-                        cout << "^\n";
-                        if (ch != 2)
-                        {
-                            ch = 0;
-                        }
-                        c = 1;
-                        Q.push(senate[i]);
-                    }
+                    QD.push(i);
                 }
-                senate = "";
-                while (!Q.empty())
+                else
                 {
-                    senate += Q.front();
-                    Q.pop();
+                    QR.push(i);
                 }
             }
-            if (senate[0] == 'R')
+            while (!QD.empty() && !QR.empty())
+            {
+                // cout << QD.size() << " " << QR.size() << "\n";
+                if (QD.front() > QR.front())
+                {
+                    QR.pop();
+                    QD.pop();
+                    QR.push(max(QD.back(),QR.back())+1);
+                }
+                else
+                {
+                    QR.pop();
+                    QD.pop();
+                    QD.push(max(QD.back(),QR.back())+1);
+                }
+            }
+            if (QD.empty())
             {
                 return "Radiant";
             }
