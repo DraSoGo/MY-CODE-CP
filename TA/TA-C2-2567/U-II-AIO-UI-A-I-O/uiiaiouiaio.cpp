@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-const unsigned long long mx = 1000000000000000000ULL;
 const int mxi = 50;
 unsigned long long S[mxi + 10];
 unsigned long long A[mxi + 10];
