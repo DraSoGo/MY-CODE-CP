@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-char T[10000][10000];
-bool visF[10000][10000],visQ[10000][10000];
+char T[101][101];
+bool visF[101][101],visQ[101][101];
 int m,n,xf,yf,xq,yq,xp,yp,t;
 int dxf[8] = {-2,-2,-1,1,2,2,-1,1};
 int dyf[8] = {-1,1,2,2,-1,1,-2,-2};

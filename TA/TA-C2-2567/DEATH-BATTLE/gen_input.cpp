@@ -12,44 +12,60 @@ void geninput(string in, int c)
     random_device rd;
     mt19937 gen(rd());
 
-    uniform_int_distribution<int> ranT(1, 1e5);
-    uniform_int_distribution<int> rani1(1, 5);
-    uniform_int_distribution<int> rani2(20, 50);
-    unsigned long long T = ranT(gen);
-    if (c < 3)
+    uniform_int_distribution<int> ranMN(1, 1e2);
+    uniform_int_distribution<int> rano(1, 1e2);
+    uniform_int_distribution<int> ranp(1, 10);
+    int M = ranMN(gen);
+    int N = ranMN(gen);
+    uniform_int_distribution<int> FQY(1, M);
+    uniform_int_distribution<int> FQX(1, N);
+    int fx = FQX(gen);
+    int qx = FQX(gen);
+    int px = FQX(gen);
+    int fy = FQY(gen);
+    int qy = FQY(gen);
+    int py = FQY(gen);
+    int t = rano(gen);
+    if (c <= 4)
     {
-        fout << T << "\n";
-        for (int i = 0; i < T; i++)
-        {
-            unsigned long long n = rani1(gen);
-            uniform_int_distribution<unsigned long long> ranx1(1, S[n+1]);
-            unsigned long long x = ranx1(gen);
-            fout << n << " " << x << "\n";
-        }
+        t = 0;
     }
-    else
+    fout << M << " " << N << "\n" << t << "\n";
+    for (int i = 0; i < M; i++)
     {
-        fout << T << "\n";
-        for (int i = 0; i < T; i++)
+        for (int j = 0; j < N; j++)
         {
-            unsigned long long n = rani2(gen);
-            // cout << S[n+1] << "\n";
-            uniform_int_distribution<unsigned long long> ranx2(S[n-2], S[n]);
-            unsigned long long x = ranx2(gen);
-            fout << n << " " << x << "\n";
+            int p = ranp(gen);
+            if (i == fy && j == fx)
+            {
+                fout << "F ";
+            }
+            else if (i == qy && j == qx)
+            {
+                fout << "Q ";
+            }
+            else if (i == py && j == px)
+            {
+                fout << "P ";
+            }
+            else
+            {
+                if (c <= 7)
+                {
+                    p <= 7 ? fout << "O " : fout << "X ";
+                }
+                else
+                {
+                    p <= 2 ? fout << "O " : fout << "X ";
+                }
+            }
         }
+        fout << "\n";
     }
 }
 
 int main()
 {
-    S[1] = 0;
-    S[2] = 1;
-    for (int i = 3; i < mxi; i++)
-    {
-        S[i] = 2*S[i-1] + S[i-2];
-        // cout << S[i] << "\n";
-    }
     for (int i = 0; i <= 9; i++)
     {
         geninput("./input/input" + to_string(i) + ".txt", i);
@@ -57,5 +73,5 @@ int main()
     return 0;
 }
 //for i in {0..9}; do    ./uiiaiouiaio < "input/input$i.txt" > "output/output$i.txt" & done
-//bash -c 'for i in {0..9}; do ./uiiaiouiaio < "input/input$i.txt" > "output/output$i.txt"; done'
-//chmod +x uiiaiouiaio
+//chmod +x deathbattle
+//bash -c 'for i in {0..9}; do ./deathbattle < "input/input$i.txt" > "output/output$i.txt"; done'
