@@ -1,75 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bitset <70000000> N;
+const int N = 7e7;
+bitset <N> P; 
 
 int main()
 {
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int a,b,ct = 0,cc = 0,cs = 0;
+    P[0] = 1;
+    P[1] = 1;
+    int a,b,t = 0,c = 0,s = 0;
     cin >> a >> b;
-    int n = b+10;
-    N[0] = 1;
-    N[1] = 1;
-    for (int i = 2; i < n; i++)
+    for (int i = 2; i < b+7; i++)
     {
-        if (N[i] == 0)
+        if (!P[i])
         {
-            for (int j = i+i; j < n; j+=i)
+            for (int j = i+i; j < b+7; j+=i)
             {
-                N[j] = 1;
+                P[j] = 1;
             }
         }
     }
     for (int i = a; i <= b; i++)
     {
-        if (N[i] == 0)
-        {
-            if (i - 2 >= 0)
-            {
-                if (N[i-2] == 0 || N[i+2] == 0)
-                {
-                    ct++;
-                }
-            }
-            else
-            {
-                if (N[i+2] == 0)
-                {
-                    ct++;
-                }
-            }
-            if (i - 4 >= 0)
-            {
-                if (N[i-4] == 0 || N[i+4] == 0)
-                {
-                    cc++;
-                }
-            }
-            else
-            {
-                if (N[i+4] == 0)
-                {
-                    cc++;
-                }
-            }
-            if (i - 6 >= 0)
-            {
-                if (N[i-6] == 0 || N[i+6] == 0)
-                {
-                    cs++;
-                }
-            }
-            else
-            {
-                if (N[i+6] == 0)
-                {
-                    cs++;
-                }
-            }
-        }
+        !P[i] && (!P[i+2] || (!P[i-2] && i-2 >= 0)) ? t++:t+=0;
+        !P[i] && (!P[i+4] || (!P[i-4] && i-2 >= 0)) ? c++:c+=0;
+        !P[i] && (!P[i+6] || (!P[i-6] && i-2 >= 0)) ? s++:s+=0;
     }
-    cout << ct << "\n";    
-    cout << cc << "\n";    
-    cout << cs;   
+    cout << t << "\n";
+    cout << c << "\n";
+    cout << s;
+    return 0;
 }

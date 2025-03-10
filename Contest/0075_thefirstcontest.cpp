@@ -14,7 +14,7 @@ struct tfc
     }
 };
 
-bool vis[1000];
+bool vis[1500000];
 
 int main()
 {

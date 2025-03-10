@@ -1,77 +1,65 @@
 #include <bits/stdc++.h>
 using namespace std;
+int n;
+int T[11][11];
+bool mem[11];
+int mx = -1;
 
-vector <long long> V;
-bool mem[1000];
-long long mx = INT_MIN;
-long long A[100][100];
+vector <int> V;
 
 bool check()
 {
-    for (long long i = 0; i < V.size(); i++)
+    for (int i = 0; i < V.size(); i++)
     {
-        if (i - 1 >= 0)
+        if (i-1 >= 0 && abs(V[i]-V[i-1]) == 2)
         {
-            if (abs(V[i] - V[i-1]) == 2)
-            {
-                return false;
-            }
+            return 0;
         }
-        if (i - 2 >= 0)
+        else if (i-2 >= 0 && abs(V[i]-V[i-2]) == 1)
         {
-            if (abs(V[i] - V[i-2]) == 1)
-            {
-                return false;
-            }
+            return 0;
         }
-        if (i + 1 < V.size())
+        else if (i+1 < V.size() && abs(V[i]-V[i+1]) == 2)
         {
-            if (abs(V[i] - V[i+1]) == 2)
-            {
-                return false;
-            }
+            return 0;
         }
-        if (i + 2 < V.size())
+        else if (i+2 < V.size() && abs(V[i]-V[i+2]) == 1)
         {
-            if (abs(V[i] - V[i+2]) == 1)
-            {
-                return false;
-            }
+            return 0;
         }
     }
-    return true;
+    return 1;
 }
 
-void gen(long long m,long long n)
+void gen(int x)
 {
-    if (V.size() == n)
+    if (x == n)
     {
-        if (check() == true)
+        if (check())
         {
-            long long sum = 0;
-            for (long long i = 0; i < V.size(); i++)
+            int sum = 0;
+            for (int i = 0; i < n; i++)
             {
-                //cout << V[i] << " ";
-                sum += A[V[i]][i];
+                // cout << V[i];
+                sum += T[i][V[i]-1];
             }
-            //cout << "\n";
             mx = max(mx,sum);
-            return;
+            // cout << "\n";
         }
+        return;
     }
     else
     {
-        for (long long i = 0; i < n; i++)
+        for (int i = 1; i <= n; i++)
         {
-            if (mem[i] == false)
+            if (!mem[i])
             {
                 V.push_back(i);
-                mem[i] = true;
-                gen(m+1,n);
-                mem[i] = false;
+                mem[i] = 1;
+                gen(x+1);
                 V.pop_back();
+                mem[i] = 0;
             }
-            
         }
     }
     
@@ -79,17 +67,16 @@ void gen(long long m,long long n)
 
 int main()
 {
-    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    memset(mem,false,sizeof(mem));
-    long long n;
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     cin >> n;
-    for (long long i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (long long j = 0; j < n; j++)
+        for (int j = 0; j < n; j++)
         {
-            cin >> A[i][j];
+            cin >> T[i][j];
         }
     }
-    gen(0,n);
+    gen(0);
     cout << mx;
+    return 0;
 }

@@ -1,80 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+map <string,long long> MP;
+
+bool cmd(long long a,long long b)
+{
+    return a > b;
+}
+
 int main()
 {
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    long long m,n;
+    long long n,m,x;
+    string a;
     cin >> n >> m;
-    long long num[n],A[m];
-    bool ch[m];
-    string B[m],c;
-    memset(A,0,sizeof(A));
-    memset(ch,0,sizeof(A));
-    for (int i = 0; i < n; i++)
+    long long mx[n],mn[n];
+    for (long long i = 0; i < n; i++)
     {
-        cin >> num[i];
+        cin >> x;
+        mn[i] = x;
+        mx[i] = x;
     }
-    for (int i = 0; i < m; i++)
-    {
-        cin >> c;
-        B[i] = c;
-    }
-    sort(B,B+m);
-    int k = 0;
-    for (int i = 0; i < m; i++)
-    {
-        //cout << B[i] << "\n";
-        A[k]++;
-        for (int j = i+1; j < m; j++)
-        {
-            if (B[i] == B[j])
-            {
-                A[k]++;
-            }
-            else
-            {
-                i = j-1;
-                k++;
-                break;
-            }
-        }
-    }
-    sort(num,num+n);
-    sort(A,A+m,greater <long long>());
-    long long mn = 0,mx = 0;
-    // for (long long i = 0; i < n; i++)
-    // {
-    //     cout << num[i] << " ";
-    // }
-    // cout << "\n";
-    // for (long long i = 0; i < m; i++)
-    // {
-    //     cout << A[i] << " ";
-    // }
-    // cout << "\n";
+    sort(mn,mn+n);
+    sort(mx,mx+n,cmd);
+    // cout << mx[0];
     for (long long i = 0; i < m; i++)
     {
-        if (A[i] == 0)
-        {
-            break;
-        }
-        mn += A[i]*num[i];
-        //cout << mn << "\n";
+        cin >> a;
+        MP[a]++;
+        // cout << MP[a] << " ";
     }
-    long long j = 0;
-    for (long long i = n-1; i >= 0; i--)
+    long long A[MP.size()];
+    long long i = 0;
+    for (auto x:MP)
     {
-        if (A[j] == 0)
-        {
-            break;
-        }
-        mx += A[j]*num[i];
-        j++;
-        if (j == m)
-        {
-            break;
-        }
-        
+        A[i] = x.second;
+        i++;
     }
-    cout << mn << " " << mx;
+    sort(A,A+MP.size(),cmd);
+    long long summn = 0;
+    long long summx = 0;
+    for (long long i = 0; i < MP.size(); i++)
+    {
+        // cout << mn[i] << " " << mx[i] << " " << A[i] << "\n";
+        // cout << mn[i] << "\n";
+        summn += A[i] * mn[i];
+        summx += A[i] * mx[i];
+    }
+    cout << summn << " " << summx;
+    return 0;
 }

@@ -2,9 +2,8 @@
 using namespace std;
 vector <int> N;
 int ch;
-bool check(int k)
+bool check(int a)
 {
-    int a = k;
     for (int i = 0; i < a; i++)
     {
         if ((N[a] == N[i] || abs(N[a] - N[i]) == abs(a-i)) && N.size() != 1)

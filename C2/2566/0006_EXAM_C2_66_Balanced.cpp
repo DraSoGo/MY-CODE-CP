@@ -1,72 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector <int> ANS[5002];
-vector <int> V;
-int c = 1,ch = 0;
+vector <int> V,ANS[5001],st = {0};
+int val[5] = {-2,-1,0,1,2},c = 1;
 
-int gen(int m,int n)
+void gen(int n)
 {
-    if (ch == 1)
+    if (c == 5001)
     {
-        return 0;
+        return;
     }
-    if (m == n)
+    if (V.size() == n)
     {
-        ANS[c] = V;
+        for (int i = V.size()-1; i >= 0; i--)
+        {
+            ANS[c].push_back(val[V[i]]);
+            // cout << val[V[i]] << " ";
+        }
         c++;
-        if (c > 5001)
-        {
-            ch = 1;
-        }
+        // cout << "\n";
+        return;
     }
-    else if (m == 0)
+    if (V.size() == 0)
     {
-        for (int i = 1; i <= 2; i++)
-        {
-            V.push_back(i);
-            gen(m+1,n);
-            V.pop_back();
-        }
+        V.push_back(3);
+        gen(n);
+        V.pop_back();
+        V.push_back(4);
+        gen(n);
+        V.pop_back();
+        return;
     }
-    else
+    for (int i = 0; i < 5; i++)
     {
-        for (int i = -2; i <= 2; i++)
-        {
-            V.push_back(i);
-            gen(m+1,n);
-            V.pop_back();
-        }
+        V.push_back(i);
+        gen(n);
+        V.pop_back();
     }
 }
 
 int main()
 {
-    ANS[0].push_back(0);
-    for (int i = 1; i <= 6; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    ANS[0] = st;
+    int t,n;
+    cin >> t;
+    
+    for (int i = 1; i < 8; i++)
     {
-        gen(0,i);
+        gen(i);
     }
-    int n,x;
-    cin >> n;
-    while (n--)
+    while (t--)
     {
-        cin >> x;
-        if (x >= 0)
+        cin >> n;
+        for (int i = 0; i < ANS[abs(n)].size(); i++)
         {
-            for (int i = ANS[x].size()-1; i >= 0; i--)
-            {
-                cout << ANS[x][i] << " ";
-            }
-        }
-        else
-        {
-            x = -1*x;
-            for (int i = ANS[x].size()-1; i >= 0; i--)
-            {
-                cout << -1*ANS[x][i] << " ";
-            }
+            cout << (abs(n)/n)*ANS[abs(n)][i] << " ";
         }
         cout << "\n";
     }
+    return 0;
 }
