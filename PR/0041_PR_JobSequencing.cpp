@@ -1,44 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
-bool cmp(const pair<long long,pair<long long,long long>> &a,const pair<long long,pair<long long,long long>> &b)
+struct Job
 {
-    return a.second.second > b.second.second;
-}
-
-int main() 
-{
-    long long n,m,ch,A[10000];
-    cin >> m;
-    for (int k = 0; k < m; k++)
+    int id,dl,w;
+    bool operator < (const Job & a)const
     {
-        memset(A,0,sizeof(A));
-        long long dl = 0,sum = 0;
+        return w > a.w;
+    }
+};
+
+
+int main()
+{
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int t;
+    int vis[101];
+    cin >> t;
+    while (t--)
+    {
+        int n,sum = 0,cnt = 0;
         cin >> n;
-        vector<pair<long long,pair<long long,long long>>> w(n);
+        Job J[n];
+        fill(vis,vis+101,0);
         for (int i = 0; i < n; i++)
         {
-            cin >> w[i].first >> w[i].second.first >> w[i].second.second;
+            cin >> J[i].id >> J[i].dl >> J[i].w;
         }
-        sort(w.begin(),w.end(),cmp);
+        sort(J,J+n);
         for (int i = 0; i < n; i++)
         {
-            ch = 0;
-            for (int j = w[i].second.first; j >= 1; j--)
+            for (int j = J[i].dl; j > 0; j--)
             {
-                if (A[j] == 0)
+                if (!vis[j])
                 {
-                    A[j] = 1;
-                    ch = 1;
+                    cnt++;
+                    sum += J[i].w;
+                    vis[j] = 1;
                     break;
                 }
             }
-            if (ch == 1)
-            {
-                dl++;
-                sum = sum + w[i].second.second;
-            }
         }
-        cout << dl << " " << sum << "\n";
+        cout << cnt << " " << sum << "\n";
     }
-    
+    return 0;
 }
