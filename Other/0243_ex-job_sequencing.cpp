@@ -17,7 +17,7 @@ int main()
         if (A[i].second >= co)
         {
             sum += A[i].first;
-            //cout << A[i].second << " " << A[i].first << "\n";
+            cout << A[i].second << " " << A[i].first << "\n";
             co++;
         }
     }

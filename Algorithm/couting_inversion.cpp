@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int co = 0;
+
 template <typename T>
 void merge(vector<T> &V, int start, int mid, int stop, vector<T> &tmp)
 {
@@ -18,7 +20,16 @@ void merge(vector<T> &V, int start, int mid, int stop, vector<T> &tmp)
             tmp[i] = V[ci++];
             continue;
         }
-        tmp[i] = V[bi] > V[ci] ? V[ci++] : V[bi++];
+        if (V[bi] <= V[ci])
+        {
+            tmp[i] = V[bi++];
+        }
+        else
+        {
+            tmp[i] = V[ci++];
+            co += mid-bi+1;
+        }
+        // tmp[i] = V[bi] < V[ci] ? V[bi++] : V[ci++];
     }
     for (int i = start; i <= stop; i++)
     {
@@ -54,9 +65,10 @@ int main()
         tmp.push_back(x);
     }
     msort(V, 0, n - 1, tmp);
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < V.size(); i++)
     {
         cout << V[i] << " ";
     }
+    cout << "\n" << co;
     return 0;
 }
