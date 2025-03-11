@@ -26,11 +26,11 @@ int main()
             B[i] = min(B[i],1+B[i-A[j]]);
         }
     }
-    // for (int i = 0; i <= w; i++)
-    // {
-    //     cout << B[i] << "\n";
-    // }
-    // cout << "\n";
+    for (int i = 0; i <= w; i++)
+    {
+        cout << B[i] << "\n";
+    }
+    cout << "\n";
     if (B[w] == 9999999)
     {
         B[w] = -1;

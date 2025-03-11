@@ -41,7 +41,7 @@ void gen(int n)
 int main()
 {
     int t,n;
-    cin >> t;
+    cin >> t;   
     for (int i = 0; i < t; i++)
     {
         ch = 0;

@@ -12,7 +12,7 @@ void geninput(string in, int c)
     random_device rd;
     mt19937 gen(rd());
 
-    uniform_int_distribution<int> ranMN(1, 1e2);
+    uniform_int_distribution<int> ranMN(1, 1e1);
     uniform_int_distribution<int> rano(1, 5e3);
     uniform_int_distribution<int> ranq(1, 30);
     int M = ranMN(gen);
@@ -37,6 +37,6 @@ int main()
     }
     return 0;
 }
-//for i in {0..9}; do    ./uiiaiouiaio < "input/input$i.txt" > "output/output$i.txt" & done
-//chmod +x uiiaiouiaio
-//bash -c 'for i in {0..9}; do ./uiiaiouiaio < "input/input$i.txt" > "output/output$i.txt"; done'
+//for i in {0..9}; do    ./woilium < "input/input$i.txt" > "output/output$i.txt" & done
+//chmod +x woilium
+//bash -c 'for i in {0..9}; do ./woilium < "input/input$i.txt" > "output/output$i.txt"; done'
