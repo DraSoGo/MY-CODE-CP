@@ -15,7 +15,7 @@ void geninput(string in, int c)
 
     uniform_int_distribution<int> ranT(1, 1e5);
     uniform_int_distribution<int> rani1(1, 5);
-    uniform_int_distribution<int> rani2(38, 40);
+    uniform_int_distribution<int> rani2(45, 48);
     unsigned long long T = ranT(gen);
     if (c < 3)
     {

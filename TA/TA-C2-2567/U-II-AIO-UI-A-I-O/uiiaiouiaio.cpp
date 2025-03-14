@@ -4,7 +4,7 @@ Author: DraSoGo
 */
 #include <bits/stdc++.h>
 using namespace std;
-const int mxi = 50;
+const int mxi = 51;
 unsigned long long S[mxi + 10];
 unsigned long long A[mxi + 10];
 vector<string> R = {"", "uii", "aio", "uia", "io"};
