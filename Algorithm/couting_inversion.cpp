@@ -1,3 +1,8 @@
+/*
+Task: Bridge
+merge sort sovle inversion
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -20,7 +25,7 @@ void merge(vector <T> &V,int start,int mid,int stop,vector <T> &tmp)
             tmp[i] = V[bi++];
             continue;
         }
-        if (V[bi] <= V[ci])
+        if (V[bi] < V[ci])
         {
             tmp[i] = V[bi++];
         }
@@ -63,10 +68,11 @@ int main()
         tmp.push_back(x);
     }
     msort(V,0,n-1,tmp);
-    for (int i = 0; i < n; i++)
-    {
-        cout << V[i] << " ";
-    }
-    cout << "\n" << co;
+    cout << co;
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cout << V[i] << " ";
+    // }
+    // cout << "\n" << co;
     return 0;
 }

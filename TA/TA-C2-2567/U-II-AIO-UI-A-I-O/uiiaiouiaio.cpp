@@ -1,3 +1,7 @@
+/*
+Task: uiiaiouiaio
+Author: DraSoGo
+*/
 #include <bits/stdc++.h>
 using namespace std;
 const int mxi = 50;
@@ -52,6 +56,17 @@ int main()
     }
 
     int T;
+    // for (int i = 1; i <= 10; i++)
+    // {
+    //     cout << A[i] << "\n";
+    //     for (int j = 0; j < A[i]; j++)
+    //     {
+    //         char ans = uii(i, j);
+    //         cout << ans;
+    //     }
+    //     cout << "\n";
+    // }
+    
     cin >> T;
     while (T--)
     {

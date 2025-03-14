@@ -14,18 +14,37 @@ void geninput(string in, int c)
 
     uniform_int_distribution<int> ranMN(1, 1e1);
     uniform_int_distribution<int> rano(1, 5e3);
+    uniform_int_distribution<int> ranol(1, 10);
     uniform_int_distribution<int> ranq(1, 30);
-    int M = ranMN(gen);
-    int N = ranMN(gen);
-    int o = rano(gen);
-    fout << M << " " << N << "\n" << o << "\n";
-    for (int i = 0; i < M; i++)
+    if (c < 2)
     {
-        for (int j = 0; j < N; j++)
+        int M = ranMN(gen);
+        int N = ranMN(gen);
+        int o = ranol(gen);
+        fout << M << " " << N << "\n" << o << "\n";
+        for (int i = 0; i < M; i++)
         {
-            fout << ranq(gen) << " ";
+            for (int j = 0; j < N; j++)
+            {
+                fout << ranq(gen) << " ";
+            }
+            fout << "\n";
         }
-        fout << "\n";
+    }
+    else
+    {
+        int M = ranMN(gen);
+        int N = ranMN(gen);
+        int o = rano(gen);
+        fout << M << " " << N << "\n" << o << "\n";
+        for (int i = 0; i < M; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                fout << ranq(gen) << " ";
+            }
+            fout << "\n";
+        }
     }
 }
 

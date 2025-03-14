@@ -3,23 +3,29 @@ using namespace std;
 
 int co = 0;
 
-void solve(int m, int n, int sum)
+void solve(int i,int sum,int n)
 {
     if (sum > n)
     {
         return;
     }
-    if (sum == n)
+    if (n == sum)
     {
+        // for (int i = 0; i < A.size(); i++)
+        // {
+        //     cout << A[i] << " ";
+        // }
+        // cout << "\n";
+        // cout << n << " " << sum << "\n";
         co++;
         return;
     }
-    else
+    // cout << "\n";
+    // cout << n-i << "\n";
+    for (int j = i; j <= n-sum; j++)
     {
-        for (int i = m; i <= n-sum; i++)
-        {
-            solve(i, n, sum + i);
-        }
+        // cout << j << " ";
+        solve(j,sum+j,n);
     }
 }
 
@@ -30,6 +36,7 @@ int main()
     cout.tie(0);
     int n;
     cin >> n;
-    solve(1, n, 0);
-    cout << co << "\n";
+    solve(1,0,n);
+    cout << co;
+    return 0;
 }

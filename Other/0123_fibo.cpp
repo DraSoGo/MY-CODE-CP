@@ -31,6 +31,8 @@ int fibbtu(long long n)
 int main()
 {
     memset(F,0,sizeof(F));
-    cout << fib(30);
-    cout << "\n" << fibbtu(30);
+    int n;
+    cin >> n;
+    cout << fib(n);
+    // cout << "\n" << fibbtu(30);
 }
