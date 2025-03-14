@@ -1,22 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
 long long F[1000];
-int fib(long long n)
-{
-    if (n <= 1)
-    {
-        return 1;
-    }
-    if (F[n] > 0)
-    {
-        return F[n];
-    }
-    else
-    {
-        return fib(n-1) + fib(n-2);
-        return F[n];
-    }
-}
 int fibbtu(long long n)
 {
     int Fibo[1000];
@@ -30,9 +14,9 @@ int fibbtu(long long n)
 }
 int main()
 {
-    memset(F,0,sizeof(F));
+    ios::sync_with_stdio(0);
     int n;
     cin >> n;
-    cout << fib(n);
-    // cout << "\n" << fibbtu(30);
+    cout << fibbtu(n);
+    return 0;
 }
