@@ -3,20 +3,19 @@ using namespace std;
 
 struct GP
 {
-    int u,v,w;
+    long long u,v,w;
     bool operator < (const GP&a)const
     {
         return a.w < w;
     }
 };
 
-const int sz = 1e5;
-int n,e,u,v,w,ans;
+const long long sz = 2e5+1;
+long long n,e,u,v,w,ans,nn;
 priority_queue <GP> PQ;
-int par[sz];
-int mem[sz];
+long long mem[sz],par[sz];
 
-int fp(int x)
+long long fp(long long x)
 {
     if (par[x] == x)
     {
@@ -30,7 +29,7 @@ void KK()
     while (!PQ.empty())
     {
         auto [u,v,w] = PQ.top();
-        int pu = fp(u),pv = fp(v);
+        long long pu = fp(u),pv = fp(v);
         PQ.pop();
         if (pu != pv)
         {
@@ -44,26 +43,35 @@ void KK()
                 mem[pv] += mem[pu];
                 par[pu] = pv;
             }
+            nn++;
             ans += w;
         }
+        
+        
     }
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(0);cin.tie();cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    
     cin >> n >> e;
-    for (int i = 0; i < n; i++)
+    for (long long i = 0; i < n; i++)
     {
         par[i] = i;
         mem[i] = 1;
     }
-    for (int i = 0; i < e; i++)
+    for (long long i = 0; i < e; i++)
     {
         cin >> u >> v >> w;
+        u--;
+        v--;
         PQ.push({u,v,w});
     }
     KK();
-    cout << ans;
+    // cout << nn << "\n";
+    nn == n-1?cout << ans:cout << "IMPOSSIBLE";
     return 0;
 }

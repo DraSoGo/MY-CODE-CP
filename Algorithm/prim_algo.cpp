@@ -21,17 +21,27 @@ void prim_algo(int st)
 {
     PQ.push({st,0});
     dis[st] = 0;
-    vis[st] = 1;
     while (!PQ.empty())
     {
         auto [node,w] = PQ.top();
-        ans += w;
         PQ.pop();
+        if (vis[node])
+        {
+            continue;
+        }
+        vis[node] = 1;
+        ans += w;
         for(auto [nxt,nw] : G[node])
         {
-            if (!vis[nxt] && nw < dis[nxt])
+            // if (!vis[nxt] && nw < dis[nxt])
+            // {
+            //     vis[nxt] = 1;
+            //     dis[nxt] = nw;
+            //     PQ.push({nxt,nw});
+            // }
+            if (nw < dis[nxt])
             {
-                vis[nxt] = 1;
+                // vis[nxt] = 1;
                 dis[nxt] = nw;
                 PQ.push({nxt,nw});
             }
