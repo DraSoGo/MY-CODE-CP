@@ -1,58 +1,92 @@
 #include <bits/stdc++.h>
+#define en '\n'
+#define sp ' '
+#define ll long long
+#define pii pair<int, int>
+#define piii pair<int, pair<int, int>>
+#define st first
+#define nd second
+#define maxx(a, b) a = max(a, b)
+#define minn(a, b) a = min(a, b)
 using namespace std;
 
-struct GP
-{
-    int v,w;
-    bool operator < (const GP&a)const
-    {
-        return a.w < w;
-    }
-};
+const int N = 105;
+char a[N][N];
+int distF[N][N], distQ[N][N];
+int fi[] = {2, 2, -2, -2, 1, -1, 1, -1}, fj[] = {1, -1, 1, -1, 2, 2, -2, -2};
+int qi[] = {1, 1, 1, 0, 0, -1, -1, -1}, qj[] = {1, 0, -1, 1, -1, 1, 0, -1};
+queue<pii> qF, qQ;
+int n, m, t, pi, pj;
 
-const int sz = 1e5;
-vector <GP> G[sz];
-int n,e,u,v,w,ans;
-int dis[sz];
-bool vis[sz];
-priority_queue <GP> PQ;
-
-void prim_algo(int st)
+bool valid(int i, int j)
 {
-    PQ.push({st,0});
-    dis[st] = 0;
-    vis[st] = 1;
-    while (!PQ.empty())
-    {
-        auto [node,w] = PQ.top();
-        ans += w;
-        PQ.pop();
-        for(auto [nxt,nw] : G[node])
-        {
-            if (!vis[nxt] && nw < dis[nxt])
-            {
-                vis[nxt] = 1;
-                dis[nxt] = nw;
-                PQ.push({nxt,nw});
-            }
-        }
-    }
+    return i >= 1 && i <= n && j >= 1 && j <= m && a[i][j] != 'X';
 }
 
 int main()
 {
-    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    cin >> n >> e;
-    fill(dis,dis+sz,INT_MAX);
-    for (int i = 0; i < e; i++)
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    cin >> n >> m >> t;
+    memset(distF, -1, sizeof(distF));
+    memset(distQ, -1, sizeof(distQ));
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+        {
+            cin >> a[i][j];
+            if (a[i][j] == 'F')
+            {
+                qF.push({i, j});
+                distF[i][j] = 0;
+            }
+            else if (a[i][j] == 'Q')
+            {
+                qQ.push({i, j});
+                distQ[i][j] = 0;
+            }
+            else if (a[i][j] == 'P')
+            {
+                pi = i;
+                pj = j;
+            }
+        }
+    while (!qF.empty())
     {
-        cin >> u >> v >> w;
-        u--;
-        v--;
-        G[u].push_back({v,w});
-        G[v].push_back({u,w});
+        auto [i, j] = qF.front();
+        qF.pop();
+        for (int k = 0; k < 8; k++)
+        {
+            int ni = i + fi[k], nj = j + fj[k];
+            if (valid(ni, nj) && distF[ni][nj] == -1)
+            {
+                qF.push({ni, nj});
+                distF[ni][nj] = 1 + distF[i][j];
+            }
+        }
     }
-    prim_algo(0);
-    cout << ans;
+    while (!qQ.empty())
+    {
+        auto [i, j] = qQ.front();
+        qQ.pop();
+        for (int k = 0; k < 8; k++)
+        {
+            int ni = i + qi[k], nj = j + qj[k];
+            if (valid(ni, nj) && distQ[ni][nj] == -1)
+            {
+                qQ.push({ni, nj});
+                distQ[ni][nj] = 1 + distQ[i][j];
+            }
+        }
+    }
+    if (distF[pi][pj] == -1 || distQ[pi][pj] == -1)
+        cout << -1;
+    else if (distF[pi][pj] + t > distQ[pi][pj])
+        cout << "Q " << distF[pi][pj] + t - distQ[pi][pj];
+    else if (distF[pi][pj] + t == distQ[pi][pj])
+        cout << distQ[pi][pj];
+    // else if(distF[pi][pj]+t<distQ[pi][pj])
+    else
+        cout << "F " << distQ[pi][pj] - (distF[pi][pj] + t);
     return 0;
 }
