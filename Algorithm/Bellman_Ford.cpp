@@ -1,57 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
-int G[1000][3];
 
-void BMF(int s,int n,int e,int d[])
+struct ED
 {
-    d[s] = 0;
-    for (int i = 0; i < n-1; i++)
+    int u,v,w;
+};
+
+
+const int sz = 1e5;
+int dis[sz],pre[sz];
+int n,e,s,u,v,w;
+vector <ED> ed;
+
+bool BMF(int st)
+{
+    dis[s] = 0;
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < e; j++)
+        for(auto [u,v,w] : ed)
         {
-            int x = G[j][0];
-            int y = G[j][1];
-            int w = G[j][2];
-            if (d[y] > d[x] + w)
+            if (dis[v] > dis[u] + w)
             {
-                d[y] = d[x] + w;
+                dis[v] = dis[u] + w;
+                if (i == n-1)
+                {
+                    return 1;
+                }
+                pre[v] = u;
             }
         }
     }
-    for (int j = 0; j < e; j++)
-    {
-        int x = G[j][0];
-        int y = G[j][1];
-        int w = G[j][2];
-        if (d[y] > d[x] + w)
-        {
-            cout << "negative weigh cycle";
-            return;
-        }
-    }
-    for (int i = 0; i < n; i++)
-    {
-        cout << d[i] << "\n";
-    }
+    return 0;
 }
 
 int main()
 {
-    int n,e,s;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    fill(dis,dis+sz,99999);
+    fill(pre,pre+sz,-1);
     cin >> n >> e >> s;
-    int d[n];
-    for (int i = 0; i < n; i++)
-    {
-        d[i] = INT_MAX;
-    }
+    s--;
     for (int i = 0; i < e; i++)
     {
-        for (int j = 0; j < 3; j++)
-        {
-            cin >> G[i][j];
-        }
+        cin >> u >> v >> w;
+        u--;
+        v--;
+        ed.push_back({u,v,w});
     }
-    BMF(s,n,e,d);
+    if (BMF(s))
+    {
+        cout << "negative cycle";
+        return 0;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cout << dis[i] << " ";
+    }
+    return 0;
 }
 /*
 5

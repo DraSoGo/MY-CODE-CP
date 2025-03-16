@@ -1,66 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define INF 99999
-int n,e,u,v,w,V;
-int G[1001][1001];
-int dist[1001][1001];
-void add_edge(int u, int v, int w)
+
+const int sz = 1e3;
+int n,e,u,v,w;
+int G[sz][sz];
+
+int main()
 {
-    G[u][v] = w;
-}
-void print2d_array()
-{
-    for (int i = 0; i < V; i++)
-    {
-        for (int j = 0; j < V; j++)
-        {
-            if (dist[i][j] == INF)
-                cout << "INF ";
-            else
-                cout << dist[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-void Floyd()
-{
-    for (int i = 0; i < V; i++)
-        for (int j = 0; j < V; j++)
-            dist[i][j] = G[i][j];
-    print2d_array();
-    for (int k = 0; k < V; k++)
-    {
-        for (int i = 0; i < V; i++)
-        {
-            for (int j = 0; j < V; j++)
-            {
-                if (dist[i][k] + dist[k][j] < dist[i][j])
-                {
-                    dist[i][j] = dist[i][k] + dist[k][j];
-                }
-            }
-        }
-    }
-    print2d_array();
-}
-main()
-{
-    V = e;
-    for (int i = 0; i < V; i++)
-    {
-        for (int j = 0; j < V; j++)
-        {
-            if (i == j)
-                add_edge(i, j, 0);
-            else
-                add_edge(i, j, INF);
-        }
-    }
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     cin >> n >> e;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            i == j?G[i][j] = 0:G[i][j] = INT_MAX;
+            // cout << G[i][j] << " ";
+        }
+    }
+    
     for (int i = 0; i < e; i++)
     {
         cin >> u >> v >> w;
-        add_edge(u,v,w);
+        G[u][v] = w;
+        G[v][u] = w;
     }
-    Floyd();
+    for (int k = 0; k < n; k++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if(G[i][k] != INT_MAX && G[k][j] != INT_MAX && G[i][j] > G[i][k] + G[k][j])
+                {
+                    G[i][j] = G[i][k] + G[k][j];
+                }
+                
+            }
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (G[i][j] == INT_MAX)
+            {
+                cout << -1 << " ";
+                continue;
+            }
+            cout << G[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    return 0;
 }

@@ -1,1 +1,3 @@
-F 14
+0
+1
+impossible

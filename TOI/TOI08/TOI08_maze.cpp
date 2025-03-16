@@ -1,176 +1,120 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-long long A[1000][1000];
-long long m,n,xs,ys,xe,ye,co = 0;
-bool vis[1000][1000];
-bool mem[1000][1000];
-queue <pair<long long,long long>> Q;
-long long dx[4] = {1,-1,0,0};
-long long dy[4] = {0,0,1,-1};
-long long ans = INT_MAX;
-
-bool checkex(long long x,long long y)
+struct pos
 {
-    if (x < 0 || y < 0 || x > m-1 || y > n-1)
+    int x,y;
+};
+
+const int sz = 2e2;
+int n,m,sx,sy,ex,ey;
+int dx[4] = {0,0,1,-1};
+int dy[4] = {1,-1,0,0};
+int T[sz][sz];
+int S[sz][sz];
+int E[sz][sz];
+
+bool check(int x,int y)
+{
+    if (x < 0 || y < 0 || x > n-1 || y > m-1)
     {
-        return false;
+        return 0;
     }
-    if (A[x][y] == 0)
-    {
-        return false;
-    }
-    return !vis[x][y];
+    return 1;
 }
 
-bool check(long long x,long long y)
+template <size_t R,size_t C>
+void BFS(int stx,int sty,int (&A)[R][C])
 {
-    if (x < 0 || y < 0 || x > m-1 || y > n-1)
-    {
-        return false;
-    }
-    if (A[x][y] == 2)
-    {
-        return !mem[x][y];
-    }
-    return false;
-}
-
-bool checkst(long long x,long long y)
-{
-    if (x < 0 || y < 0 || x > m-1 || y > n-1)
-    {
-        return false;
-    }
-    if (A[x][y] == 0)
-    {
-        for (long long i = 0; i < 4; i++)
-        {
-            long long x1 = x + dx[i],y1 = y + dy[i];
-            if (check(x1,y1))
-            {
-                mem[x][y] = 1;
-                break;
-            }
-        }
-        return false;
-        
-    }
-    return !vis[x][y];
-}
-
-void BFSEX(long long x,long long y)
-{
-    Q.push({x,y});
-    vis[x][y] = 1;
+    int co = 1;
+    queue <pos> Q;
+    int vis[sz][sz];
+    memset(vis,0,sizeof(vis));
+    Q.push({stx,sty});
     while (!Q.empty())
     {
-        auto [x1,y1] = Q.front();
-        A[x1][y1] = 2;
-        Q.pop();
-        for (long long i = 0; i < 4; i++)
+        int lv = Q.size();
+        while (lv--)
         {
-            long long x2 = x1 + dx[i],y2 = y1 + dy[i];
-            if (checkex(x2,y2))
-            {
-                Q.push({x2,y2});
-                vis[x2][y2] = 1;
-            }
-        }
-    }
-}
-
-void BFSST(long long x,long long y)
-{
-    Q.push({x,y});
-    vis[x][y] = 1;
-    while (!Q.empty())
-    {
-        auto [x1,y1] = Q.front();
-        Q.pop();
-        for (long long i = 0; i < 4; i++)
-        {
-            long long x2 = x1 + dx[i],y2 = y1 + dy[i];
-            if (checkst(x2,y2))
-            {
-                Q.push({x2,y2});
-                vis[x2][y2] = 1;
-            }
-        }
-    }
-}
-
-long long BFS(long long x,long long y)
-{
-    Q.push({x,y});
-    vis[x][y] = 1;
-    long long lv = 1;
-    while (!Q.empty())
-    {
-        long long lvq = Q.size();
-        while (lvq--)
-        {
-            auto [x1,y1] = Q.front();
-            if (x1 == xe && y1 == ye)
-            {
-                ans = min(ans,lv);
-            }
+            auto [x,y] = Q.front();
             Q.pop();
-            for (long long i = 0; i < 4; i++)
+            // cout << "----\n";
+            // cout << x << " " << y << "\n";
+            if (vis[x][y])
             {
-                long long x2 = x1 + dx[i],y2 = y1 + dy[i];
-                if (checkex(x2,y2))
+                continue;
+            }
+            vis[x][y] = 1;
+            for (int i = 0; i < 4; i++)
+            {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                // cout << nx << " " << ny << "\n";
+                if (vis[nx][ny])
                 {
-                    Q.push({x2,y2});
-                    vis[x2][y2] = 1;
+                    continue;
+                }
+                if (check(nx,ny))
+                {
+                    if (T[nx][ny] == 0)
+                    {
+                        A[nx][ny] = co;
+                        vis[nx][ny] = 1;
+                        continue;
+                    }
+                    Q.push({nx,ny});
+                    // vis[nx][ny] = 1;
                 }
             }
         }
-        lv++;
+        co++;
     }
-    return ans;
-}
-
-int main()
-{
-    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    memset(mem,0,sizeof(mem));
-    cin >> m >> n >> xs >> ys >> xe >> ye;
-    xs--;ys--;xe--;ye--;
-    for (long long i = 0; i < m; i++)
-    {
-        for (long long j = 0; j < n; j++)
-        {
-            cin >> A[i][j];
-        }
-    }
-    memset(vis,0,sizeof(vis));
-    BFSEX(xe,ye);
-    memset(vis,0,sizeof(vis));
-    BFSST(xs,ys);
-    for (long long i = 0; i < m; i++)
-    {
-        for (long long j = 0; j < n; j++)
-        {
-            if (mem[i][j] == 1)
-            {
-                co++;
-                A[i][j] = 1;
-            }
-            //cout << mem[i][j] << " ";
-        }
-        //cout << "\n";
-    }
-    cout << co << "\n";
-    // for (long long i = 0; i < m; i++)
+    // for (int i = 0; i < n; i++)
     // {
-    //     for (long long j = 0; j < n; j++)
+    //     for (int j = 0; j < m; j++)
     //     {
     //         cout << A[i][j] << " ";
     //     }
     //     cout << "\n";
     // }
-    memset(vis,0,sizeof(vis));
-    cout << BFS(xs,ys);
+    // cout << "\n";
+    
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    cin >> n >> m >> sx >> sy >> ex >> ey;
+    sx--;
+    sy--;
+    ex--;
+    ey--;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> T[i][j];
+            S[i][j] = T[i][j];
+            E[i][j] = T[i][j];
+            // cout << T[i][j] << " ";
+        }
+        // cout << "\n";
+    }
+    // cout << "\n";
+    BFS(sx,sy,S);
+    BFS(ex,ey,E);
+    int anse = 0,anss = INT_MAX;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (T[i][j] == 0 && S[i][j] != 0 && E[i][j] != 0)
+            {
+                anse++;
+                anss = min(anss,S[i][j]+E[i][j]+1);
+            }
+        }
+    }
+    cout << anse << "\n" << anss;
     return 0;
 }
