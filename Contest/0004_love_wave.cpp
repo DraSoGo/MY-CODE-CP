@@ -1,41 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-main()
+int main()
 {
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     int n;
     cin >> n;
-    string lv;
-    for (int i = 0; i < n; i++)
+    while (n--)
     {
-        cin >> lv;
-        stack <char> LOVE;
-        int l = lv.length(),I = 0,U = 0;
-        for (int i = 0; i < l; i++)
+        string str;
+        int ch = 1;
+        cin >> str;
+        stack <char> S;
+        for (auto c:str)
         {
-            LOVE.push(lv[i]);
-            if (LOVE.top() == 'I')
+            if (c == 'U')
             {
-                I++;                
-            }
-            else if (LOVE.top() == 'U')
-            {
-                U++;
-                I--;
-                if (I < 0)
+                if (S.empty() || S.top() != 'I')
                 {
+                    ch = 0;
                     break;
                 }
-                
+                S.pop();
+                continue;
             }
-            
+            S.push(c);
         }
-        if (I == 0)
-        {
-            cout << "Y" << "\n";
-        }
-        else
-        {
-            cout << "N" << "\n";
-        }
+        ch && S.empty()?cout << "Y\n":cout << "N\n";
     }
+    return 0;
 }

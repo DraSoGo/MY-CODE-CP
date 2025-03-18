@@ -2,30 +2,33 @@
 using namespace std;
 int main() 
 {
-    int ch = 0,a,b;
-    cin >> a >> b;
-    int X[a],Y[a];
-    for (int i = 0; i < a; i++)
+    ios::sync_with_stdio(0);cin.tie();cout.tie(0);
+    int n,k;
+    cin >> n >> k;
+    int A[n],B[n],ida = 0,idb = 0,co = 0;
+    for (int i = 0; i < n; i++)
     {
-        cin >> X[i];
+        cin >> A[i];
     }
-    for (int i = 0; i < a; i++)
+    for (int i = 0; i < n; i++)
     {
-        cin >> Y[i];
+        cin >> B[i];
     }
-    for (int i = 0; i < a; i++)
+    sort(A,A+n);
+    sort(B,B+n,greater <int>());
+    while (ida != n && idb != n)
     {
-        for (int j = 0; j < a; j++)
+        if (A[ida] + B[idb] > k)
         {
-            if (X[i] + Y[j] > b)
-            {
-                ch++;
-                Y[j] = -99999;
-                break;
-            }
-            
+            ida++;
+            idb++;
+            co++;
         }
-        
+        else
+        {
+            ida++;
+        }
     }
-    cout << ch;
+    cout << co;
+    return 0;
 }

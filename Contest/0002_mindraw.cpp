@@ -1,47 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 int main()
 {
-    int n;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    long long n,x,sum = 0;
     cin >> n;
-    long long A[n],a,x = 0,sum = 0,y = 0;
-    for (int i = 0; i < n; i++)
+    priority_queue <long long,vector <long long>,greater <long long>> PQ;
+    for (long long i = 0; i < n; i++)
     {
-        A[i] = 9999999999;
-    }
-    
-    for (int i = 0; i < n; i++)
-    {
-        long long mn = 999999999;
-        cin >> a;
-        if (a > 0)
+        cin >> x;
+        if (x == 0)
         {
-            A[x] = a;
-            x++;
-            y++;
-        }
-        else
-        {
-            if (y > 0)
+            if (!PQ.empty())
             {
-                for (int i = 0; i <= x; i++)
-                {
-                    mn = min(mn,A[i]);
-                }
-                for (int i = 0; i <= x; i++)
-                {
-                    if (mn == A[i])
-                    {
-                        A[i] = 9999999999;
-                        break;
-                    }
-                    
-                }
-                
-                sum = sum + mn;
-                y--;
+                sum += PQ.top();
+                PQ.pop();
             }
+            continue;
         }
+        PQ.push(x);
     }
     cout << sum;
+    return 0;
 }

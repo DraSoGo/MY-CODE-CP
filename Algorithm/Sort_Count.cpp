@@ -2,6 +2,7 @@
 using namespace std;
 int main()
 {
+    ios::sync_with_stdio(0);cin.tie(0);
     int a,ch = 0,x = 0,co = 0,j = 0;
     cin >> a;
     int A[a],B[a];

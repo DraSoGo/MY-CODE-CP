@@ -3,78 +3,81 @@ using namespace std;
 int main()
 {
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int a,b,v,cox = 0,coy = 0,idx = 0,idy = 0;
-    cin >> a >> b;
-    char c;
-    int X[a],Y[a];
-    for (int i = 0; i < a; i++)
+    int n,c,x,y,cox = 0,coy = 0;
+    char q;
+    deque <int> A,B,tmp;
+    cin >> n >> c;
+    for (int i = 0; i < n; i++)
     {
-        cin >> X[i];
+        cin >> x;
+        A.push_back(x);
     }
-    for (int i = 0; i < a; i++)
+    for (int i = 0; i < n; i++)
     {
-        cin >> Y[i];
+        cin >> x;
+        B.push_back(x);
     }
-    for (int i = 0; i < b; i++)
-    {
-        cin >> c;
-        if (c == 'A')
+     while (c--)
+     {
+        cin >> q;
+        if (q == 'B')
         {
-            if (X[idx] == Y[idy])
+            int co = 3;
+            while (co--)
             {
-                cox++;
-                coy++;
-                idx++;
-                idy++;
+                x = A.front();
+                cout << x << " ";
+                A.pop_front();
+                tmp.push_front(x);
             }
-            else if (X[idx] > Y[idy])
+            while (!tmp.empty())
             {
-                cox++;
-                X[idx] -= Y[idy];
-                idy++;
+                A.push_front(tmp.front());
+                tmp.pop_front();
             }
-            else if (X[idx] < Y[idy])
+            cout << "\n";
+            co = 3;
+            while (co--)
             {
-                coy++;
-                Y[idy] -= X[idx];
-                idx++;
+                x = B.front();
+                cout << x << " ";
+                B.pop_front();
+                tmp.push_front(x);
             }
-            if (idx > a-1)
+            while (!tmp.empty())
             {
-                idx = 0;
+                B.push_front(tmp.front());
+                tmp.pop_front();
             }
-            if (idy > a-1)
-            {
-                idy = 0;
-            }
+            cout << "\n";
+            continue;
+        }
+        x = A.front();
+        y = B.front();
+        A.pop_front();
+        B.pop_front();
+        if (x > y)
+        {
+            x -= y;
+            cox++;
+            A.push_front(x);
+            B.push_back(y);
+        }
+        else if (x < y)
+        {
+            y -= x;
+            coy++;
+            A.push_back(x);
+            B.push_front(y);
         }
         else
         {
-            int sx = idx,sy = idy;
-            for (int j = 0; j < 3; j++)
-            {
-                cout << X[idx] << " ";
-                idx++;
-                if (idx > a-1)
-                {
-                    idx = 0;
-                }
-            }
-            cout << "\n";
-            for (int j = 0; j < 3; j++)
-            {
-                cout << Y[idy] << " ";
-                idy++;
-                if (idy > a-1)
-                {
-                    idy = 0;
-                }
-            }
-            cout << "\n";
-            idx = sx;
-            idy = sy;
+            cox++;
+            coy++;
+            A.push_back(x);
+            B.push_back(y);
         }
-    }
-    cout << cox << " " << coy;
+     }
+     cout << cox << " " << coy;
     return 0;
 }
