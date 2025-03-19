@@ -1,109 +1,105 @@
 #include <bits/stdc++.h>
 using namespace std;
  
-class DisjSet
+struct GP
 {
-    int *rank, *parent, n;
- 
-public:
-   
-    DisjSet(int n)
+    long long u,v;
+};
+
+struct MF
+{
+    long long v,w;
+    bool operator < (const MF&a)const
     {
-        rank = new int[n];
-        parent = new int[n];
-        this->n = n;
-        makeSet();
-    }
- 
-    void makeSet()
-    {
-        for (int i = 0; i < n; i++) 
-        {
-            parent[i] = i;
-        }
-    }
- 
-    int find(int x)
-    {
-        if (parent[x] != x) 
-        {
- 
-            parent[x] = find(parent[x]);
- 
-        }
- 
-        return parent[x];
-    }
- 
-    void Union(int x, int y)
-    {
-        int xset = find(x);
-        int yset = find(y);
- 
-        if (xset == yset)
-            return;
- 
-        if (rank[xset] < rank[yset]) 
-        {
-            parent[xset] = yset;
-        }
-        else if (rank[xset] > rank[yset]) 
-        {
-            parent[yset] = xset;
-        }
- 
-        else 
-        {
-            parent[yset] = xset;
-            rank[xset] = rank[xset] + 1;
-        }
+        return a.w < w;
     }
 };
- 
-int main()
+
+
+const long long sz = 2e6+1;
+long long mem[sz],par[sz],n,e,u,v;
+queue <GP> Q;
+
+long long fp(long long x)
 {
-    // freopen("input.in", "r", stdin);
-    // freopen("output.in", "w", stdout);
-    int a,b,x,y,ch = 0,ch1;
-    cin >>  a >> b;
-    int A[a],B[a];
-    for (int i = 0; i < a; i++)
+    if (x == par[x])
     {
-        B[i] = 1;
-        A[i] = 0;
+        return x;
     }
-    
-    DisjSet obj(a);
-    for (int i = 0; i < b; i++)
+    return par[x] = fp(par[x]);
+}
+
+void un()
+{
+    while (!Q.empty())
     {
-        cin >> x >> y;
-        obj.Union(x,y);
-    }
-    for (int i = 1; i <= a; i++)
-    {
-        ch1 = 0;
-        if (A[i - 1] == 0)
+        auto [u,v] = Q.front();
+        long long pu = fp(u),pv = fp(v);
+        Q.pop();
+        if (pu != pv)
         {
-            for (int j = i+1; j <= a; j++)
+            if (mem[pu] >= mem[pv])
             {
-                if (obj.find(i) == obj.find(j))
-                {
-                    A[j - 1] = 1;
-                    B[ch]++;
-                    ch1 = 1;
-                }
+                mem[pu] += mem[pv];
+                mem[pv] = 0;
+                par[pv] = pu;
+            }
+            else
+            {
+                mem[pv] += mem[pu];
+                mem[pu] = 0;
+                par[pu] = pv;
             }
         }
-        if (ch1 == 1)
-        {
-            ch++;
-        }
     }
-    sort(B,B+(a),greater <int>());
-    cout << ch << "\n";
-    for (int i = 0; i < ch; i++)
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    cin >> n >> e;
+    for (long long i = 0; i < n; i++)
     {
-        cout << B[i] << " ";
+        mem[i] = 1;
+        par[i] = i;
     }
+    for (long long i = 0; i < e; i++)
+    {
+        cin >> u >> v;
+        u--;
+        v--;
+        Q.push({u,v});
+    }
+    un();
+    vector <MF> V;
+    long long x = 0;
+    for (long long i = 0; i < n; i++)
+    {
+        if (mem[i] != 0)
+        {
+            x++;
+        }
+        V.push_back({par[i],mem[i]});
+    }
+    sort(V.begin(),V.end());
+    cout << x << "\n";
+    for (long long i = 0; i < n; i++)
+    {
+        if (V[i].w == 0)
+        {
+            break;
+        }
+        cout << V[i].w << " ";
+    }
+    // for (long long i = 0; i < n; i++)
+    // {
+    //     cout << par[i] << " ";
+    // }
+    // cout << "\n";
+    // for (long long i = 0; i < n; i++)
+    // {
+    //     cout << mem[i] << " ";
+    // }
+    
     return 0;
 }

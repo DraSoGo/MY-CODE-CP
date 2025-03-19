@@ -1,95 +1,85 @@
 #include <bits/stdc++.h>
 using namespace std;
-void addEdge(vector<vector<pair<long long,long long>>>& graph,vector<tuple<long long,long long,long long>>& allEdges,long long u, long long v, long long w)
-{
-    graph[u].push_back(make_pair(v, w));
-    graph[v].push_back(make_pair(u, w));
-    allEdges.emplace_back(make_tuple(u,v,w));
-}
-void make_set(vector<long long>& parent)
-{
-    for (long long i = 0; i < parent.size();i++)
-        parent[i] = i;
-}
-bool comp(const tuple<long long,long long,long long>& a, const tuple<long long,long long,long long>& b)
-{
-    long long first = get<2>(a);
-    long long second = get<2>(b);
-    if (first < second)
-        return true;
-    return false;
-}
-long long find_par(vector<long long>& parent, long long x)
-{
-    if(parent[x] != x)
-        parent[x] = find_par(parent,parent[x]);
-    return parent[x];
-}
 
-void union_set(vector<long long>& parent, vector<long long>& ranksize, long long x, long long y)
+struct pos
 {
-    long long par_x = find_par(parent,x);
-    long long par_y = find_par(parent,y);
+    long long x,y;
+};
 
-    if (par_x == par_y)
-        //return
-        return;
-
-    if (ranksize[par_x] > ranksize[par_y])
-        parent[par_y] = par_x;
-
-    else
+struct GP
+{
+    long long v,w;
+    bool operator < (const GP & a)const
     {
-        parent[par_x] = par_y;
-
-        if (ranksize[par_x] == ranksize[par_y])
-            ranksize[par_y]++;
+        return a.w < w;
     }
-}
-long long kruskal(vector<vector<pair<long long,long long>>>& graph,vector<tuple<long long,long long,long long>>& allEdges,long long sum)
-{
-    vector <long long> parent(graph.size());
-    vector <long long> ranksize(graph.size());
-    vector <tuple<long long,long long,long long>> result;
-    make_set(parent);
-   sort(allEdges.begin(),allEdges.end(),comp);
+};
 
-    for (tuple <long long,long long,long long> e: allEdges) 
+const long long sz = 1e5;
+long long n,e,x,y,ans;
+vector <pos> V;
+vector <GP> G[sz];
+queue <GP> PQ;
+long long dis[sz],vis[sz];
+
+void prim(long long st)
+{
+    PQ.push({st,0});
+    while (!PQ.empty())
     {
-        long long s = get<0>(e);
-        long long t = get<1>(e);
-        long long w = get<2>(e);
-        if (find_par(parent,s) != find_par(parent,t))
+        auto [node,w] = PQ.front();
+        PQ.pop();
+        if (vis[node])
         {
-            result.emplace_back(make_tuple(s,t,w));
-            union_set(parent,ranksize,s,t);
-            sum = sum + w;
+            continue;
         }
+        vis[node] = 1;
+        ans += w;
+        long long nv;
+        long long mn = LLONG_MAX;
+        for(auto [nxt,nw]:G[node])
+        {
+            if (vis[nxt])
+            {
+                continue;
+            }
+            dis[nxt] = min(dis[nxt], nw);
+            if (dis[nxt] < mn)
+            {
+                nv = nxt;
+                mn = dis[nxt];
+                // dis[nxt] = nw;
+            }
+        }
+        PQ.push({nv,dis[nv]});
     }
-    return sum;
 }
+
 int main()
 {
-    long long V,x,y,z;
-    cin >> V;
-    pair <long long,long long> A[V];
-    vector<vector<pair<long long,long long>>> graph(V, vector<pair<long long,long long>>(V));
-    vector<tuple<long long,long long,long long>> allEdges;
-    for (long long i = 0; i < V; i++)
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    fill(dis,dis+sz,LLONG_MAX);
+    cin >> e;
+    for (long long i = 0; i < e; i++)
     {
         cin >> x >> y;
-        A[i].first = x;
-        A[i].second = y;
-    }
-    for (long long i = 0; i < V; i++)
-    {
-        for (long long j = i+1; j < V; j++)
+        for (long long j = 0; j < V.size(); j++)
         {
-            z = abs(A[i].first - A[j].first) + abs(A[i].second - A[j].second);
-            addEdge(graph, allEdges, i, j, z);
+            G[i].push_back({j,abs(x-V[j].x)+abs(y-V[j].y)});
+            G[j].push_back({i,abs(x-V[j].x)+abs(y-V[j].y)});
         }
+        V.push_back({x,y});
     }
-   long long res = kruskal(graph, allEdges,0);
-   cout << res << "\n";
+    prim(0);
+    cout << ans;
+    // for (long long i = 0; i < e; i++)
+    // {
+    //     cout << i << ": ";
+    //     for(auto [nxt,w] :G[i])
+    //     {
+    //         cout << nxt << "," << w << " ";
+    //     }
+    //     cout << "\n";
+    // }
    return 0;
 }
