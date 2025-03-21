@@ -1,76 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool cmp(pair <pair<int,int>,int> a,pair <pair<int,int>,int> b)
+struct SS
 {
-    if (a.first.second - a.first.first == b.first.second - b.first.first)
+    int t,w;
+    bool operator < (const SS&a)const
     {
-        return a.second > b.second;
+        return a.w < w;
     }
-    
-    return a.first.second - a.first.first < b.first.second - b.first.first;
-}
+};
 
 int main()
 {
-    vector <pair<pair<int,int>,int>> V;
-    pair <pair<int,int>,int> v;
-    int A[100000];
-    int s,n,ta = 999999,sum,t,x = 0;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int s,n,a,b,w,l = 0,r = 0,sumt = 0,sumw = 0,mn = INT_MAX;
+    vector <SS> V;
     cin >> s >> n;
+    int c = 100-s;
     for (int i = 0; i < n; i++)
     {
-        cin >> v.first.first >> v.first.second >> v.second;
-        x += v.second;
-        V.push_back(v);
+        cin >> a >> b >> w;
+        V.push_back({b-a+1,w});
     }
-    sort(V.begin(),V.end(),cmp);
-    if (x < 100-s)
+    sort(V.begin(),V.end());
+    for(auto [i,j]:V)
     {
-        cout << -1;
+        cout << j << " " << i << "\n";
     }
-    else
+    sumw = V[0].w;
+    sumt = V[0].t;
+    while (l <= r && r < n)
     {
-        for (int i = 0; i < n; i++)
+        if (sumw < c)
         {
-            memset(A,0,sizeof(A));
-            sum = V[i].second;
-            t = V[i].first.second - V[i].first.first + 1;
-            int ch;
-            for (int k = V[i].first.first; k < V[i].first.second; k++)
-            {
-                A[k]++;
-            }
-            for (int j = i+1; j < n; j++)
-            {
-                ch = 0;
-                for (int k = V[j].first.first; k < V[j].first.second; k++)
-                {
-                    if (A[k] + 1 > 1)
-                    {
-                        ch = 1;
-                        break;
-                    }
-                    A[k]++;
-                }
-                if (ch == 1)
-                {
-                    continue;
-                }
-                t += V[j].first.second - V[j].first.first + 1;
-                sum += V[j].second;
-                if (sum > 100-s)
-                {
-                    ta = min(ta,t);
-                    break;
-                }
-            }
+            r++;
+            sumw += V[r].w;
+            sumt += V[r].t;
+            // cout << sumw << "\n";
         }
-        if (ta == 999999)
+        else
         {
-            ta = -1;
+            // cout << sumt << "\n";
+            // cout << "hi";
+            mn = min(mn,sumt);
+            sumw -= V[l].w;
+            sumt -= V[l].t;
+            l++;
         }
-        cout << -1;
     }
+    cout << mn;
     return 0;
 }

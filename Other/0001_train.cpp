@@ -1,35 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+
 int main()
 {
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int n;
-    bool ch;
-    for (int j = 2; j < 1000; j++)
+    int x,n,q;
+    string str;
+
+    cin >> n >> q;
+    int t = (1<<n);
+    for (int i = 0; i < t; i++)
     {
-        ch = 0;
-        n = j;
-        if (n % 2 == 0 && n != 2)
+        cin >> str >> x;
+        int idx = 0;
+        for (int j = 0; j < str.size(); j++)
         {
-            // cout << n << " N\n";
-            continue;
+            idx <<= 1;
+            idx += str[j]-'0';
+            cout << idx << " ";
         }
-        for (int i = 3; i*i <= n; i+=2)
-        {
-            if (n % i == 0 && n != 3)
-            {
-                ch = 1;
-                break;
-            }
-        }
-        if (ch == 1)
-        {
-            // cout << n << " N\n";
-        }
-        else
-        {
-            cout << n << "\n";
-        }
+        cout << "\n";
     }
     return 0;
 }

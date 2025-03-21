@@ -1,37 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int mx = 0;
 vector <int> V;
-bool check[11];
-int A[11][11];
+bool vis[11];
+int mx = -1;
 
-void solve(int m,int n)
+template <size_t A, size_t B>
+void SSS(int (&T)[A][B],int n)
 {
-    if (m == n)
+    if (V.size() == n)
     {
         int sum = 0;
-        for (int i = 0; i < V.size(); i++)
+        for (int i = 0; i < n; i++)
         {
-            sum += A[V[i]-1][i];
-            if (V[i] == n)
-            {
-                break;
-            }
+            sum += T[V[i]][i];
+            // cout << V[i] << " ";
+            // if (V[i] == n-1)
+            // {
+            //     break;
+            // }
         }
         mx = max(sum,mx);
+        // cout << "\n";
     }
     else
     {
-        for (int i = 1; i <= n; i++)
+        for (int i = 0; i < n; i++)
         {
-            if (check[i] == false)
+            if (!vis[i])
             {
                 V.push_back(i);
-                check[i] = true;
-                solve(m+1,n);
-                check[i] = false;
+                vis[i] = 1;
+                SSS(T,n);
                 V.pop_back();
+                vis[i] = 0;
             }
         }
     }
@@ -39,17 +41,18 @@ void solve(int m,int n)
 
 int main()
 {
-    memset(check,0,sizeof(0));
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     int n;
     cin >> n;
+    int T[11][11];
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            cin >> A[i][j];
+            cin >> T[i][j];
         }
     }
-    solve(0,n);
+    SSS(T,n);
     cout << mx;
+    return 0;
 }

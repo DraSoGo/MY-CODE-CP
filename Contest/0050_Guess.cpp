@@ -1,68 +1,71 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+const int sz = 20;
+
+int n,m,co;
+int T[sz][sz],vis[sz],visn[sz];
 vector <int> V;
-vector <int> S[10000];
-int co = 0;
-bool vis[1000];
-int A[100][100];
-int B[100][100];
-int C[100],E[100];
 
-bool check(int l)
+void SSS()
 {
-    int er,cr;
-    for (int k = 0; k < l; k++)
+    if (V.size() == m)
     {
-        cr = 0;
-        er = 0;
-        for (int i = 0; i < V.size(); i++)
+        // for (int i = 0; i < m; i++)
+        // {
+        //     cout << V[i] << " ";
+        // }
+        // cout << "\n";
+        bool ch = 1;
+        for (int i = 0; i < n; i++)
         {
-            if (V[i] == A[k][i])
+            int cop = 0,con = 0;
+            memset(visn,0,sizeof(visn));
+            for (int j = 0; j < m; j++)
             {
-                cr++;
+                visn[T[i][j]]++;
             }
-            else if (vis[A[k][i]])
+            for (int j = 0; j < m; j++)
             {
-                er++;
+                if (T[i][j] == V[j])
+                {
+                    cop++;
+                }
+                else if (visn[V[j]])
+                {
+                    // visn[V[j]] = 0; 
+                    con+=visn[V[j]];
+                }
             }
-            // if (cr > A[k][V.size()] || er > A[k][V.size()+1])
-            // {
-            //     return false;
-            // }
+            if (cop != T[i][m] || con != T[i][m+1])
+            {
+                // cout << cop << " " << con << "\n";
+                // ch = 0;
+                return;
+            }
+            // cout << cop << " " << con << "\n";
         }
-        if (cr != C[k] || er != E[k])
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-void solve(int m,int n,int l)
-{
-    if (m == n)
-    {
-        if (check(l) == true)
+        // cout << "\n";
+        if (ch)
         {
             for (int i = 0; i < m; i++)
             {
-                //S[co].push_back(V[i]);
                 cout << V[i] << " ";
             }
             cout << "\n";
             co++;
         }
+        return;
     }
     else
     {
-        for (int i = 1; i <= 9; i++)
+        for (int i = 1; i < 10; i++)
         {
-            if (vis[i] == 0)
+            if (!vis[i])
             {
-                V.push_back(i);
                 vis[i] = 1;
-                solve(m+1,n,l);
+                V.push_back(i);
+                SSS();
                 vis[i] = 0;
                 V.pop_back();
             }
@@ -73,45 +76,15 @@ void solve(int m,int n,int l)
 int main()
 {
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    memset(vis,0,sizeof(vis));
-    memset(B,0,sizeof(B));
-    int n,m;
-    cin >> n >> m;
-    for (int i = 0; i < m; i++)
+    cin >> m >> n;
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < m+2; j++)
         {
-            cin >> A[i][j];
-            if (j < n)
-            {
-                B[i][A[i][j]]++;
-            }
+            cin >> T[i][j];
         }
-        cin >> C[i] >> E[i];
     }
-    // for (int i = 0; i < m; i++)
-    // {
-    //     for (int j = 1; j <= 9; j++)
-    //     {
-    //         cout << B[i][j] <<" ";
-    //     }
-    //     cout << "\n";
-    // }
-    
-    solve(0,n,m);
-    // sort(S,S+10000);
-    // for (int i = 0; i < 10000; i++)
-    // {
-    //     if (!S[i].empty())
-    //     {
-    //         for (int j = 0; j < S[i].size(); j++)
-    //         {
-    //             cout << S[i][j] << " ";
-    //         }
-    //         cout << "\n";
-    //     }
-    // }
-    
+    SSS();
     cout << co;
     return 0;
 }

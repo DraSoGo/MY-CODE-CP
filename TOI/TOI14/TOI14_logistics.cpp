@@ -1,80 +1,97 @@
-#pragma GCC optimize("O3,unroll-loops")
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Graph
+struct GP
 {
-    int node,f,t,w;
-    bool operator < (const Graph & a)const
+    int v,f,t,w;
+    bool operator < (const GP & a)const
     {
-        return w > a.w;
+        return a.w < w;
     }
 };
-
 struct ADJ
 {
-    int node,w;
+    int v,w;
 };
 
-const int N = 101;
-int cost[N],dis[N][N][2],mxf;
-vector <ADJ> adj[N];
-priority_queue <Graph> PQ;
+const int sz = 101;
+int mxf,n,e,u,v,w,s,d;
+vector <ADJ> G[sz];
+priority_queue <GP> PQ;
+int cost[sz],dis[sz][sz][2],vis[sz][sz][2];
 
-void add(int node,int f,int t,int w)
+void DJ(int st)
 {
-    if (dis[node][f][t] > w)
-    {
-        PQ.push({node,f,t,dis[node][f][t] = w});
-    }
-}
-
-int DJ(int s,int d)
-{
-    add(s,0,1,0);
+    PQ.push({s,0,1,0});
+    // dis[s][0][1] = 0;
     while (!PQ.empty())
     {
         auto [node,f,t,w] = PQ.top();
         PQ.pop();
+        // if (vis[node][f][t])
+        // {
+        //     continue;
+        // }
+        // vis[node][f][t] = 1;
         if (f < mxf)
         {
-            add(node,f+1,t,w+cost[node]);
+            if (dis[node][f+1][t] > cost[node]+w)
+            {
+                dis[node][f+1][t] = cost[node]+w;
+                PQ.push({node,f+1,t,dis[node][f+1][t]});
+            }
         }
         if (t == 1)
         {
-            add(node,mxf,0,w);
-        }
-        for (int i = 0; i < adj[node].size(); i++)
-        {
-            if (f >= adj[node][i].w)
+            if (dis[node][mxf][0] > w)
             {
-                add(adj[node][i].node,f - adj[node][i].w,t,w);
+                dis[node][mxf][0] = w;
+                PQ.push({node,mxf,0,w});
+            }
+        }
+        for(auto [nxt,nw] : G[node])
+        {
+            if (f >= nw && dis[nxt][f-nw][t] > w)
+            {
+                dis[nxt][f-nw][t] = w;
+                PQ.push({nxt,f-nw,t,w});
             }
         }
     }
-    return dis[d][mxf][0];
+    
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(0);
-    fill_n(dis[0][0],N*N*2,INT_MAX);
-    int n,u,v,x,s,d,m,w;
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    for (int i = 0; i < sz; i++)
+    {
+        for (int j = 0; j < sz; j++)
+        {
+            for (int k = 0; k < 2; k++)
+            {
+                dis[i][j][k] = 9999999;
+            }
+        }
+    }
     cin >> n;
     for (int i = 0; i < n; i++)
     {
         cin >> cost[i];
     }
     cin >> s >> d >> mxf;
-    s--,d--;
-    cin >> m;
-    for (int i = 0; i < m; i++)
+    s--;
+    d--;
+    cin >> e;
+    for (int i = 0; i < e; i++)
     {
         cin >> u >> v >> w;
-        u--,v--;
-        adj[u].push_back({v,w});
-        adj[v].push_back({u,w});
+        u--;
+        v--;
+        G[u].push_back({v,w});
+        G[v].push_back({u,w});
     }
-    cout << DJ(s,d);
+    DJ(s);
+    cout << dis[d][mxf][0];
     return 0;
 }

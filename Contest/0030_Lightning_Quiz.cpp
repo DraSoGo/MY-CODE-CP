@@ -1,40 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-int a,b,sum = 0,co = 0;
+
+const int sz = 2e7;
+int a,b,sum = 0,co = 0,md = 1e9+7;
 vector <int> P;
-void SieveOfEratosthenes(int n)
-{
-    bool prime[n + 1];
-    memset(prime, true, sizeof(prime));
-
-    for (int p = 2; p * p <= n; p++)
-    {
-        if (prime[p] == true)
-        {
-            for (int i = p * p; i <= n; i += p)
-                prime[i] = false;
-        }
-    }
-
-    for (int p = 2; p <= n; p++)
-    {
-        if (prime[p])
-        {
-            P.push_back(p);
-        }
-
-    }
-}
+bool vis[sz];
 
 int main()
 {
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     cin >> a >> b;
-    int n = 20000000;
-    SieveOfEratosthenes(n);
-    for (int i = a-1; i < b; i++)
+    vis[0] = 1;
+    vis[1] = 1;
+    for (int i = 2; P.size() <= b; i++)
     {
-        sum = (sum % 1000000007 + P[i] % 1000000007) % 1000000007;
+        if (!vis[i])
+        {
+            for (int j = i+i; j <= sz; j+=i)
+            {
+                vis[j] = 1;
+            }
+            P.push_back(i);
+        }
     }
+    for (int i = a-1; i <= b-1; i++)
+    {
+        // cout << P[i] << "\n";
+        sum = (sum+P[i])%md;
+    }
+    
     cout << sum;
     return 0;
 }   
