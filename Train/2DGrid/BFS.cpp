@@ -1,68 +1,68 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int m,n,T[100][100],vis[100][100];
-int dx[4] = {0,0,1,-1};
-int dy[4] = {1,-1,0,0};
-queue <pair<int,int>> Q;
-
-
-bool check(int x,int y)
+struct pos
 {
-    if (x < 0 || y < 0 || x > m-1 || y > n-1)
+    int i,j;
+};
+
+
+const int sz = 10;
+int m,n,ans;
+int T[sz][sz];
+int di[4] = {0,0,1,-1};
+int dj[4] = {1,-1,0,0};
+bool vis[sz][sz];
+queue <pos> Q;
+
+bool check(int i,int j)
+{
+    if (i < 0 || j < 0 || i >= n || j >= m || T[i][j] == 1)
     {
         return 0;
     }
-    else if (T[x][y] == 1)
-    {
-        return 0;
-    }
-    return !vis[x][y];
+    return 1;
 }
 
-int BFS()
+void BFS(int si,int sj)
 {
-    int st = 0;
-    Q.push({0,0});
-    vis[0][0] = 1;
+    Q.push({si,sj});
     while (!Q.empty())
     {
-        int lvq = Q.size();
-        while (lvq--)
+        auto [ii,jj] = Q.front();
+        Q.pop();
+        if (vis[ii][jj])
         {
-            auto [x1,y1] = Q.front();
-            if (x1 == m-1 && y1 == n-1)
+            continue;
+        }
+        ans++;
+        vis[ii][jj] = 1;
+        for (int i = 0; i < 4; i++)
+        {
+            int ni = ii+di[i];
+            int nj = jj+dj[i];
+            if (check(ni,nj))
             {
-                return st;
-            }
-            Q.pop();
-            for (int i = 0; i < 4; i++)
-            {
-                int x2 = x1 + dx[i];
-                int y2 = y1 + dy[i];
-                if (check(x2,y2))
-                {
-                    Q.push({x2,y2});
-                    vis[x2][y2] = 1;
-                }
+                Q.push({ni,nj});
             }
         }
-        st++;
+        
     }
 }
 
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    cin >> m >> n;
-    for (int i = 0; i < m; i++)
+    cin >> n >> m;
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < m; j++)
         {
             cin >> T[i][j];
         }
     }
-    cout << BFS();
+    BFS(0,0);
+    cout << ans-1;
     return 0;
 }
 /*

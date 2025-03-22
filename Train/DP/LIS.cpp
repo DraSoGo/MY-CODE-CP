@@ -15,7 +15,7 @@ int main()
         int idx = lower_bound(V.begin(),V.end(),A[i])-V.begin();
         if (idx >= V.size())
         {
-            V.push_back(A[i]);
+            V.push_back(A[idx]);
         }
         else
         {
@@ -23,6 +23,7 @@ int main()
         }
     }
     cout << V.size();
+    
 }
 /*
 INPUT

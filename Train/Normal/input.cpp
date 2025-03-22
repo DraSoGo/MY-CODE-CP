@@ -4,13 +4,12 @@ using namespace std;
 
 int input()
 {
-    int n = 0;
-    char c = 0;
-    bool neg = 0;
+    int n = 0,neg = 1;
+    char c;
     c = getchar();
     if (c == '-')
     {
-        neg = 1;
+        neg = -1;
         c = getchar();
     }
     while (c >= '0' && c <= '9')
@@ -19,11 +18,7 @@ int input()
         n += c - '0';
         c = getchar();
     }
-    if (neg)
-    {
-        n *= -1;
-    }
-    return n;
+    return neg*n;
 }
 
 int main()

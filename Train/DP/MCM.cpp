@@ -5,7 +5,7 @@ const int sz = 1e4;
 int A[sz], DP[sz][sz];
 int n;
 
-int MCM(int l, int r)
+int MCM(int l,int r)
 {
     if (l >= r)
     {
@@ -18,7 +18,7 @@ int MCM(int l, int r)
     int mn = INT_MAX;
     for (int i = l; i < r; i++)
     {
-        mn = min(mn, MCM(l, i) + MCM(i + 1, r) + A[l-1] * A[i] * A[r]);
+        mn = min(mn,MCM(l,i) + MCM(i+1,r) + (A[l-1]*A[i]*A[r]));
     }
     return DP[l][r] = mn;
 }

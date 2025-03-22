@@ -1,80 +1,87 @@
-#include <bits/stdc++.h>
-using namespace std;
+    #include <bits/stdc++.h>
+    using namespace std;
 
-struct Point
-{
-    int node,w;
-    bool operator < (const Point & a)const
+    struct GP
     {
-        return w > a.w;
-    }
-};
-
-const int N = 1000;
-vector <Point> adj[N];
-vector <int> path[N];
-priority_queue <Point> PQ;
-int dist[N];
-
-void DJ(int bg,int ed)
-{
-    PQ.push({bg,0});
-    dist[bg] = 0;
-    path[bg].push_back(bg);
-    while (!PQ.empty())
-    {
-        auto[node,w] = PQ.top();
-        PQ.pop();
-        if (w > dist[node])
+        int v,w;
+        bool operator < (const GP&a)const
         {
-            continue;
+            return a.w < w;
         }
-        for (int i = 0; i < adj[node].size(); i++)
+    };
+
+    const int sz = 1e5;
+    int n,e,u,v,w,bg,ed;
+    vector <GP> G[sz];
+    priority_queue <GP> PQ;
+    int vis[sz],dis[sz],par[sz];
+
+    int DJ(int bg,int ed)
+    {
+        dis[bg] = 0;
+        PQ.push({bg,0});
+        while (!PQ.empty())
         {
-            if (dist[adj[node][i].node] > w + adj[node][i].w)
+            auto [node,w] = PQ.top();
+            PQ.pop();
+            if (vis[node])
             {
-                vector <int> tmp;
-                tmp = path[node];
-                tmp.push_back(adj[node][i].node);
-                path[adj[node][i].node] = tmp;
-                PQ.push({adj[node][i].node,dist[adj[node][i].node] = w + adj[node][i].w});
+                continue;
+            }
+            vis[node] = 1;
+            for(auto [nxt,nw] : G[node])
+            {
+                if (dis[nxt] > nw+dis[node])
+                {
+                    dis[nxt] = nw+dis[node];
+                    PQ.push({nxt,dis[nxt]});
+                    par[nxt] = node;
+                }
+                
             }
         }
+        int idx = ed;
+        while (par[idx] != idx)
+        {
+            cout << idx << " ";
+            idx = par[idx];
+        }
+        cout << idx << " ";
+        cout << "\n";
+        return dis[ed];
+        
     }
-}
 
-int main()
-{
-    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    fill(dist,dist + N,INT_MAX);
-    int n,e,bg,ed,u,v,w;
-    cin >> n >> e >> bg >> ed;
-    for (int i = 0; i < e; i++)
+    int main()
     {
-        cin >> u >> v >> w;
-        adj[u].push_back({v,w});
-        adj[v].push_back({u,w});
+        ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+        fill(dis,dis+sz,INT_MAX);
+        cin >> n >> e >> bg >> ed;
+        for (int i = 0; i < n; i++)
+        {
+            par[i] = i;
+        }
+        for (int i = 0; i < e; i++)
+        {
+            cin >> u >> v >> w;
+            G[u].push_back({v,w});
+            G[v].push_back({u,w});
+        }
+        cout << DJ(bg,ed);
+        return 0;
     }
-    DJ(bg,ed);
-    cout << dist[ed] << "\n";
-    for (int i = 0; i < path[ed].size(); i++)
-    {
-        cout << path[ed][i] << " ";
-    }
-    return 0;
-}
-/*
-INPUT
-5 8 0 2
-0 1 2
-1 2 6
-1 4 3
-4 2 1
-3 2 5
-0 3 10
-5 3 4
-0 5 1
-OUTPUT
-6
-0 1 4 2 
-*/
+    /*
+    INPUT
+    5 8 0 2
+    0 1 2
+    1 2 6
+    1 4 3
+    4 2 1
+    3 2 5
+    0 3 10
+    5 3 4
+    0 5 1
+    OUTPUT
+    2 4 1 0 
+    6 
+    */

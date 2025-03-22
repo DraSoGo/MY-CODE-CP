@@ -1,18 +1,13 @@
-/*
-Task: Bridge
-merge sort sovle inversion
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-int co = 0;
+int co;
 
 template <typename T>
 void merge(vector <T> &V,int start,int mid,int stop,vector <T> &tmp)
 {
     int bi = start;
-    int ci = mid+1;
+    int ci = mid + 1;
     for (int i = start; i <= stop; i++)
     {
         if (bi > mid)
@@ -46,7 +41,7 @@ void msort(vector <T> &V,int start,int stop,vector <T> &tmp)
 {
     if (start < stop)
     {
-        int mid = (start+stop)/2;
+        int mid = (start + stop)/2;
         msort(V,start,mid,tmp);
         msort(V,mid+1,stop,tmp);
         merge(V,start,mid,stop,tmp);
@@ -55,11 +50,9 @@ void msort(vector <T> &V,int start,int stop,vector <T> &tmp)
 
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    int n,x;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     vector <int> V,tmp;
+    int n,x;
     cin >> n;
     for (int i = 0; i < n; i++)
     {
@@ -68,7 +61,6 @@ int main()
         tmp.push_back(x);
     }
     msort(V,0,n-1,tmp);
-    // cout << co;
     for (int i = 0; i < n; i++)
     {
         cout << V[i] << " ";
@@ -76,3 +68,11 @@ int main()
     cout << "\n" << co;
     return 0;
 }
+/*
+INPUT
+4
+4 3 2 1
+OUTPUT
+1 2 3 4 
+6
+*/
