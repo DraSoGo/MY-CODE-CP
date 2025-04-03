@@ -39,7 +39,7 @@ void solve(int idx)
     }
 }
 
-main()
+int main()
 {
     int a;
     cin >> a;
