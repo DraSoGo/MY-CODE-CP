@@ -1,70 +1,35 @@
 #include <bits/stdc++.h>
-#define coutf(n, m) cout << fixed << setprecision(n) << m
-#define forr(i, a, n) for (int i = a; i < n; i++)
-#define forl(i, a, n) for (int i = a; i > n; i--)
-#define macos                \
-    ios::sync_with_stdio(0); \
-    cin.tie(0);              \
-    cout.tie(0)
-#define endll "\n"
-#define sp " "
-typedef long long ll;
 using namespace std;
-
-const int N = 2e5 + 10;
-ll n, m, l, z, a, b, c, d;
-vector<tuple<ll, ll, ll>> adj[N];
-vector<pair<ll, ll>> Pts;
-set<pair<ll, ll>> s;
-
-void dfs(ll u, ll wa, ll wb)
-{
-    if (u == n)
-        Pts.push_back({wa, wb});
-    else
-        for (auto [v, t, w] : adj[u])
-        {
-            if (t == 1)
-                dfs(v, wa + w, wb);
-            else
-                dfs(v, wa, wb + w);
-        }
-}
-
-int main()
-{
-    macos;
-
-    cin >> n >> m >> l;
-    forr(i, 0, l) cin >> z;
-    forr(i, 0, m)
-    {
-        cin >> a >> b >> c >> d;
-        adj[a].push_back({b, c, d});
+ 
+#define ll long long
+ 
+int main() {
+    // read the input
+    int n;
+    cin >> n;
+    vector<tuple<ll, ll, ll>> projects(n);
+    for (int i = 0; i < n; i++) {
+        ll start, end, reward;
+        cin >> start >> end >> reward;
+        projects[i] = {end, start, reward};
     }
-
-    dfs(1, 0, 0);
-
-    sort(Pts.begin(), Pts.end());
-
-    ll j = 0, ans = LLONG_MAX;
-    forr(i, 0, Pts.size())
-    {
-        d = sqrt(ans) + 1;
-        while (j < i && Pts[j].first < Pts[i].first - ans)
-            s.erase({Pts[j].second, Pts[j].first}), j++;
-        auto l = s.lower_bound({Pts[i].second - d, Pts[i].first});
-        auto r = s.lower_bound({Pts[i].second + d, Pts[i].first});
-        for (auto it = l; it != r; it++)
-        {
-            ll dx = (Pts[i].first - it->second) * (Pts[i].first - it->second);
-            ll dy = (Pts[i].second - it->first) * (Pts[i].second - it->first);
-            ans = min(ans, dx + dy);
-        }
-        s.insert({Pts[i].second, Pts[i].first});
+    sort(projects.begin(), projects.end());
+ 
+    // compute the dp table and totalBestReward
+    ll bestTotalReward = 0;
+    map<ll, ll> dp; // {end: totalRewardSoFar}
+    dp[0] = 0;
+    for (auto project: projects) {
+        ll start, end, reward;
+        tie(end, start, reward) = project;
+        cout << start << " " << end << " " << reward << "\n";
+        auto it = dp.lower_bound(start);
+        it--;
+        ll totalReward = it->second + reward;
+        bestTotalReward = max(bestTotalReward, totalReward);
+        dp[end] = bestTotalReward;
     }
-
-    cout << ans;
-
+    cout << bestTotalReward;
+ 
     return 0;
 }
