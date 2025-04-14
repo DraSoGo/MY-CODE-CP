@@ -1,36 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
-bool cmd(pair <int,int> a,pair <int,int> b)
-{
-    if (a.first != b.first)
-    {
-        return a.first < b.first;
-    }
-    return a.second > b.second;
-}
+
 int main()
 {
-    int n,s,e,mx = 0,co = 0;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,a,b;
     vector <pair<int,int>> V;
     cin >> n;
     for (int i = 0; i < n; i++)
     {
-        cin >> s >> e;
-        V.push_back({s,1});
-        V.push_back({e,2});
+        cin >> a >> b;
+        V.push_back({a,1});
+        V.push_back({b,-1});
     }
-    sort(V.begin(),V.end(),cmd);
-    for (int i = 0; i < V.size(); i++)
+    sort(V.begin(),V.end());
+    int s = 0,mx = 0;
+    for(auto [x,y]:V)
     {
-        if (V[i].second == 2)
-        {
-            co--;
-        }
-        else
-        {
-            co++;
-        }
-        mx = max(mx,co);
+        s += y;
+        mx = max(mx,s);
     }
     cout << mx;
+    return 0;
 }
