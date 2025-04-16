@@ -3,45 +3,28 @@ using namespace std;
 int main() 
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    long long m,n,c,x,y;
-    cin >> n >> m;
-    long long DP[m][n];
-    memset(DP,-1,sizeof(DP));
-    cin >> c;
-    while (c--)
+    long long m,n,a,b,q;
+    cin >> m >> n >> q;
+    bool vis[n+1][m+1];
+    long long DP[n+2][m+1];
+    memset(DP,0,sizeof(DP));
+    memset(vis,0,sizeof(vis));
+    while (q--)
     {
-        cin >> x >> y;
-        x--;
-        y = m - y;
-        DP[y][x] = 0;
+        cin >> a >> b;
+        vis[n-b+1][a] = 1;
     }
-    DP[m-1][0] = 1;
-    for (long long i = m-1; i >= 0; i--)
+    DP[n][1] = 1;
+    for (int i = n; i >= 0; i--)
     {
-        for (long long j = 0; j < n; j++)
+        for (int j = 1; j < m+1; j++)
         {
-            if (DP[i][j] == 0)
+            if (!vis[i][j])
             {
-                continue;
-            }
-            if (i == m-1 && j == 0)
-            {
-                continue;
-            }
-            else if (i == m-1)
-            {
-                DP[i][j] = DP[i][j-1];
-            }
-            else if (j == 0)
-            {
-                DP[i][j] = DP[i+1][j];
-            }
-            else
-            {
-                DP[i][j] = DP[i+1][j] + DP[i][j-1];
+                DP[i][j] += DP[i+1][j] + DP[i][j-1];
             }
         }
     }
-    cout << DP[0][n-1];
-    return 0;   
+    cout << DP[1][m];
+    return 0;
 }

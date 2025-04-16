@@ -2,16 +2,17 @@
 using namespace std;
 int main()
 {
-    int m,n;
+    long long m,n;
     for (int i = 0; i < 20; i++)
     {
         cin >> m >> n;
-        if (n >= m || 4*n-m > m || 4*n-m < 0)
+        if (n > m || 4*n-m < 0 || 4*n-m > m)
         {
-            cout << 0 << "\n";
+            cout << "0\n";
             continue;
         }
-        cout << (4*n-m)/2+1 << "\n";
+        cout << (4*n-m)/2+1;
+        cout << "\n";
     }
     return 0;
 }

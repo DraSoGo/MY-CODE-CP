@@ -3,34 +3,39 @@ using namespace std;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int a,b,ch,sum;
-    cin >> a >> b;
-    int A[b];
-    for (int i = 0; i < b; i++)
+    long long m,o;
+    cin >> m >> o;
+    long long A[o];
+    for (int i = 0; i < o; i++)
     {
         cin >> A[i];
     }
-    int l = 0,r = INT_MAX;
+    long long l = 0,r = INT_MAX;
     while (l < r)
     {
-        int mid = (l+r)/2;
+        long long mid = (l+r)/2,sum = 0,co = 1;
         // cout << l << " " << r << " " << mid << "\n";
-        ch = 0;sum = 0;
-        for (int i = 0; i < b; i++)
+        for (int i = 0; i < o; i++)
         {
             if (A[i] > mid)
             {
-                ch = a;
+                co = m+1;
                 break;
             }
+            
             sum += A[i];
             if (sum > mid)
             {
-                ch++;
+                co++;
                 sum = A[i];
             }
+            // cout << A[i] << " " << co << " " << sum << "\n";
+            if (co > m)
+            {
+                break;
+            }
         }
-        if (ch >= a)
+        if (co > m)
         {
             l = mid+1;
         }

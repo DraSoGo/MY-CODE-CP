@@ -1,168 +1,104 @@
-#pragma GCC optimize("O3,unroll-loops")
 #include <bits/stdc++.h>
 using namespace std;
-struct point
-{
-    int x,y;
-};
 
-struct mp
+struct GP
 {
-    int a;
+    int v;
     char c;
-    int b; 
 };
 
-int A[404][404];
-point pos[40004];
-vector <mp> V;
-bool vis[40004];
-
-void fl(int a,char c,int b,int p)
+struct pos
 {
-    int x1,y1;
-    if (p == 0)
+    int i,j,num;
+    bool operator < (const pos&a)const
     {
-        x1 = 200,y1 = 200;
-        A[y1][x1] = a;
-        pos[a] = {x1,y1};
-        if (c == 'U')
+        if (i == a.i)
         {
-            y1--;
+            return j < a.j;
         }
-        else if (c == 'D')
-        {
-            y1++;
-        }
-        else if (c == 'L')
-        {
-            x1++;
-        }
-        else if (c == 'R')
-        {
-            x1--;
-        }
-        A[y1][x1] = b;
-        pos[b] = {x1,y1};
+        return i < a.i;
     }
-    else if (p == 1)
+};
+
+
+const int sz = 1e5;
+int n,m,e,u,v;
+char c;
+vector <GP> G[sz];
+bool vis[sz];
+vector <pos> P;
+pair <int,int> PG[sz];
+queue <int> Q;
+
+void BFS(int st)
+{
+    PG[st] = {0,0};
+    Q.push(st);
+    while (!Q.empty())
     {
-        x1 = pos[a].x,y1 = pos[a].y;
-        if (c == 'U')
+        int node = Q.front();
+        // cout << node << "\n";
+        Q.pop();
+        if (vis[node])
         {
-            y1--;
+            continue;
         }
-        else if (c == 'D')
+        // cout << PG[node].first << " " << PG[node].second << "\n";
+        P.push_back({PG[node].first,PG[node].second,node});
+        vis[node] = 1;
+        for(auto [nxt,cmd]:G[node])
         {
-            y1++;
+            Q.push(nxt);
+            if (cmd == 'U')
+            {
+                PG[nxt] = {PG[node].first+1,PG[node].second};
+            }
+            else if (cmd == 'D')
+            {
+                PG[nxt] = {PG[node].first-1,PG[node].second};
+            }
+            else if (cmd == 'L')
+            {
+                PG[nxt] = {PG[node].first,PG[node].second+1};
+            }
+            else
+            {
+                PG[nxt] = {PG[node].first,PG[node].second-1};
+            }
         }
-        else if (c == 'L')
-        {
-            x1++;
-        }
-        else if (c == 'R')
-        {
-            x1--;
-        }
-        A[y1][x1] = b;
-        pos[b] = {x1,y1};
     }
-    else if (p == 2)
-    {
-        x1 = pos[b].x,y1 = pos[b].y;
-        if (c == 'U')
-        {
-            y1++;
-        }
-        else if (c == 'D')
-        {
-            y1--;
-        }
-        else if (c == 'L')
-        {
-            x1--;
-        }
-        else if (c == 'R')
-        {
-            x1++;
-        }
-        A[y1][x1] = a;
-        // cout << "hi " << a << " " << x1 << " " << y1 << "\n";
-        pos[a] = {x1,y1};
-    }
+    
 }
 
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    memset(A,-1,sizeof(A));
-    int n,m,a,b,co = 1;
-    char c;
-    cin >> m >> n;
-    for (int i = 0; i < 40004; i++)
+    cin >> n >> m;
+    e = n*m-1;
+    for (int i = 0; i < e; i++)
     {
-        pos[i] = {-1,-1};
+        cin >> u >> c >> v;
+        char c2;
+        c == 'U'?c2 = 'D':c2 = 'R';
+        G[u].push_back({v,c});
+        G[v].push_back({u,c2});
     }
-    for (int i = 0; i < (m*n)-1; i++)
+    BFS(0);
+    sort(P.begin(),P.end());
+    // for(auto [i,j,num] : P)
+    // {
+    //     cout << num << " " << i << " " << j << "\n";
+    // }
+    int idx = 0;
+    for (int i = 0; i < n; i++)
     {
-        cin >> a >> c >> b;
-        V.push_back({a,c,b});
+        for (int j = 0; j < m; j++)
+        {
+            cout << P[idx].num << " ";
+            idx++;
+        }
+        cout << "\n";
     }
-    mp z = V[0];
-    vis[0] = 1;
-    fl(z.a,z.c,z.b,0);
-    while (co != m*n-1)
-    {
-        for (int i = 1; i < m*n-1; i++)
-        {
-            if (vis[i] == 1)
-            {
-                continue;
-            }
-            z = V[i];
-            // cout << i << " :" << z.a << " " << z.b << " =" << co << "\n";
-            
-            if (pos[z.a].x != -1 && pos[z.a].y != -1)
-            {
-                fl(z.a,z.c,z.b,1);
-                vis[i] = 1;
-                co++;
-            }
-            else if (pos[z.b].x != -1 && pos[z.b].y != -1)
-            {
-                fl(z.a,z.c,z.b,2);
-                vis[i] = 1;
-                co++;
-            }
-            // if (i == 4)
-            // {
-            //     break;
-            // }
-            
-        }
-    }
-    int check = 0,cal = 0;
-    for (int i = 403;   i >= 1; i--)
-    {
-        for (int j = 0; j < 404; j++)
-        {
-            if (A[i][j] != -1)
-            {
-                check = 1;
-                cout << A[i][j] << " ";
-                cal++;
-            }
-        }
-        if (cal == m*n)
-        {
-            break;
-        }
-        if (check == 1)
-        {
-            cout << "\n";
-        }
-    }
-    
     
     return 0;
 }

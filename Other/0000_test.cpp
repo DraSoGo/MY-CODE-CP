@@ -1,32 +1,79 @@
-// Orbs by ttamx
-#include<bits/stdc++.h>
-#include<bits/extc++.h>
-
+#include <bits/stdc++.h>
 using namespace std;
-using namespace __gnu_pbds;
 
-template<class T>
-using ordered_multiset=tree<T,null_type,less_equal<T>,rb_tree_tag,tree_order_statistics_node_update>;
+struct pos
+{
+    int i, j, w;
+};
 
-int main(){
-    cin.tie(nullptr)->sync_with_stdio(false);
-    int n,q,l,r;
-    cin >> n >> q >> l >> r;
-    l--,r--;
-    ordered_multiset<int> t;
-    while(n--){
-        int x;
-        cin >> x;
-        t.insert(x);
+const int sz = 105;
+int n, m;
+int dx[6] = {-1, -1, 0, 0, 1, 1};
+int dy[2][6] = {
+    {0, 1, -1, 1, 0, 1},
+    {-1, 0, -1, 1, -1, 0}};
+int T[sz][sz];
+bool vis[sz][sz][1005];
+
+queue<pos> Q;
+
+int BFS()
+{
+    while (!Q.empty())
+    {
+        auto [ii, jj, w] = Q.front();
+        Q.pop();
+
+        if (ii == (n - 1) / 2 && jj == m - 1)
+        {
+            return w;
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            int ni = ii + dx[i];
+            int nj = jj + dy[ii % 2][i];
+            int nw = w + 1;
+
+            if (ni >= 0 && nj >= 0 && ni < n && nj < m &&
+                T[ni][nj] != 0 && nw % T[ni][nj] == 0 &&
+                !vis[ni][nj][nw])
+            {
+
+                vis[ni][nj][nw] = true;
+                Q.push({ni, nj, nw});
+            }
+        }
     }
-    while(q--){
-        auto itl=t.find_by_order(l);
-        auto itr=t.find_by_order(r);
-        int x=*itl,y=*itr;
-        t.erase(itl);
-        t.erase(itr);
-        t.insert(y-x);
-        t.insert((x+y)/2);
+    return 0;
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> n >> m;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> T[i][j];
+        }
     }
-    for(auto x:t)cout << x << " ";
+
+    int mid = (n - 1) / 2;
+    for (int d = -1; d <= 1; d++)
+    {
+        int i = mid + d;
+        if (i >= 0 && i < n && T[i][0] == 1)
+        {
+            Q.push({i, 0, 1});
+            vis[i][0][1] = true;
+        }
+    }
+
+    cout << BFS();
+    return 0;
 }
