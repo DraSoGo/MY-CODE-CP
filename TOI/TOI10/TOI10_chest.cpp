@@ -26,53 +26,28 @@ int main()
         for (j = i; j < V.size() && V[i].first == V[j].first; j++)
         {
             long long w = V[j].second;
+            long long c = w/abs(w);
+            w = abs(w);
             // cout << w << " ";
-            if (w > 0)
+            while (w > 1 && w % 7 == 0)
             {
-                while (w > 1 && w % 7 == 0)
-                {
-                    M[7]++;
-                    w /= 7;
-                }
-                while (w > 1 && w % 5 == 0)
-                {
-                    M[5]++;
-                    w /= 5;
-                }
-                while (w > 1 && w % 3 == 0)
-                {
-                    M[3]++;
-                    w /= 3;
-                }
-                while (w > 1 && w % 2 == 0)
-                {
-                    M[2]++;
-                    w /= 2;
-                }
+                M[7]+=1*c;
+                w /= 7;
             }
-            else
+            while (w > 1 && w % 5 == 0)
             {
-                w = abs(w);
-                while (w > 1 && w % 7 == 0)
-                {
-                    M[7]--;
-                    w /= 7;
-                }
-                while (w > 1 && w % 5 == 0)
-                {
-                    M[5]--;
-                    w /= 5;
-                }
-                while (w > 1 && w % 3 == 0)
-                {
-                    M[3]--;
-                    w /= 3;
-                }
-                while (w > 1 && w % 2 == 0)
-                {
-                    M[2]--;
-                    w /= 2;
-                }
+                M[5]+=1*c;
+                w /= 5;
+            }
+            while (w > 1 && w % 3 == 0)
+            {
+                M[3]+=1*c;
+                w /= 3;
+            }
+            while (w > 1 && w % 2 == 0)
+            {
+                M[2]+=1*c;
+                w /= 2;
             }
         }
         long long sum = 1;

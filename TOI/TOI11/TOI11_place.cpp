@@ -1,78 +1,71 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-long long par[200001];
-long long val[200001];
-
-struct Graph
+struct GP
 {
     long long u,v,w;
-    bool operator < (const Graph & a) const
+    bool operator < (const GP&a)const
     {
-        return w > a.w;
+        return a.w < w;
     }
 };
-Graph A[1000001];
 
-long long findpar(long long x)
+
+const long long sz = 2e5+1;
+long long n,e,u,v,w,par[sz],mem[sz],ans;
+vector <GP> V;
+
+int fp(int x)
 {
-    if (par[x] == x)
+    if (x == par[x])
     {
         return x;
     }
-    else
-    {
-        return par[x] = findpar(par[x]);
-    }
+    return par[x] = fp(par[x]);
 }
 
-long long kruskal(long long e)
+void KK()
 {
-    long long sum = 0;
-    for (int i = 0; i < e; i++)
+    for (auto [u,v,w] : V)
     {
-        long long a = A[i].u,b = A[i].v,c = A[i].w;
-        if (findpar(a) != findpar(b))
+        int pu = fp(u),pv = fp(v);
+        if (pu != pv)
         {
-            if (val[par[a]] > val[par[b]])
+            ans += w;
+            if (mem[pu] >= mem[pv])
             {
-                val[par[a]] += val[par[b]];
-                par[par[b]] = par[a];
+                mem[pu] += mem[pv];
+                par[pv] = pu;
             }
             else
             {
-                val[par[b]] += val[par[a]];
-                par[par[a]] = par[b];
+                mem[pv] += mem[pu];
+                par[pu] = pv;
             }
-            sum += c;
         }
     }
-    return sum;
 }
-
 
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    long long n,e;
     cin >> n >> e;
-    long long u,v,w;
-    for (long long i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         par[i] = i;
-        val[i] = 1;
+        mem[i] = 1;
     }
-    for (long long i = 0; i < e; i++)
+    
+    for (int i = 0; i < e; i++)
     {
         cin >> u >> v >> w;
         u--;
         v--;
         w--;
-        A[i].u = u;
-        A[i].v = v;
-        A[i].w = w;
+        V.push_back({u,v,w});
     }
-    sort(A,A+e);
-    cout << kruskal(e);
+    sort(V.begin(),V.end());
+    KK();
+    cout << ans;
     return 0;
 }

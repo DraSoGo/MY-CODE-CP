@@ -1,72 +1,61 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-char T[2001][2001];
-int m,n,co = 0,ch = 0;
+const int sz = 2001;
+bool vis[sz][sz];
+int n,m,ans;
 queue <pair<int,int>> Q;
-int dx[8] = {0,0,1,-1,1,1,-1,-1};
-int dy[8] = {1,-1,0,0,1,-1,1,-1};
+int di[8] = {0,0,1,-1,1,-1,1,-1};
+int dj[8] = {1,-1,0,0,-1,1,1,-1};
 
-bool check(int x,int y)
+void BFS(int i,int j)
 {
-    if (x < 0 || y < 0 || x > m-1 || y > n-1)
-    {
-        return false;
-    }
-    if (T[x][y] == '0')
-    {
-        return false;
-    }
-    return true;
-}
-
-void BFS(int x,int y)
-{
-    Q.push({x,y});
-    T[x][y] = '0';
+    Q.push({i,j});
     while (!Q.empty())
     {
-        int x1 = Q.front().first;
-        int y1 = Q.front().second;
+        auto [ii,jj] = Q.front();
         Q.pop();
-        //cout << x1 << " " << y1 << "\n";
-        for (int i = 0; i < 8; i++)
+        if (!vis[ii][jj])
         {
-            int x2 = x1+dx[i];
-            int y2 = y1+dy[i];
-            if (check(x2,y2))
+            continue;
+        }
+        vis[ii][jj] = 0;
+        for (int k = 0; k < 8; k++)
+        {
+            int ni = ii+di[k];
+            int nj = jj+dj[k];
+            if (ni >= 0 && nj >= 0 && ni < n && nj < m && vis[ni][nj] == 1)
             {
-                Q.push({x2,y2});
-                T[x2][y2] = '0';
+                Q.push({ni,nj});
             }
         }
-        ch++;
-        
     }
 }
 
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    cin >> m >> n;
-    for (int i = 0; i < m; i++)
+    cin >> n >> m;
+    char c;
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < m; j++)
         {
-            cin >> T[i][j];
+            cin >> c;
+            vis[i][j] = c-'0';
         }
     }
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < m; j++)
         {
-            if (T[i][j] == '1')
+            if (vis[i][j])
             {
-                co++;
                 BFS(i,j);
+                ans++;
             }
         }
     }
-    cout << co;
+    cout << ans;
     return 0;
 }

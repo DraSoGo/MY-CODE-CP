@@ -5,31 +5,31 @@ using namespace std;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    long long n,m,a;
+    long long n,m;
     cin >> n >> m;
     long long A[n];
     for (int i = 0; i < n; i++)
     {
         cin >> A[i];
     }
-    long long l = 0,r = 1e13,mid;
+    long long l = 1,r = 1e13,mid;
     while (l < r)
     {
         mid = (l+r)/2;
-        a = 0;
+        long long sum = 0;
         for (int i = 0; i < n; i++)
         {
-            a += mid/A[i];
+            sum += mid/A[i];
         }
-        if (a >= m)
+        if (sum >= m)
         {
             r = mid;
         }
         else
-        {   
-            l = mid + 1;
+        {
+            l = mid+1;
         }
     }
-    cout << l;
+    cout << r;
     return 0;
 }
