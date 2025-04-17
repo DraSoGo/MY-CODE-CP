@@ -1,79 +1,56 @@
 #include <bits/stdc++.h>
+#define coutf(n, m) cout << fixed << setprecision(n) << m
+#define forr(i, a, n) for (int i = a; i < n; i++)
+#define forl(i, a, n) for (int i = a; i > n; i--)
+#define macos                \
+    ios::sync_with_stdio(0); \
+    cin.tie(0);              \
+    cout.tie(0);
+#define endll "\n"
+#define sp " "
+typedef long long ll;
 using namespace std;
 
-struct pos
-{
-    int i, j, w;
-};
-
-const int sz = 105;
-int n, m;
-int dx[6] = {-1, -1, 0, 0, 1, 1};
-int dy[2][6] = {
-    {0, 1, -1, 1, 0, 1},
-    {-1, 0, -1, 1, -1, 0}};
-int T[sz][sz];
-bool vis[sz][sz][1005];
-
-queue<pos> Q;
-
-int BFS()
-{
-    while (!Q.empty())
-    {
-        auto [ii, jj, w] = Q.front();
-        Q.pop();
-
-        if (ii == (n - 1) / 2 && jj == m - 1)
-        {
-            return w;
-        }
-
-        for (int i = 0; i < 6; i++)
-        {
-            int ni = ii + dx[i];
-            int nj = jj + dy[ii % 2][i];
-            int nw = w + 1;
-
-            if (ni >= 0 && nj >= 0 && ni < n && nj < m &&
-                T[ni][nj] != 0 && nw % T[ni][nj] == 0 &&
-                !vis[ni][nj][nw])
-            {
-
-                vis[ni][nj][nw] = true;
-                Q.push({ni, nj, nw});
-            }
-        }
-    }
-    return 0;
-}
+const int N = 15000 + 10;
+int n, k, ans, curr, nxt, mn;
+int dis[N];
+bool vis[N];
+pair<int, int> A[N];
 
 int main()
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
+    macos;
 
-    cin >> n >> m;
-
-    for (int i = 0; i < n; i++)
+    cin >> n >> k;
+    forr(i, 1, n + 1)
     {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> T[i][j];
-        }
+        cin >> A[i].first >> A[i].second;
+        dis[i] = 1e9;
     }
 
-    int mid = (n - 1) / 2;
-    for (int d = -1; d <= 1; d++)
+    curr = 1;
+    forr(i, 1, n + 1)
     {
-        int i = mid + d;
-        if (i >= 0 && i < n && T[i][0] == 1)
+        vis[curr] = 1;
+        mn = 1e9;
+        forr(j, 1, n + 1)
         {
-            Q.push({i, 0, 1});
-            vis[i][0][1] = true;
+            if (vis[j])
+                continue;
+            dis[j] = min(dis[j], abs(A[curr].first - A[j].first) + abs(A[curr].second - A[j].second));
+            if (dis[j] < mn)
+                mn = dis[j], nxt = j;
         }
+        curr = nxt;
     }
 
-    cout << BFS();
+    sort(dis + 1, dis + n + 1);
+    for (int i = 1; i <= n - k; i++)
+    {
+        // cout << dis[i] << "\n";
+        ans += dis[i];
+    }
+    cout << ans;
+
     return 0;
 }

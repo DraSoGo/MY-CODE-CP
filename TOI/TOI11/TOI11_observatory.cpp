@@ -3,124 +3,78 @@ using namespace std;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int x, y, k, s1 = 0, sum,mx = INT_MIN;
-    cin >> y >> x >> k;
-    int A[y][x], QS0[y+1][x+1], QS1[y+1][x+1],QS2[y+1][x+1],QS3[y+1][x+1];
-    memset(QS0, 0, sizeof(QS0));
-    memset(QS1, 0, sizeof(QS1));
-    memset(QS2, 0, sizeof(QS2));
-    memset(QS3, 0, sizeof(QS3));
-    for (int i = 0; i < y; i++)
+    int n,m,k,mx = INT_MIN;
+    cin >> n >> m >> k;
+    int T1[n+1][m+1],T2[n+1][m+1];
+    int QST[n+1][m+1],QSS[n+1][m+1];
+    memset(QST,0,sizeof(QST));
+    memset(QSS,0,sizeof(QSS));
+    for (int i = 1; i <= n; i++)
     {
-        for (int j = 0; j < x; j++)
+        for (int j = 1; j <= m; j++)
         {
-            cin >> A[i][j];
+            cin >> T1[i][j];
+            T2[i][m-j+1] = T1[i][j];
         }
     }
-    for (int i = 1; i <= y; i++)
+    for (int i = 1; i <= n; i++)
     {
-        for (int j = 1; j <= x; j++)
+        for (int j = 1; j <= m; j++)
         {
-            if (i == 1 && j == 1)
+            QSS[i][j] = T1[i][j] + QSS[i-1][j] + QSS[i][j-1] - QSS[i-1][j-1];
+            if (i >= 2 && j >= 2)
             {
-                QS0[i][j] = A[i-1][j-1];
+                QST[i][j] = T1[i][j] + QST[i][j-1] + QST[i-1][j-1] - QST[i-1][j-2];
             }
-            else if (i == 1)
+            else if(i == 1)
             {
-                QS0[i][j] = QS0[i][j-1] + A[i-1][j-1];
-            }
-            else if (j == 1)
-            {
-                QS0[i][j] = QS0[i-1][j] + A[i-1][j-1];
+                QST[i][j] = T1[i][j] + QST[i][j-1];
             }
             else
             {
-                QS0[i][j] = A[i-1][j-1] - QS0[i-1][j-1] + QS0[i-1][j] + QS0[i][j-1];
+                QST[i][j] = T1[i][j];
             }
+            
+            // cout << QST[i][j] << " ";
+        }
+        // cout << "\n";
+    }
+    for (int i = k; i <= n; i++)
+    {
+        for (int j = k; j <= m; j++)
+        {
+            mx = max(mx,QST[i][j]-(QSS[i][j-k]-QSS[i-k][j-k])-QST[i-k][j-k]);
         }
     }
-    for (int i = 1; i <= y; i++)
+    memset(QST,0,sizeof(QST));
+    memset(QSS,0,sizeof(QSS));
+    for (int i = 1; i <= n; i++)
     {
-        for (int j = x-1; j >= 0; j--)
+        for (int j = 1; j <= m; j++)
         {
-            if (i == 1 && j == x-1)
+            QSS[i][j] = T2[i][j] + QSS[i-1][j] + QSS[i][j-1] - QSS[i-1][j-1];
+            if (i >= 2 && j >= 2)
             {
-                QS3[i][j] = A[i-1][j];
+                QST[i][j] = T2[i][j] + QST[i][j-1] + QST[i-1][j-1] - QST[i-1][j-2];
             }
-            else if (i == 1)
+            else if(i == 1)
             {
-                QS3[i][j] = QS3[i][j+1] + A[i-1][j];
-            }
-            else if (j == x-1)
-            {
-                QS3[i][j] = QS3[i-1][j] + A[i-1][j];
+                QST[i][j] = T2[i][j] + QST[i][j-1];
             }
             else
             {
-                QS3[i][j] = A[i-1][j] + QS3[i-1][j] + QS3[i][j+1] - QS3[i-1][j+1];
+                QST[i][j] = T2[i][j];
             }
+            
+            // cout << QST[i][j] << " ";
         }
+        // cout << "\n";
     }
-    for (int i = 1; i <= y; i++)
+    for (int i = k; i <= n; i++)
     {
-        for (int j = 1; j <= x; j++)
+        for (int j = k; j <= m; j++)
         {
-            if (i == 1 && j == 1)
-            {
-                QS1[i][j] = A[i-1][j-1];
-            }
-            else if (i == 1)
-            {
-                QS1[i][j] = QS1[i][j-1] + A[i-1][j-1];
-            }
-            else if (j == 1)
-            {
-                QS1[i][j] = A[i-1][j-1];
-            }
-            else
-            {
-                QS1[i][j] = A[i-1][j-1] + QS1[i][j-1] + QS1[i-1][j-1] - QS1[i-1][j-2];
-            }
-        }
-    }
-    for (int i = 1; i <= y; i++)
-    {
-        for (int j = x-1; j >= 0; j--)
-        {
-            if (i == 1 && j == x-1)
-            {
-                QS2[i][j] = A[i-1][j];
-            }
-            else if (i == 1)
-            {
-                QS2[i][j] = QS2[i][j+1] + A[i-1][j];
-                //cout << i << "," << j << " = " << QS2[i][j+1] << " + " << A[i-1][j-1] << " = " << QS2[i][j] << "\n";
-            }
-            else if (j == x-1)
-            {
-                QS2[i][j] = A[i-1][j];
-            }
-            else
-            {
-                QS2[i][j] = A[i-1][j] + QS2[i][j+1] + QS2[i-1][j+1] - QS2[i-1][j+2];
-            }
-        }
-    }
-    for (int i = k; i <= y; i++)
-    {
-        for (int j = k; j <= x; j++)
-        {
-            sum = QS1[i][j] - QS0[i][j-k] + QS0[i-k][j-k] - QS1[i-k][j-k];
-            mx = max(mx,sum);
-        }
-    }
-    for (int i = k; i <= y; i++)
-    {
-        for (int j = x-k; j >= 0; j--)
-        {
-            sum = QS2[i][j] - QS2[i-k][j+k] - QS3[i][j+k] + QS3[i-k][j+k];
-            //cout << i << "," << j << " = " << sum << "\n";
-            mx = max(mx,sum);
+            mx = max(mx,QST[i][j]-(QSS[i][j-k]-QSS[i-k][j-k])-QST[i-k][j-k]);
         }
     }
     cout << mx;
