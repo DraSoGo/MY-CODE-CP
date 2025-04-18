@@ -3,55 +3,44 @@ using namespace std;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    long long n,q,x,idx;
+    int n,q,x;
     cin >> n >> q;
-    long long A[n],ansl[n],ansr[n];
-    vector <long long> L;
-    vector <long long> R;
-    for (long long i = 0; i < n; i++)
+    int L[n],R[n],DPL[n],DPR[n];
+    memset(DPL,0,sizeof(DPL));
+    memset(DPR,0,sizeof(DPR));
+    vector <int> LISL,LISR;
+    for (int i = 0; i < n; i++)
     {
-        cin >> A[i];
+        cin >> L[i];
+        R[n-i-1] = L[i];
     }
-    for (long long i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        idx = lower_bound(L.begin(),L.end(),A[i])-L.begin();
-        if (idx == L.size())
+        int idxl = lower_bound(LISL.begin(),LISL.end(),L[i])-LISL.begin();
+        int idxr = lower_bound(LISR.begin(),LISR.end(),R[i])-LISR.begin();
+        if (idxl >= LISL.size())
         {
-            L.push_back(A[i]);
+            LISL.push_back(L[i]);
         }
         else
         {
-            L[idx] = A[i];
+            LISL[idxl] = L[i];
         }
-        ansl[i] = idx;
-    }
-    // for(auto i:ansl)
-    // {
-    //     cout << i << " ";
-    // }
-    // cout << "\n";
-    for (long long i = n-1; i >= 0; i--)
-    {
-        idx = lower_bound(R.begin(),R.end(),A[i])-R.begin();
-        if (idx == R.size())
+        if (idxr >= LISR.size())
         {
-            R.push_back(A[i]);
+            LISR.push_back(R[i]);
         }
         else
         {
-            R[idx] = A[i];
+            LISR[idxr] = R[i];
         }
-        ansr[i] = idx;
+        DPL[i] = idxl;
+        DPR[n-i-1] = idxr;
     }
-    // for(auto i:ansr)
-    // {
-    //     cout << i << " ";
-    // }
-    // cout << "\n";
-    for (long long i = 0; i < q; i++)
+    while (q--)
     {
         cin >> x;
-        cout << min(ansl[x],ansr[x]) << "\n";
+        cout << min(DPL[x],DPR[x]) << "\n";
     }
     return 0;
 }
