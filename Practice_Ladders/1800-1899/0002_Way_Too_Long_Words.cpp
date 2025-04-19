@@ -9,7 +9,7 @@ int main()
     while (n--)
     {
         cin >> s;
-        if (s.length() < 10)
+        if (s.length() <= 10)
         {
             cout << s;
         }
