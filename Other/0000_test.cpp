@@ -1,61 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 4005;
-int dp[N][N];
-int a[N];
-
-int main()
-{
+int main() {
     int n;
     cin >> n;
-
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
+    vector<pair<long long, long long>> tasks(n);
+    for (int i = 0; i < n; i++) {
+        cin >> tasks[i].first >> tasks[i].second; // duration, deadline
     }
 
-    map<int, int> M;
-    int idx = 0;
-    for (int i = 0; i < n; i++)
-    {
-        if (M.find(a[i]) == M.end())
-        {
-            M[a[i]] = idx++;
-        }
-    }
-    for (int i = 0; i < n; i++)
-    {
-        a[i] = M[a[i]];
-        cout << a[i] << " ";
-    }
-    cout << "\n";
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            dp[i][j] = 1;
-        }
+    sort(tasks.begin(), tasks.end()); // sort by duration
+
+    long long current_time = 0, reward = 0;
+    for (auto [duration, deadline] : tasks) {
+        current_time += duration;
+        reward += deadline - current_time;
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < i; j++)
-        {
-            dp[i][a[j]] = max(dp[i][a[j]], dp[j][a[i]] + 1);
-        }
-    }
-
-    int ans = 0;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            cout << dp[i][j] << " " << a[i] << " " << j << "\n";
-            ans = max(ans, dp[i][j]);
-        }
-    }
-
-    cout << ans << '\n';
+    cout << reward << '\n';
     return 0;
 }
