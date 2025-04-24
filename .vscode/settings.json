@@ -10,6 +10,7 @@
         "span": "cpp",
         "stacktrace": "cpp",
         "regex": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "iomanip": "cpp"
     }
 }
