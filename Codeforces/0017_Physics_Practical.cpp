@@ -7,12 +7,11 @@ int main()
     ifstream fin("input.txt");
     ofstream fout("output.txt");
     int n;
-    cin >> n;
+    fin >> n;
     int A[n];
     for (int i = 0; i < n; i++)
     {
-        // fin >> A[i];
-        cin >> A[i];
+        fin >> A[i];
     }
     sort(A,A+n);
     int l = 0,mx = 0;
@@ -24,7 +23,6 @@ int main()
         }
         mx = max(mx,r-l+1);
     }
-    // fout << mx;
-    cout << n - mx;
+    fout << n - mx;
     return 0;
 }
