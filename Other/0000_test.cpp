@@ -1,67 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, s, w, a, ans;
-vector<vector<pair<int, int>>> v;
-vector<int> dist, poi;
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-signed main()
+#define pi pair<int, int>
+#define pb push_back
+
+const int N = 1010;
+vector<pair<int, char>> adj[N];
+vector<vector<int>> D(N, vector<int>(N, 1e9));
+
+int main()
 {
-    cin.tie(0)->sync_with_stdio(0);
-    cin >> n >> s;
-    v.resize(1 << s);
+    int n, m;
+    cin >> n >> m;
+    for (int i = 0; i < m; i++)
+    {
+        int a, b;
+        char c;
+        cin >> a >> b >> c;
+        --a, --b;
+        adj[a].pb({b, c});
+        adj[b].pb({a, c});
+    }
+    queue<pi> q;
     for (int i = 0; i < n; i++)
     {
-        cin >> w;
-        int cure = 0, poison = 0;
-        for (int j = 0; j < s; j++)
+        D[i][i] = 0;
+        q.push({i, i});
+        for (const auto &[j, _] : adj[i])
         {
-            cure <<= 1;
-            poison <<= 1;
-            cin >> a;
-            if (a == 1)
-                cure++;
-            if (a == -1)
-                poison++;
-        }
-        poi.push_back(poison);
-        v[poison].push_back({w, cure});
-    }
-    dist.assign(1 << s, INT_MAX);
-    dist[0] = 0;
-    pq.push({0, 0});
-    while (!pq.empty())
-    {
-        auto [w, now] = pq.top();
-        pq.pop();
-        if (w > dist[now])
-            continue;
-        for (auto &[tow, to] : v[now])
-        {
-            if (dist[to] > tow + w)
+            if (D[i][j] == 1e9)
             {
-                dist[to] = tow + w;
-                pq.push({tow + w, to});
+                D[i][j] = D[j][i] = 1;
+                q.push({i, j});
             }
         }
-        for (int i = 0; i < s; i++)
+    }
+    while (q.size())
+    {
+        const auto [c, d] = q.front();
+        q.pop();
+        int new_len = D[c][d] + 2;
+        for (const auto &[a, c1] : adj[c])
         {
-            if (now & (1 << i))
+            for (const auto &[b, c2] : adj[d])
             {
-                int to = now ^ (1 << i);
-                if (dist[to] > w)
+                if (c1 == c2 && new_len < D[a][b])
                 {
-                    dist[to] = w;
-                    pq.push({w, to});
+                    D[a][b] = D[b][a] = new_len;
+                    q.push({a, b});
                 }
             }
         }
     }
-    for (int i = 0; i < n; i++)
-    {
-        if (dist[poi[i]] != INT_MAX)
-            ans = max(ans, dist[poi[i]]);
-    }
-    cout << ans << '\n';
-    return 0;
+    cout << (D[0][n - 1] == 1e9 ? -1 : D[0][n - 1]) << '\n';
 }
