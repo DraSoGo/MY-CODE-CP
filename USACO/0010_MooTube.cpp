@@ -50,7 +50,7 @@ int main()
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     ifstream fin("mootube.in");
     ofstream fout("mootube.out");
-    fin >> n >> q;
+    cin >> n >> q;
     int ans[q];
     e = n-1;
     for (int i = 0; i < n; i++)
@@ -61,13 +61,13 @@ int main()
     
     for (int i = 0; i < e; i++)
     {
-        fin >> u >> v >> w;
+        cin >> u >> v >> w;
         u--,v--;
         G.push_back({u,v,w});
     }
     for (int i = 0; i < q; i++)
     {
-        fin >> k >> v;
+        cin >> k >> v;
         v--;
         QR.push_back({k,v,i});
     }
@@ -85,7 +85,7 @@ int main()
     }
     for (int i = 0; i < q; i++)
     {
-        fout << ans[i] << "\n";
+        cout << ans[i] << "\n";
     }
     
     return 0;
