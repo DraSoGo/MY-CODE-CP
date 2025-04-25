@@ -1,56 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define pi pair<int, int>
-#define pb push_back
-
-const int N = 1010;
-vector<pair<int, char>> adj[N];
-vector<vector<int>> D(N, vector<int>(N, 1e9));
-
 int main()
 {
     int n, m;
     cin >> n >> m;
+
+    vector<int> out(n + 1);          // Number of outgoing nodes
+    vector<vector<int>> radj(n + 1); // Reverse graph
+
     for (int i = 0; i < m; i++)
     {
         int a, b;
-        char c;
-        cin >> a >> b >> c;
-        --a, --b;
-        adj[a].pb({b, c});
-        adj[b].pb({a, c});
+        cin >> a >> b;
+        radj[b].push_back(a);
+        out[a]++;
     }
-    queue<pi> q;
-    for (int i = 0; i < n; i++)
+
+    /*
+     * Any node with out[i] == 0 can be used, so we store all possible
+     * nodes in a max heap to get the node with the maximum id.
+     */
+    priority_queue<int> pq;
+    for (int i = 1; i <= n; i++)
     {
-        D[i][i] = 0;
-        q.push({i, i});
-        for (const auto &[j, _] : adj[i])
+        if (out[i] == 0)
         {
-            if (D[i][j] == 1e9)
+            pq.push(i);
+        }
+    }
+
+    vector<int> ans;
+    while (!pq.empty())
+    {
+        // Remove the node with the greatest id.
+        int x = pq.top();
+        pq.pop();
+        ans.push_back(x);
+
+        // Remove all edges that begin at `x`.
+        for (int t : radj[x])
+        {
+            out[t]--;
+            if (!out[t])
             {
-                D[i][j] = D[j][i] = 1;
-                q.push({i, j});
+                pq.push(t);
             }
         }
     }
-    while (q.size())
+    reverse(ans.begin(), ans.end());
+    for (int t : ans)
     {
-        const auto [c, d] = q.front();
-        q.pop();
-        int new_len = D[c][d] + 2;
-        for (const auto &[a, c1] : adj[c])
-        {
-            for (const auto &[b, c2] : adj[d])
-            {
-                if (c1 == c2 && new_len < D[a][b])
-                {
-                    D[a][b] = D[b][a] = new_len;
-                    q.push({a, b});
-                }
-            }
-        }
+        cout << t << " ";
     }
-    cout << (D[0][n - 1] == 1e9 ? -1 : D[0][n - 1]) << '\n';
 }
