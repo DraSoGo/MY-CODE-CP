@@ -58,7 +58,7 @@ int main()
     cin >> n >> e;
     for (int i = 0; i < n; i++)
     {
-        dis[i] = LLONG_MAX;
+        dis[i] = LLONG_MAX; 
         mn[i] = LLONG_MAX;
     }
     for (int i = 0; i < e; i++)
