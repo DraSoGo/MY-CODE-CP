@@ -6,18 +6,18 @@ struct GP
     int u,v,w;
     bool operator < (const GP&a)const
     {
-        return a.w > w;
+        return w < a.w;
     }
 };
 
-const int sz = 1e5;
+const int sz = 1e5+10;
 int n,e,u,v,w,ans;
-vector <GP> G;
 int par[sz],mem[sz];
+vector <GP> G;
 
 int fp(int x)
 {
-    if (par[x] == x)
+    if (x == par[x])
     {
         return x;
     }
@@ -26,22 +26,20 @@ int fp(int x)
 
 void KK()
 {
-    for(auto [u,v,w]:G)
+    for (auto [u,v,w]:G)
     {
         int pu = fp(u),pv = fp(v);
-        if (pu != pv)
+        if (pv != pu)
         {
             ans += w;
             if (mem[pu] >= mem[pv])
             {
                 mem[pu] += mem[pv];
-                mem[pv] = 0;
                 par[pv] = pu;
             }
             else
             {
                 mem[pv] += mem[pu];
-                mem[pu] = 0;
                 par[pu] = pv;
             }
         }

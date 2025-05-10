@@ -18,7 +18,7 @@ int input()
         n += c - '0';
         c = getchar();
     }
-    return neg*n;
+    return n*neg;
 }
 
 int main()

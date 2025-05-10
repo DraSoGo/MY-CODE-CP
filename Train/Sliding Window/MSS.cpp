@@ -3,15 +3,15 @@ using namespace std;
 int main()
 {
     ios::sync_with_stdio(0);
-    int n,x,mx = INT_MIN,sum = 0;
+    int n,x,sum = 0,ans = INT_MIN;
     cin >> n;
     for (int i = 0; i < n; i++)
     {
         cin >> x;
-        sum = max(sum+x,x);
-        mx = max(mx,sum);
+        sum = max(x,sum+x);
+        ans = max(sum,ans);
     }
-    cout << mx;
+    cout << ans;
     return 0;
 }
 /*

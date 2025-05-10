@@ -5,17 +5,30 @@ using namespace std;
 using namespace __gnu_pbds;
 
 template <class T>
-using order_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag,tree_order_statistics_node_update>;
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag,tree_order_statistics_node_update>;
 
 int main()
 {
     ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    order_multiset <int> OMS;
-    OMS.insert(1);
-    OMS.insert(2);
-    OMS.insert(1);
-    cout << *OMS.find_by_order(0) << " ";
-    cout << *OMS.find_by_order(1) << " ";
-    cout << *OMS.find_by_order(2) << " ";
+    ordered_multiset <int> OMS;
+    int n,x;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> x;
+        OMS.insert(x);
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cout << *OMS.find_by_order(i) << " ";
+    }
+    
     return 0;
 }
+/*
+INPUT
+6
+1 1 2 2 3 1
+OUTPUT
+1 1 1 2 2 3
+*/

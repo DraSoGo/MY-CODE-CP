@@ -6,56 +6,54 @@ struct GP
     int u,v,w;
 };
 
-const int sz = 1e5;
-int n,e,u,v,w,st,ch;
+const int sz = 1e5+10;
+int n,e,u,v,w,a;
 vector <GP> G;
 int dis[sz];
 
 bool BMF(int st)
 {
-    dis[st] = 0;
+    dis[a] = 0;
+    bool ch = 0;
     for (int i = 0; i < n; i++)
     {
-        for(auto [u,v,w]:G)
+        for (auto [u,v,w]:G)
         {
-            if (dis[v] > dis[u] + w)
+            if (dis[v] > dis[u]+w)
             {
+                dis[v] = dis[u]+w;
                 if (i == n-1)
                 {
                     ch = 1;
                 }
-                dis[v] = dis[u] + w;
             }
         }
     }
-    if (ch)
-    {
-        return 0;
-    }
-    return 1;
+    return ch;
 }
 
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    cin >> n >> e >> st;
-    st--;
-    fill(dis,dis + sz,INT_MAX);
+    cin >> n >> e >> a;
+    a--;
+    fill(dis,dis+sz,INT_MAX);
     for (int i = 0; i < e; i++)
     {
         cin >> u >> v >> w;
-        u--;
-        v--;
+        u--,v--;
         G.push_back({u,v,w});
     }
-    if(!BMF(st))
+    if (!BMF(a))
+    {
+        for (int i = 0; i < n; i++)
+        {
+            cout << (dis[i] == INT_MAX?0:dis[i]) << "\n";
+        }
+    }
+    else
     {
         cout << -1;
-        return 0;
-    }
-    for (int i = 0; i < n; i++)
-    {
-        cout << dis[i] << "\n";
     }
     
     return 0;

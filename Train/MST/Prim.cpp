@@ -10,16 +10,17 @@ struct GP
     }
 };
 
-const int sz = 1e5;
+const int sz = 1e5+10;
 int n,e,u,v,w,ans;
 vector <GP> G[sz];
+bool vis[sz];
 priority_queue <GP> PQ;
-int dis[sz],vis[sz];
+int dis[sz];
 
-void Prim(int st)
+void prim(int st)
 {
-    dis[st] = 0;
     PQ.push({st,0});
+    dis[st] = 0;
     while (!PQ.empty())
     {
         auto [node,w] = PQ.top();
@@ -52,7 +53,7 @@ int main()
         G[u].push_back({v,w});
         G[v].push_back({u,w});
     }
-    Prim(0);
+    prim(0);
     cout << ans;
     return 0;
 }

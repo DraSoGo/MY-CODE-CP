@@ -2,28 +2,26 @@
 using namespace std;
 int main()
 {
-    int n;
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    int n,x;
     cin >> n;
-    int A[n];
     vector <int> V;
     for (int i = 0; i < n; i++)
     {
-        cin >> A[i];
-    }
-    for (int i = 0; i < n; i++)
-    {
-        int idx = lower_bound(V.begin(),V.end(),A[i])-V.begin();
+        cin >> x;
+        int idx = lower_bound(V.begin(),V.end(),x)-V.begin();
         if (idx >= V.size())
         {
-            V.push_back(A[idx]);
+            V.push_back(x);
         }
         else
         {
-            V[idx] = A[i];
+            V[idx] = x;
         }
+        
     }
     cout << V.size();
-    
+    return 0;
 }
 /*
 INPUT

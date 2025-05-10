@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int sz = 1e3;
-int G[sz][sz];
+const int sz = 1e4;
 int n,e,u,v,w;
+long long G[sz][sz];
 
 int main()
+
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     cin >> n >> e;
@@ -13,15 +14,12 @@ int main()
     {
         for (int j = 0; j < n; j++)
         {
-            if (i == j)
+            if (i != j)
             {
-                G[i][j] = 0;
-                continue;
+                G[i][j] = INT_MAX;
             }
-            G[i][j] = INT_MAX;
         }
     }
-    
     for (int i = 0; i < e; i++)
     {
         cin >> u >> v >> w;
@@ -34,7 +32,7 @@ int main()
         {
             for (int j = 0; j < n; j++)
             {
-                if (!(G[i][k] == INT_MAX || G[j][k] == INT_MAX) && G[i][j] > G[i][k] + G[k][j])
+                if (G[i][j] > G[i][k] + G[k][j])
                 {
                     G[i][j] = G[i][k] + G[k][j];
                 }
@@ -45,11 +43,11 @@ int main()
     {
         for (int j = 0; j < n; j++)
         {
-            cout << G[i][j] << " ";
+            cout << (G[i][j] == INT_MAX?0:G[i][j]) << " ";
         }
         cout << "\n";
     }
-        
+    
     return 0;
 }
 /*

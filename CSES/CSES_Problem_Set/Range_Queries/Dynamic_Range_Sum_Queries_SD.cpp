@@ -29,7 +29,7 @@ int main()
         if (c == 2)
         {
             a--,b--;
-            ans = 0;
+            int ans = 0;
             while (a < b && a % sz != 0)
             {
                 ans += A[a];
