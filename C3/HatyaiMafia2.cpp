@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+const int sz = 2e3+1;
 int n,m,q;
-int A[2001][2001];
-int par[2001];
-int mem[2001];
+int A[sz][sz];
+int par[sz];
+int mem[sz];
 
 int check(int a,int b)
 {
