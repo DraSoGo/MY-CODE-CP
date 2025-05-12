@@ -4,11 +4,10 @@ using namespace std;
 int main()
 {
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int n,x,y;
-    cin >> n;
+    int n,d,x,y,mn = INT_MAX;
     set <pair<int,int>> S;
     vector <pair<int,int>> V;
-    int mn = INT_MAX,d;
+    cin >> n;
     for (int i = 0; i < n; i++)
     {
         cin >> x >> y;
@@ -19,22 +18,22 @@ int main()
     for (int i = 0; i < n; i++)
     {
         d = sqrt(mn);
-        while (V[j].first - V[i].first >= mn)
+        while (V[i].first - V[j].first >= d)
         {
             S.erase({V[j].second,V[j].first});
             j++;
         }
         auto it1 = S.lower_bound({V[i].second-d,V[i].first});
-        auto it2 = S.lower_bound({V[i].second+d,V[i].first});
+        auto it2 = S.upper_bound({V[i].second+d,V[i].first});
         for (auto it = it1; it != it2; it++)
         {
-            int dx = V[i].first-it->second;
-            int dy = V[i].second-it->first;
-            mn = min(mn,dx*dx + dy*dy);
+            int dx = V[i].first - it->second;
+            int dy = V[i].second - it->first;
+            mn = min(mn,dx*dx+dy*dy);
         }
         S.insert({V[i].second,V[i].first});
     }
-    cout << sqrt(mn);
+    cout << sqrt(double(mn));
     return 0;
 }
 /*
