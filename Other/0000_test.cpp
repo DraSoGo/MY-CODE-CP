@@ -1,113 +1,77 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
-const ll INF = (1LL<<60);
 
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+const int MOD = 1e9 + 7;
+const int BUF_SZ = 1 << 15;
 
-    while(true){
-        int M;
-        if(!(cin >> M)) return 0;
-        if(M == 0) break;
+// BeginCodeSnip{Input}
+inline namespace Input {
+char buf[BUF_SZ];
+int pos;
+int len;
+char next_char() {
+	if (pos == len) {
+		pos = 0;
+		len = (int)fread(buf, 1, BUF_SZ, stdin);
+		if (!len) { return EOF; }
+	}
+	return buf[pos++];
+}
 
-        // 1) read costs
-        vector<ll> cost(M+1);
-        for(int i = 1; i <= M; i++){
-            cin >> cost[i];
-        }
+int read_int() {
+	int x;
+	char ch;
+	int sgn = 1;
+	while (!isdigit(ch = next_char())) {
+		if (ch == '-') { sgn *= -1; }
+	}
+	x = ch - '0';
+	while (isdigit(ch = next_char())) { x = x * 10 + (ch - '0'); }
+	return x * sgn;
+}
+}  // namespace Input
+// EndCodeSnip
+// BeginCodeSnip{Output}
+inline namespace Output {
+char buf[BUF_SZ];
+int pos;
 
-        // 2) read endpoints
-        int P;
-        cin >> P;
-        vector<int> endpoints;
-        for(int i = 0; i < P; i++){
-            int t; char side;
-            cin >> t >> side;       // side is A or B; we ignore it
-            endpoints.push_back(t);
-        }
+void flush_out() {
+	fwrite(buf, 1, pos, stdout);
+	pos = 0;
+}
 
-        // 3) build graph
-        vector<vector<int>> adj(M+1);
-        for(int u = 1; u <= M; u++){
-            int K;
-            cin >> K;
-            for(int j = 0; j < K; j++){
-                int v; char side;
-                cin >> v >> side;    // again ignore side
-                adj[u].push_back(v);
-            }
-        }
+void write_char(char c) {
+	if (pos == BUF_SZ) { flush_out(); }
+	buf[pos++] = c;
+}
 
-        // 4) multi-source Dijkstra: dist[v] = min cost to reach v
-        vector<ll> dist(M+1, INF);
-        priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<>> pq;
-        for(int s: endpoints){
-            if(dist[s] > cost[s]){
-                dist[s] = cost[s];
-                pq.emplace(dist[s], s);
-            }
-        }
-        while(!pq.empty()){
-            auto [d,u] = pq.top(); pq.pop();
-            if(d > dist[u]) continue;
-            for(int v: adj[u]){
-                ll nd = d + cost[v];
-                if(nd < dist[v]){
-                    dist[v] = nd;
-                    pq.emplace(nd, v);
-                }
-            }
-        }
+void write_int(int x) {
+	static char num_buf[100];
+	if (x < 0) {
+		write_char('-');
+		x *= -1;
+	}
+	int len = 0;
+	for (; x >= 10; x /= 10) { num_buf[len++] = (char)('0' + (x % 10)); }
+	write_char((char)('0' + x));
+	while (len) { write_char(num_buf[--len]); }
+	write_char('\n');
+}
 
-        // 5) find minimal endpoint cost
-        ll bestCost = INF;
-        for(int e: endpoints){
-            bestCost = min(bestCost, dist[e]);
-        }
+// auto-flush output when program exits
+void init_output() { assert(atexit(flush_out) == 0); }
+}  // namespace Output
+// EndCodeSnip
 
-        // 6) build shortest-path DAG and DP for max segments
-        vector<vector<int>> dag(M+1);
-        vector<pair<ll,int>> order;
-        order.reserve(M);
-        for(int u = 1; u <= M; u++){
-            if(dist[u] < INF){
-                order.emplace_back(dist[u], u);
-                for(int v: adj[u]){
-                    if(dist[v] == dist[u] + cost[v]){
-                        dag[u].push_back(v);
-                    }
-                }
-            }
-        }
-        sort(order.begin(), order.end());
-
-        vector<int> dp(M+1, 0);
-        for(int s: endpoints){
-            if(dist[s] < INF){
-                dp[s] = 1;
-            }
-        }
-        for(auto &pr: order){
-            int u = pr.second;
-            if(dp[u] > 0){
-                for(int v: dag[u]){
-                    dp[v] = max(dp[v], dp[u] + 1);
-                }
-            }
-        }
-
-        int bestLen = 0;
-        for(int e: endpoints){
-            if(dist[e] == bestCost){
-                bestLen = max(bestLen, dp[e]);
-            }
-        }
-
-        // 7) output
-        cout << bestCost << " " << bestLen << "\n";
-    }
-
-    return 0;
+int main() {
+	init_output();
+	int M = read_int();
+	int N = read_int();
+	int ans = 0;
+	for (int i = 0; i < N; i++) {
+		ans = (ans + read_int()) % MOD;
+		if (M == 1) { write_int(ans); }
+	}
+	if (M == 0) { write_int(ans); }
 }
