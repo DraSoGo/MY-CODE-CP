@@ -1,6 +1,6 @@
 # 🐱‍💻 This my code about competitive programming.
 
-<img src="https://github.com/DraSoGo/Competitive-Programming/refs/heads/main/Source/image.png"/>
+<img src="https://raw.githubusercontent.com/DraSoGo/Competitive-Programming/refs/heads/main/Source/image.png"/>
 
 ## 📁 File
 1. Algorithm : About every algotithm that i know.
